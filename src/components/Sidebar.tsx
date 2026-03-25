@@ -29,10 +29,16 @@ export function Sidebar() {
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const [user, setUser] = React.useState<any>(null);
+  const [profile, setProfile] = React.useState<any>(null);
 
   React.useEffect(() => {
-    import("@/lib/auth").then(({ getUser }) => {
-      getUser().then(setUser);
+    import("@/lib/auth").then(({ getUser, getProfile }) => {
+      getUser().then((u) => {
+        setUser(u);
+        if (u) {
+          getProfile(u.id).then(setProfile);
+        }
+      });
     });
   }, []);
 
@@ -83,24 +89,26 @@ export function Sidebar() {
         {user && (
           <div className="flex items-center gap-3 p-3 mb-4 rounded-xl bg-surface-light/50 border border-white/5">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-secondary/20 to-primary/20 flex items-center justify-center text-xs font-bold text-primary-light border border-primary/10">
-              {user.email?.[0].toUpperCase()}
+              {profile?.store_name?.[0].toUpperCase() || user.email?.[0].toUpperCase()}
             </div>
             <div className="flex flex-col overflow-hidden">
-              <span className="text-xs font-bold text-foreground truncate">{user.email}</span>
+              <span className="text-xs font-bold text-foreground truncate">{profile?.store_name || user.email}</span>
               <span className="text-[10px] text-muted truncate">Commander</span>
             </div>
           </div>
         )}
 
         <div className="space-y-1">
-          <Link
-            href={`/store/demo`}
-            target="_blank"
-            className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-muted hover:text-foreground hover:bg-white/5 transition-all group"
-          >
-            <ExternalLink className="w-5 h-5 group-hover:rotate-12 transition-transform" />
-            View Live Store
-          </Link>
+          {profile?.username && (
+            <Link
+              href={`/store/${profile.username}`}
+              target="_blank"
+              className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-muted hover:text-foreground hover:bg-white/5 transition-all group"
+            >
+              <ExternalLink className="w-5 h-5 group-hover:rotate-12 transition-transform" />
+              View Live Store
+            </Link>
+          )}
           <button
             onClick={handleSignOut}
             className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-danger/70 hover:text-danger hover:bg-danger/10 w-full transition-all cursor-pointer group"

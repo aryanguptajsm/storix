@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase-server";
 
 export async function POST(req: NextRequest) {
   try {
@@ -11,6 +11,8 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
+
+    const supabase = await createClient();
 
     // Get the product
     const { data: product, error: productError } = await supabase
