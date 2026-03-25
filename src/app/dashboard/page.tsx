@@ -133,7 +133,7 @@ export default function DashboardPage() {
               <p className="text-sm text-muted/80 max-w-md">Your database infrastructure is not yet established. Run the SQL setup script to launch your store.</p>
             </div>
           </div>
-          <Link href="/dashboard/settings" className="w-full md:w-auto">
+          <Link href="/dashboard/setup" className="w-full md:w-auto">
              <Button variant="danger" className="w-full md:w-auto gap-2 bg-danger hover:bg-danger-dark shadow-lg shadow-danger/20">
                <ArrowRight size={16} />
                View Setup Script
