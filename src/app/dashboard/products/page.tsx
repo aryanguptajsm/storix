@@ -46,7 +46,12 @@ export default function ProductsPage() {
     const supabase = createClient();
     try {
       const user = await getUser();
-      if (!user) return;
+      if (!user) {
+        setLoading(false);
+        return;
+      }
+
+      console.log("Fetching products for user:", user.id);
 
       const { data, error } = await supabase
         .from("products")
@@ -55,13 +60,21 @@ export default function ProductsPage() {
         .order("created_at", { ascending: false });
 
       if (error) {
-        console.error("Supabase Error:", error);
+        console.error("Supabase Detailed Error:", {
+          message: error.message,
+          code: error.code,
+          details: error.details,
+          hint: error.hint
+        });
         throw error;
       }
+      
       setProducts(data || []);
     } catch (err: any) {
-      console.error("Error fetching products:", err);
-      toast.error(err.message || "Failed to fetch products. Please check your connection or RLS policies.");
+      console.error("Caught fetching error:", err);
+      const errorMessage = err.message || "Failed to fetch products.";
+      const errorDetail = err.details || "Please check your connection or RLS policies.";
+      toast.error(`${errorMessage} ${errorDetail}`);
     } finally {
       setLoading(false);
     }

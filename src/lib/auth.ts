@@ -41,11 +41,28 @@ export async function signOut() {
   if (error) throw error;
 }
 
+let getUserPromise: Promise<any> | null = null;
+
 export async function getUser() {
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  return user;
+  if (getUserPromise) return getUserPromise;
+
+  getUserPromise = (async () => {
+    try {
+      const {
+        data: { user },
+        error,
+      } = await supabase.auth.getUser();
+      if (error) throw error;
+      return user;
+    } catch (err) {
+      console.error("getUser error:", err);
+      return null;
+    } finally {
+      getUserPromise = null;
+    }
+  })();
+
+  return getUserPromise;
 }
 
 export async function getProfile(userId: string): Promise<UserProfile | null> {

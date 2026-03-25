@@ -46,7 +46,10 @@ export default function SettingsPage() {
     async function loadSettings() {
       try {
         const user = await getUser();
-        if (!user) return;
+        if (!user) {
+          setLoading(false);
+          return;
+        }
         const profile = await getProfile(user.id);
         if (profile) {
           setProfile(profile);
