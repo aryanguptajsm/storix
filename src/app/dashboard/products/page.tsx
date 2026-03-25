@@ -51,8 +51,6 @@ export default function ProductsPage() {
         return;
       }
 
-      console.log("Fetching products for user:", user.id);
-
       const { data, error } = await supabase
         .from("products")
         .select("*")
@@ -60,21 +58,14 @@ export default function ProductsPage() {
         .order("created_at", { ascending: false });
 
       if (error) {
-        console.error("Supabase Detailed Error:", {
-          message: error.message,
-          code: error.code,
-          details: error.details,
-          hint: error.hint
-        });
+        console.error("Supabase Error:", error);
         throw error;
       }
       
       setProducts(data || []);
     } catch (err: any) {
-      console.error("Caught fetching error:", err);
-      const errorMessage = err.message || "Failed to fetch products.";
-      const errorDetail = err.details || "Please check your connection or RLS policies.";
-      toast.error(`${errorMessage} ${errorDetail}`);
+      console.error("Error fetching products:", err);
+      toast.error(err.message || "Failed to fetch products.");
     } finally {
       setLoading(false);
     }

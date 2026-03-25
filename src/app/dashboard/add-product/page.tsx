@@ -93,7 +93,7 @@ export default function AddProductPage() {
 
   async function handleSave() {
     if (!productData) {
-      toast.error("No product intelligence detected.");
+      toast.error("No product data detected.");
       return;
     }
     
@@ -101,7 +101,7 @@ export default function AddProductPage() {
     const supabase = createClient();
     try {
       const user = await getUser();
-      if (!user) throw new Error("Authentication failed. Session expired or missing.");
+      if (!user) throw new Error("Authentication failed. Please sign in again.");
       
       const insertData = {
         user_id: user.id,
@@ -113,31 +113,22 @@ export default function AddProductPage() {
         original_url: String(productData.originalUrl || url || "").trim(),
       };
 
-      console.log("CRITICAL: Final deployment data payload:", JSON.stringify(insertData, null, 2));
-
-      const { data, error, status, statusText } = await supabase
+      const { data, error } = await supabase
         .from("products")
         .insert(insertData)
         .select()
         .single();
       
       if (error) {
-        const diagnosticInfo = `Msg: ${error.message} | Code: ${error.code} | Hint: ${error.hint} | Status: ${status} ${statusText}`;
-        console.error("SUPABASE_DIAGNOSTIC_FAILURE:", diagnosticInfo);
-        console.error("RAW_ERROR_OBJECT:", error);
-        throw new Error(diagnosticInfo);
+        console.error("Supabase Deployment Error:", error);
+        throw new Error(error.message || "Failed to save product.");
       }
       
-      console.log("DEPLOYMENT_SUCCESS:", data);
       toast.success("Product successfully deployed to your hangar!");
       router.push("/dashboard/products");
     } catch (err: any) {
-      console.error("CATASTROPHIC_DEPLOYMENT_FAILURE:", err);
-      // Construct a detailed string even if the object is opaque
-      const detailedError = err.message || JSON.stringify(err) || "Unknown critical failure";
-      toast.error(`Deploy Failed: ${detailedError}`, {
-        duration: 10000, // Show for longer to allow reading
-      });
+      console.error("Deployment failure:", err);
+      toast.error(err.message || "A critical error occurred during deployment.");
     } finally {
       setSaving(false);
     }

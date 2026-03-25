@@ -26,6 +26,7 @@ export default function DashboardPage() {
     totalClicks: 0,
   });
   const [loading, setLoading] = useState(true);
+  const [recentProducts, setRecentProducts] = useState<any[]>([]);
   const router = useRouter();
 
   useEffect(() => {
@@ -39,11 +40,28 @@ export default function DashboardPage() {
         }
         setUser(user);
 
-        const profile = await getProfile(user.id);
+        let profile = await getProfile(user.id);
+        
+        // Auto-initialize profile if trigger didn't run or user existed before trigger
+        if (!profile) {
+          console.log("Profile missing, initializing...");
+          const { data: newProfile, error: initError } = await supabase
+            .from("profiles")
+            .insert({
+              id: user.id,
+              username: user.email?.split("@")[0] + Math.random().toString(36).substring(7),
+              store_name: (user.email?.split("@")[0] || "My") + "'s Store",
+            })
+            .select()
+            .single();
+          
+          if (!initError) profile = newProfile;
+        }
+        
         setProfile(profile);
 
-        // Fetch stats
-        const [productsRes, clicksRes] = await Promise.all([
+        // Fetch stats and recent products
+        const [productsRes, clicksRes, recentRes] = await Promise.all([
           supabase
             .from("products")
             .select("*", { count: "exact", head: true })
@@ -52,12 +70,19 @@ export default function DashboardPage() {
             .from("clicks")
             .select("*", { count: "exact", head: true })
             .eq("user_id", user.id),
+          supabase
+            .from("products")
+            .select("*")
+            .eq("user_id", user.id)
+            .order("created_at", { ascending: false })
+            .limit(5)
         ]);
 
         setStats({
           totalProducts: productsRes.count || 0,
           totalClicks: clicksRes.count || 0,
         });
+        setRecentProducts(recentRes.data || []);
       } catch (err) {
         console.error("Error loading dashboard:", err);
         toast.error("Failed to load dashboard data");
@@ -179,16 +204,45 @@ export default function DashboardPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <Card className="glass hover:border-white/10 transition-colors">
-          <CardHeader className="border-b border-white/5">
-            <CardTitle className="text-lg font-bold">Recent Intelligence</CardTitle>
+          <CardHeader className="border-b border-white/5 flex flex-row items-center justify-between">
+            <CardTitle className="text-lg font-bold">Recent Hangar Activity</CardTitle>
+            <Link href="/dashboard/products">
+              <Button variant="ghost" size="sm" className="text-xs text-primary-light hover:text-primary">View All</Button>
+            </Link>
           </CardHeader>
           <CardContent className="p-0">
-            <div className="text-sm text-muted text-center py-20 flex flex-col items-center gap-3">
-              <div className="w-12 h-12 rounded-2xl bg-surface-light flex items-center justify-center opacity-50">
-                <Zap className="w-6 h-6" />
+            {recentProducts.length === 0 ? (
+              <div className="text-sm text-muted text-center py-20 flex flex-col items-center gap-3">
+                <div className="w-12 h-12 rounded-2xl bg-surface-light flex items-center justify-center opacity-50">
+                  <Zap className="w-6 h-6" />
+                </div>
+                <p className="max-w-[200px]">No recent data detected. Scale your activity to see results.</p>
               </div>
-              <p className="max-w-[200px]">No recent data detected. Scale your activity to see results.</p>
-            </div>
+            ) : (
+              <div className="divide-y divide-white/5">
+                {recentProducts.map((product) => (
+                  <div key={product.id} className="p-4 flex items-center justify-between group hover:bg-white/[0.02] transition-colors">
+                    <div className="flex items-center gap-4">
+                      <div className="w-10 h-10 rounded-lg bg-white overflow-hidden flex-shrink-0 relative">
+                        {product.image_url ? (
+                          <img src={product.image_url} alt="" className="object-contain w-full h-full p-1" />
+                        ) : (
+                          <Package className="w-full h-full p-2 text-muted/20" />
+                        )}
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="text-sm font-bold text-foreground line-clamp-1 group-hover:text-primary transition-colors">{product.title}</span>
+                        <span className="text-[10px] text-muted uppercase font-black tracking-widest">{product.platform}</span>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-sm font-black text-secondary-light">{product.price || "N/A"}</div>
+                      <div className="text-[10px] text-muted">{new Date(product.created_at).toLocaleDateString()}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </CardContent>
         </Card>
 
