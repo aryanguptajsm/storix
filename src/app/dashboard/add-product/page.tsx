@@ -92,31 +92,52 @@ export default function AddProductPage() {
   }
 
   async function handleSave() {
-    if (!productData) return;
+    if (!productData) {
+      toast.error("No product intelligence detected.");
+      return;
+    }
     
     setSaving(true);
     const supabase = createClient();
     try {
       const user = await getUser();
-      if (!user) throw new Error("Not authenticated");
+      if (!user) throw new Error("Authentication failed. Session expired or missing.");
       
-      const { error } = await supabase.from("products").insert({
+      const insertData = {
         user_id: user.id,
-        title: productData.title,
-        description: productData.description,
-        price: productData.price,
-        image_url: productData.image,
-        platform: productData.platform,
-        original_url: productData.originalUrl || url,
-      });
+        title: String(productData.title || "Untitled Product").trim(),
+        description: String(productData.description || "").trim(),
+        price: String(productData.price || "").trim(),
+        image_url: String(productData.image || "").trim(),
+        platform: String(productData.platform || "Universal").trim(),
+        original_url: String(productData.originalUrl || url || "").trim(),
+      };
+
+      console.log("CRITICAL: Final deployment data payload:", JSON.stringify(insertData, null, 2));
+
+      const { data, error, status, statusText } = await supabase
+        .from("products")
+        .insert(insertData)
+        .select()
+        .single();
       
-      if (error) throw error;
+      if (error) {
+        const diagnosticInfo = `Msg: ${error.message} | Code: ${error.code} | Hint: ${error.hint} | Status: ${status} ${statusText}`;
+        console.error("SUPABASE_DIAGNOSTIC_FAILURE:", diagnosticInfo);
+        console.error("RAW_ERROR_OBJECT:", error);
+        throw new Error(diagnosticInfo);
+      }
       
-      toast.success("Product deployed to hangar!");
+      console.log("DEPLOYMENT_SUCCESS:", data);
+      toast.success("Product successfully deployed to your hangar!");
       router.push("/dashboard/products");
     } catch (err: any) {
-      console.error("Save error:", err);
-      toast.error(err.message || "Failed to save product.");
+      console.error("CATASTROPHIC_DEPLOYMENT_FAILURE:", err);
+      // Construct a detailed string even if the object is opaque
+      const detailedError = err.message || JSON.stringify(err) || "Unknown critical failure";
+      toast.error(`Deploy Failed: ${detailedError}`, {
+        duration: 10000, // Show for longer to allow reading
+      });
     } finally {
       setSaving(false);
     }
