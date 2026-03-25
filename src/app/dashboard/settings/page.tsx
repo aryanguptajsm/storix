@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import Link from "next/link";
 import { getUser, getProfile, updateProfile, UserProfile } from "@/lib/auth";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
@@ -21,7 +22,9 @@ import {
   CreditCard,
   Mail,
   Lock,
-  Camera
+  Camera,
+  DollarSign,
+  ShoppingBag
 } from "lucide-react";
 
 export default function SettingsPage() {
