@@ -13,7 +13,8 @@ import {
   TrendingUp,
   ExternalLink,
   Sparkles,
-  Zap
+  Zap,
+  ArrowRight
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -21,6 +22,7 @@ import { useRouter } from "next/navigation";
 export default function DashboardPage() {
   const [user, setUser] = useState<any>(null);
   const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [dbStatus, setDbStatus] = useState<{ productsTable: boolean }>({ productsTable: true });
   const [stats, setStats] = useState({
     totalProducts: 0,
     totalClicks: 0,
@@ -39,6 +41,19 @@ export default function DashboardPage() {
           return;
         }
         setUser(user);
+
+        // Check if database is initialized
+        const { error: probeError } = await supabase
+          .from("products")
+          .select("id")
+          .limit(1);
+        
+        if (probeError && probeError.code === "PGRST205") {
+          setDbStatus({ productsTable: false });
+          console.error("DATABASE_OFFLINE: 'products' table not found in public schema.");
+        } else {
+          setDbStatus({ productsTable: true });
+        }
 
         let profile = await getProfile(user.id);
         
@@ -107,6 +122,26 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-8 animate-fade-in pb-12">
+      {!dbStatus.productsTable && (
+        <div className="p-6 rounded-3xl border border-danger/30 bg-danger/5 backdrop-blur-md flex flex-col md:flex-row items-center justify-between gap-6 animate-pulse-glow shadow-2xl shadow-danger/10">
+          <div className="flex items-center gap-4 text-center md:text-left">
+            <div className="w-12 h-12 rounded-2xl bg-danger/20 flex items-center justify-center text-danger flex-shrink-0">
+              <Zap size={24} fill="currentColor" />
+            </div>
+            <div>
+              <h3 className="text-lg font-black text-white">Database Offline</h3>
+              <p className="text-sm text-muted/80 max-w-md">Your database infrastructure is not yet established. Run the SQL setup script to launch your store.</p>
+            </div>
+          </div>
+          <Link href="/dashboard/settings" className="w-full md:w-auto">
+             <Button variant="danger" className="w-full md:w-auto gap-2 bg-danger hover:bg-danger-dark shadow-lg shadow-danger/20">
+               <ArrowRight size={16} />
+               View Setup Script
+             </Button>
+          </Link>
+        </div>
+      )}
+
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
