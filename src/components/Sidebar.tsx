@@ -28,7 +28,7 @@ export function Sidebar() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
-  const [user, setUser] = React.useState<any>(null);
+  const [user, setUser] = React.useState<any>(null); // Still using any for Supabase User for now but will refine if possible
   const [profile, setProfile] = React.useState<any>(null);
 
   React.useEffect(() => {

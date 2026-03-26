@@ -41,31 +41,13 @@ export async function signOut() {
   if (error) throw error;
 }
 
-let getUserPromise: Promise<any> | null = null;
-let cachedUser: any = null;
-
 export async function getUser() {
-  if (cachedUser) return cachedUser;
-  if (getUserPromise) return getUserPromise;
-
-  getUserPromise = (async () => {
-    try {
-      const {
-        data: { user },
-        error,
-      } = await supabase.auth.getUser();
-      if (error) throw error;
-      cachedUser = user;
-      return user;
-    } catch (err) {
-      console.error("getUser error:", err);
-      return null;
-    } finally {
-      getUserPromise = null;
-    }
-  })();
-
-  return getUserPromise;
+  const { data: { user }, error } = await supabase.auth.getUser();
+  if (error) {
+    console.error("getUser error:", error);
+    return null;
+  }
+  return user;
 }
 
 export async function getProfile(userId: string): Promise<UserProfile | null> {
@@ -74,6 +56,7 @@ export async function getProfile(userId: string): Promise<UserProfile | null> {
     .select("*")
     .eq("id", userId)
     .single();
+  
   if (error) return null;
   return data;
 }

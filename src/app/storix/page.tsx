@@ -87,44 +87,56 @@ export default function StorixProductPage() {
             <div className="absolute top-0 left-0 w-64 h-64 bg-[#6C5CE7]/10 blur-[80px]" />
             <div className="relative z-10 flex flex-col items-center text-center max-w-2xl mx-auto">
               <Shield className="w-12 h-12 text-[#00B894] mb-8" />
-              <h2 className="text-4xl font-bold mb-6">Designed for Trust</h2>
+              <h2 className="text-4xl font-bold mb-6">Your store&apos;s ready!</h2>
               <p className="text-lg text-muted mb-10">
-                A clean, premium storefront increases user trust and conversion rates. We've spent months perfecting the layout so you don't have to.
+                Your store&apos;s ready! Scrape products, generate AI titles, and build your empire.
               </p>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-8 w-full">
-                <div className="space-y-2">
-                  <div className="text-2xl font-bold text-white">SSL</div>
-                  <div className="text-xs text-muted uppercase">Secured</div>
+              <div className="flex gap-4">
+                <Link href="/dashboard">
+                  <Button className="px-8 py-4 text-lg font-bold">Admin Console</Button>
+                </Link>
+                <Link href="/dashboard/add-product">
+                  <Button variant="secondary" className="px-8 py-4 text-lg font-bold">Launch a Product</Button>
+                </Link>
+              </div>
+            </div>
+            <div className="relative group">
+              <div className="absolute inset-0 bg-primary/20 blur-[100px] rounded-full group-hover:bg-primary/30 transition-all duration-700" />
+              <div className="relative border border-white/10 rounded-[2.5rem] overflow-hidden shadow-2xl bg-[#0F0F13]">
+                <div className="h-8 bg-surface-light border-b border-white/5 flex items-center px-4 gap-2">
+                  <div className="w-2.5 h-2.5 rounded-full bg-danger/40" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-warning/40" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-success/40" />
+                  <div className="ml-4 h-4 w-40 bg-white/5 rounded-full" />
                 </div>
-                <div className="space-y-2">
-                  <div className="text-2xl font-bold text-white">24/7</div>
-                  <div className="text-xs text-muted uppercase">Monitoring</div>
-                </div>
-                <div className="space-y-2">
-                  <div className="text-2xl font-bold text-white">100%</div>
-                  <div className="text-xs text-muted uppercase">Responsive</div>
-                </div>
-                <div className="space-y-2">
-                  <div className="text-2xl font-bold text-white">AI</div>
-                  <div className="text-xs text-muted uppercase">Powered</div>
+                <div className="p-8 space-y-4">
+                  <div className="h-4 w-3/4 bg-white/5 rounded-full animate-pulse" />
+                  <div className="h-4 w-1/2 bg-white/5 rounded-full animate-pulse decoration-primary" />
+                  <div className="grid grid-cols-2 gap-4 pt-4">
+                    <div className="aspect-square bg-white/5 rounded-2xl animate-pulse" />
+                    <div className="aspect-square bg-white/5 rounded-2xl animate-pulse" />
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        <section className="py-20 text-center">
-          <div className="flex flex-col items-center gap-8">
-            <Layout className="w-16 h-16 text-[#6C5CE7]/40" />
-            <h2 className="text-4xl font-bold">Start your journey today.</h2>
-            <p className="text-muted max-w-lg">
-              Join the growing community of smart affiliate marketers using Storix to automate their business.
-            </p>
-            <Link href="/signup">
-              <Button size="lg" className="h-14 px-12 text-lg">
-                Create My First Store
-              </Button>
-            </Link>
+        <section className="max-w-7xl mx-auto px-6 py-32 border-t border-white/5">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+            {[
+              { title: "AI Scraper", desc: "Just paste a URL and we&apos;ll extract everything - titles, prices, images.", color: "primary" },
+              { title: "Smart SEO", desc: "Our AI generates high-converting titles that rank higher on Google.", color: "secondary" },
+              { title: "Auto-Click Track", desc: "Detailed analytics on every click in your affiliate empire.", color: "accent" }
+            ].map((feature, i) => (
+              <div key={i} className="space-y-4 group cursor-default">
+                <div className={`w-12 h-12 rounded-2xl bg-${feature.color}/10 flex items-center justify-center text-${feature.color} group-hover:scale-110 transition-transform`}>
+                  <Sparkles size={24} />
+                </div>
+                <h3 className="text-xl font-bold">{feature.title}</h3>
+                <p className="text-muted leading-relaxed">{feature.desc}</p>
+              </div>
+            ))}
           </div>
         </section>
       </main>

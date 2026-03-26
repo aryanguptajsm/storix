@@ -11,7 +11,6 @@ import {
   ArrowRight, 
   ArrowUpRight,
   Layout,
-  MousePointerClick,
   TrendingUp,
   Globe
 } from "lucide-react";

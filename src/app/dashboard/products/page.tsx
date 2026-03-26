@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { getUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
+import { Card, CardContent } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { toast } from "sonner";
@@ -15,14 +15,12 @@ import {
   Loader2,
   Package,
   ArrowRight,
-  Sparkles,
   ShoppingBag,
   Zap
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { Skeleton } from "@/components/ui/Skeleton";
-import { cn } from "@/lib/utils";
 
 interface Product {
   id: string;
@@ -65,9 +63,10 @@ export default function ProductsPage() {
       }
       
       setProducts(data || []);
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const errorMsg = err instanceof Error ? err.message : "Failed to fetch products.";
       console.error("Error fetching products:", err);
-      toast.error(err.message || "Failed to fetch products.");
+      toast.error(errorMsg);
     } finally {
       setLoading(false);
     }
@@ -83,9 +82,10 @@ export default function ProductsPage() {
       if (error) throw error;
       setProducts(products.filter((p) => p.id !== id));
       toast.success("Product removed from inventory.");
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const errorMsg = err instanceof Error ? err.message : "Failed to delete product.";
       console.error("Error deleting product:", err);
-      toast.error(err.message || "Failed to delete product.");
+      toast.error(errorMsg);
     } finally {
       setDeletingId(null);
     }
