@@ -36,6 +36,8 @@ CREATE TABLE IF NOT EXISTS public.products (
   title TEXT NOT NULL,
   description TEXT,
   price TEXT,
+  original_price TEXT,
+  discount_percentage TEXT,
   image_url TEXT,
   platform TEXT,
   original_url TEXT NOT NULL,

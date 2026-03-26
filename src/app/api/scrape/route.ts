@@ -14,6 +14,8 @@ export async function POST(req: NextRequest) {
     let description = "";
     let image = "";
     let price = "";
+    let originalPrice = "";
+    let discountPercentage = "";
     let rating = "";
     let platform = "other";
 
@@ -53,6 +55,15 @@ export async function POST(req: NextRequest) {
         const priceFraction = $(".a-price-fraction").first().text().trim();
         if (priceWhole) {
           price = `${priceWhole}${priceFraction ? "." + priceFraction : ""}`;
+        }
+
+        // Original Price & Discount
+        const originalPriceText = $(".a-price.a-text-price span.a-offscreen").first().text().trim();
+        if (originalPriceText) originalPrice = originalPriceText;
+
+        const discountText = $(".savingsPercentage").first().text().trim();
+        if (discountText) {
+          discountPercentage = discountText.replace(/[^0-9]/g, "");
         }
 
         // Rating
@@ -99,6 +110,8 @@ export async function POST(req: NextRequest) {
       description: description || "",
       image: image || "",
       price,
+      originalPrice,
+      discountPercentage,
       rating,
       platform,
       originalUrl: url,

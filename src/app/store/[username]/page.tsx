@@ -25,6 +25,8 @@ interface Product {
   image_url: string;
   platform: string;
   price: string;
+  original_price?: string;
+  discount_percentage?: string;
   original_url: string;
   user_id: string;
 }
@@ -185,7 +187,6 @@ export default function PublicStorePage() {
                        </div>
                      ))}
                    </div>
-                   <p className="text-xs font-bold text-slate-500 text-center">Trusted by 10,000+ Shoppers</p>
                  </div>
               </div>
             </div>
@@ -258,15 +259,29 @@ export default function PublicStorePage() {
                   </h3>
                   
                   <div className="mt-auto flex flex-col gap-4">
-                    <div className="flex items-end justify-between">
-                      <div className="flex flex-col">
-                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-0.5">Price</span>
-                        <div className="text-2xl font-black text-[#FF4D67] tracking-tight group-hover:scale-105 transition-transform origin-left duration-300">
-                          {product.price || "Check Price"}
+                    <div className="flex flex-col gap-1">
+                      {product.original_price && (
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs text-slate-400 line-through font-medium">
+                            {product.original_price}
+                          </span>
+                          {product.discount_percentage && (
+                            <span className="text-[10px] font-black text-green-600 bg-green-50 px-1.5 py-0.5 rounded">
+                              {product.discount_percentage}% OFF
+                            </span>
+                          )}
                         </div>
-                      </div>
-                      <div className="flex items-center text-[#24A3B5] text-[10px] font-black bg-[#24A3B5]/10 px-2.5 py-1.5 rounded-full border border-[#24A3B5]/20 animate-pulse-subtle">
-                        <Tag size={10} className="mr-1" /> BEST OFFER
+                      )}
+                      <div className="flex items-end justify-between">
+                        <div className="flex flex-col">
+                          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-0.5">Price</span>
+                          <div className="text-2xl font-black text-[#FF4D67] tracking-tight group-hover:scale-105 transition-transform origin-left duration-300">
+                            {product.price || "Check Price"}
+                          </div>
+                        </div>
+                        <div className="flex items-center text-[#24A3B5] text-[10px] font-black bg-[#24A3B5]/10 px-2.5 py-1.5 rounded-full border border-[#24A3B5]/20 animate-pulse-subtle">
+                          <Tag size={10} className="mr-1" /> BEST OFFER
+                        </div>
                       </div>
                     </div>
                     
@@ -295,8 +310,30 @@ export default function PublicStorePage() {
         )}
       </main>
 
+      {/* Trust Badges */}
+      <section className="bg-white border-y border-slate-100 py-12 px-4 shadow-inner">
+        <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
+          {[
+            { icon: Zap, title: "Lightning Deals", desc: "Best prices guaranteed" },
+            { icon: ExternalLink, title: "Verified Links", desc: "100% secure redirection" },
+            { icon: Sparkles, title: "Curated Picks", desc: "Hand-picked by experts" },
+            { icon: ShoppingBag, title: "Latest Trends", desc: "Fresh arrivals daily" },
+          ].map((item, i) => (
+            <div key={i} className="flex flex-col items-center text-center gap-3 group">
+              <div className="w-12 h-12 rounded-2xl bg-[#FF4D67]/5 text-[#FF4D67] flex items-center justify-center group-hover:bg-[#FF4D67] group-hover:text-white transition-all duration-500">
+                <item.icon size={22} />
+              </div>
+              <div>
+                <h4 className="font-bold text-slate-800 text-sm whitespace-nowrap">{item.title}</h4>
+                <p className="text-[10px] font-medium text-slate-400 uppercase tracking-tighter">{item.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* Brands Strip */}
-      <div className="max-w-7xl mx-auto px-4 py-12 border-t border-slate-100 flex flex-wrap justify-center gap-12 opacity-30 grayscale hover:grayscale-0 transition-all duration-700">
+      <div className="max-w-7xl mx-auto px-4 py-16 flex flex-wrap justify-center gap-12 opacity-30 grayscale hover:grayscale-0 transition-all duration-700">
          <div className="text-xl font-black text-slate-400">AMAZON</div>
          <div className="text-xl font-black text-slate-400">FLIPKART</div>
          <div className="text-xl font-black text-slate-400">MEESHO</div>

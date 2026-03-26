@@ -108,6 +108,8 @@ export default function AddProductPage() {
         title: String(productData.title || "Untitled Product").trim(),
         description: String(productData.description || "").trim(),
         price: String(productData.price || "").trim(),
+        original_price: String(productData.originalPrice || "").trim(),
+        discount_percentage: String(productData.discountPercentage || "").trim(),
         image_url: String(productData.image || "").trim(),
         platform: String(productData.platform || "Universal").trim(),
         original_url: String(productData.originalUrl || url || "").trim(),
@@ -216,16 +218,28 @@ export default function AddProductPage() {
                     {productData.platform}
                   </div>
                 </div>
-                <div className="p-6 bg-white/[0.01] border-t border-white/5">
-                  <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center justify-between mb-4">
                     <span className="text-[10px] font-black uppercase tracking-widest text-muted/60">Unit Status</span>
                     <span className="text-[10px] font-black uppercase tracking-widest text-success bg-success/10 px-2 py-0.5 rounded-full">Detected</span>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-black uppercase tracking-widest text-muted/60">MSRP Proxy</span>
-                    <span className="text-2xl font-black text-secondary-light tracking-tighter">{productData.price || "N/A"}</span>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-black uppercase tracking-widest text-muted/60">Deal Price</span>
+                      <span className="text-2xl font-black text-[#FF4D67] tracking-tighter">{productData.price || "N/A"}</span>
+                    </div>
+                    {productData.originalPrice && (
+                      <div className="flex items-center justify-between opacity-60">
+                        <span className="text-[10px] font-black uppercase tracking-widest text-muted/60">List Price</span>
+                        <span className="text-sm font-bold text-slate-400 line-through">{productData.originalPrice}</span>
+                      </div>
+                    )}
+                    {productData.discountPercentage && (
+                      <div className="flex items-center justify-between">
+                        <span className="text-[10px] font-black uppercase tracking-widest text-muted/60">Savings</span>
+                        <span className="text-xs font-black text-green-500 bg-green-500/10 px-2 py-1 rounded-lg">-{productData.discountPercentage}% OFF</span>
+                      </div>
+                    )}
                   </div>
-                </div>
               </CardContent>
             </Card>
             
@@ -301,6 +315,25 @@ export default function AddProductPage() {
                     </div>
                   </div>
                 )}
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-black uppercase tracking-widest text-muted/60">Deal Price</label>
+                    <Input
+                      value={productData.price}
+                      onChange={(e) => setProductData({ ...productData, price: e.target.value })}
+                      className="bg-white/5 border-white/5 focus:border-primary/30 font-bold"
+                    />
+                  </div>
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-black uppercase tracking-widest text-muted/60">Original Price</label>
+                    <Input
+                      value={productData.originalPrice}
+                      onChange={(e) => setProductData({ ...productData, originalPrice: e.target.value })}
+                      className="bg-white/5 border-white/5 focus:border-primary/30 font-bold"
+                    />
+                  </div>
+                </div>
 
                 <div className="space-y-3">
                   <label className="text-[10px] font-black uppercase tracking-widest text-muted/60">Landing Description</label>
