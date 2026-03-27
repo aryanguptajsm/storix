@@ -40,6 +40,7 @@ export default function SettingsPage() {
     email: "",
     paypal_email: "",
     amazon_id: "",
+    theme: "default",
   });
 
   useEffect(() => {
@@ -60,6 +61,7 @@ export default function SettingsPage() {
             email: user.email || "",
             paypal_email: "", // Placeholder
             amazon_id: "", // Placeholder
+            theme: profile.theme || "default",
           });
         }
       } catch (err) {
@@ -80,6 +82,7 @@ export default function SettingsPage() {
         store_name: formData.store_name,
         username: formData.username.toLowerCase().replace(/\s+/g, "-"),
         store_description: formData.store_description,
+        theme: formData.theme,
       });
       toast.success("Settings updated successfully!");
     } catch (err: any) {
@@ -149,6 +152,54 @@ export default function SettingsPage() {
         <div className="lg:col-span-9 space-y-8">
           {activeTab === "General" && (
             <form onSubmit={handleUpdate} className="space-y-8">
+              <Card className="glass overflow-hidden">
+                <CardHeader className="p-6 border-b border-white/5 bg-white/[0.01]">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+                      <LayoutGrid size={20} />
+                    </div>
+                    <div>
+                      <CardTitle className="text-lg font-bold">Visual Themes</CardTitle>
+                      <p className="text-xs text-muted font-medium mt-0.5">Select a signature style for your storefront deployment.</p>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent className="p-8">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {[
+                      { id: "default", name: "Default (Shopify-like)", color: "bg-[#FF4D67]", desc: "Clean and high-energy." },
+                      { id: "midnight", name: "Midnight (Premium)", color: "bg-[#6C5CE7]", desc: "Sleek and professional." },
+                      { id: "minimalist", name: "Minimalist", color: "bg-[#111111]", desc: "Pure white label feel." },
+                      { id: "neon", name: "Cyber Neon", color: "bg-[#00FFD1]", desc: "Futuristic and bold." }
+                    ].map((themeItem) => (
+                      <button
+                        key={themeItem.id}
+                        type="button"
+                        onClick={() => setFormData({ ...formData, theme: themeItem.id })}
+                        className={`group p-4 rounded-2xl border transition-all duration-300 text-left flex items-start gap-4 ${
+                          formData.theme === themeItem.id 
+                            ? "bg-primary/10 border-primary shadow-lg shadow-primary/5" 
+                            : "bg-white/5 border-white/5 hover:bg-white/[0.08]"
+                        }`}
+                      >
+                        <div className={`w-12 h-12 rounded-xl ${themeItem.color} flex-shrink-0 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform`}>
+                           <div className="w-6 h-6 bg-white/20 rounded-full blur-[2px]" />
+                        </div>
+                        <div className="flex-1">
+                          <h6 className="text-sm font-bold text-foreground">{themeItem.name}</h6>
+                          <p className="text-[10px] text-muted mt-0.5">{themeItem.desc}</p>
+                          {formData.theme === themeItem.id && (
+                            <div className="mt-2 inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-primary/20 text-primary-light text-[8px] font-black uppercase tracking-widest animate-fade-in">
+                              Active Configuration
+                            </div>
+                          )}
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+
               <Card className="glass overflow-hidden">
                 <CardHeader className="p-6 border-b border-white/5 bg-white/[0.01]">
                   <div className="flex items-center gap-3">
