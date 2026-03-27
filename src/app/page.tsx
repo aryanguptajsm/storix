@@ -21,8 +21,8 @@ export default function LandingPage() {
       {/* Navigation */}
       <nav className="fixed top-0 w-full z-50 glass border-b border-[#3D3D5C]/50">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-10 h-10 rounded-xl gradient-primary flex items-center justify-center shadow-lg shadow-[#6C5CE7]/20">
+          <div className="flex items-center gap-2 group cursor-pointer">
+            <div className="w-10 h-10 rounded-xl gradient-primary flex items-center justify-center shadow-lg shadow-[#6C5CE7]/20 group-hover:scale-110 transition-transform animate-float">
               <ShoppingBag className="w-6 h-6 text-white" />
             </div>
             <span className="text-2xl font-black bg-gradient-to-r from-[#6C5CE7] to-[#FD79A8] bg-clip-text text-transparent tracking-tighter">
@@ -141,8 +141,8 @@ export default function LandingPage() {
                   bg: "bg-[#00CEC9]/10"
                 }
               ].map((feature, i) => (
-                <Card key={i} className="group hover:-translate-y-2 transition-all duration-500 border-[#3D3D5C] bg-[#1E1E2E]/40">
-                  <div className={`w-14 h-14 rounded-2xl ${feature.bg} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform ${feature.color}`}>
+                <Card key={i} className="group hover-lift transition-all duration-500 border-[#3D3D5C] bg-[#1E1E2E]/40 backdrop-blur-sm">
+                  <div className={`w-14 h-14 rounded-2xl ${feature.bg} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform ${feature.color} shadow-lg shadow-black/20`}>
                     <feature.icon className="w-7 h-7" />
                   </div>
                   <h3 className="text-xl font-bold mb-3 text-white">{feature.title}</h3>
@@ -184,7 +184,7 @@ export default function LandingPage() {
               <div className="absolute inset-0 bg-[#6C5CE7]/20 blur-[100px] -z-10" />
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-4 mt-12">
-                  <div className="h-48 rounded-2xl bg-[#1E1E2E] border border-[#3D3D5C] p-4 flex flex-col justify-end gap-2 shadow-2xl">
+                <div className="h-48 rounded-2xl bg-[#1E1E2E] border border-[#3D3D5C] p-4 flex flex-col justify-end gap-2 shadow-2xl hover-lift">
                     <div className="h-3 w-2/3 bg-[#3D3D5C] rounded-full" />
                     <div className="h-3 w-full bg-[#3D3D5C]/50 rounded-full" />
                   </div>

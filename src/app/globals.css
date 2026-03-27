@@ -101,3 +101,88 @@ body {
   background-size: 200% 100%;
   animation: shimmer 2s infinite;
 }
+.glass-morphism {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.glass-morphism-dark {
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+}
+
+.text-gradient {
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  background-image: linear-gradient(to right, var(--color-primary), var(--color-secondary));
+}
+
+.bg-mesh {
+  background-color: var(--background);
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(108, 92, 231, 0.15) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(0, 206, 201, 0.1) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(253, 121, 168, 0.15) 0px, transparent 50%),
+    radial-gradient(at 0% 100%, rgba(253, 203, 110, 0.1) 0px, transparent 50%);
+}
+
+.hover-lift {
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Theme Variables for Storefront */
+:root {
+  --store-primary: #FF4D67;
+  --store-primary-rgb: 255, 77, 103;
+  --store-background: #F0F2F5;
+  --store-foreground: #1E293B;
+  --store-card: #FFFFFF;
+  --store-border: #E2E8F0;
+}
+
+[data-theme='midnight'] {
+  --store-primary: #6C5CE7;
+  --store-primary-rgb: 108, 92, 231;
+  --store-background: #0F0F1A;
+  --store-foreground: #F1F1F6;
+  --store-card: #1E1E2E;
+  --store-border: #3D3D5C;
+}
+
+[data-theme='minimalist'] {
+  --store-primary: #111111;
+  --store-primary-rgb: 17, 17, 17;
+  --store-background: #FFFFFF;
+  --store-foreground: #111111;
+  --store-card: #FFFFFF;
+  --store-border: #EEEEEE;
+}
+
+[data-theme='neon'] {
+  --store-primary: #00FFD1;
+  --store-primary-rgb: 0, 255, 209;
+  --store-background: #050505;
+  --store-foreground: #FFFFFF;
+  --store-card: #111111;
+  --store-border: #00FFD144;
+}

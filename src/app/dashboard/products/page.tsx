@@ -190,7 +190,7 @@ export default function ProductsPage() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredProducts.map((product) => (
-            <Card key={product.id} className="group glass overflow-hidden flex flex-col hover:border-primary/30 transition-all duration-500 hover:shadow-2xl hover:shadow-primary/5">
+            <Card key={product.id} className="group glass-morphism-dark overflow-hidden flex flex-col hover:border-primary/30 transition-all duration-500 hover:shadow-2xl hover:shadow-primary/5 hover-lift">
               <div className="relative h-56 bg-white overflow-hidden flex items-center justify-center p-6">
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/5 opacity-0 group-hover:opacity-100 transition-opacity z-10" />
                 
@@ -228,8 +228,8 @@ export default function ProductsPage() {
                 </div>
               </div>
 
-              <CardContent className="p-6 flex-1 flex flex-col relative">
-                <div className="absolute top-0 right-6 w-12 h-1 bg-gradient-to-r from-primary to-secondary rounded-full opacity-20" />
+              <CardContent className="p-6 flex-1 flex flex-col relative bg-[var(--color-surface)]">
+                <div className="absolute top-0 right-6 w-12 h-1 bg-gradient-to-r from-primary to-secondary rounded-full opacity-40 shadow-glow" />
                 
                 <h3 className="font-bold text-base line-clamp-2 min-h-[3rem] mb-4 group-hover:text-primary transition-colors leading-tight">
                   {product.title}

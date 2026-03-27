@@ -13,11 +13,13 @@ import {
   Sparkles,
   Zap,
   Tag,
-  Share2
+  Share2,
+  ChevronRight
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { toast } from "sonner";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 interface Product {
   id: string;
@@ -36,6 +38,7 @@ interface Profile {
   store_description: string;
   username: string;
   id: string;
+  theme: "default" | "midnight" | "minimalist" | "neon";
 }
 
 export default function PublicStorePage() {
@@ -52,7 +55,7 @@ export default function PublicStorePage() {
         // Fetch profile
         const { data: profileData, error: profileError } = await supabase
           .from("profiles")
-          .select("id, store_name, store_description, username")
+          .select("id, store_name, store_description, username, theme")
           .eq("username", username)
           .single();
 
@@ -134,15 +137,16 @@ export default function PublicStorePage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F0F2F5] font-sans selection:bg-[#FF4D67]/20">
+    <ThemeProvider initialTheme={profile.theme}>
+      <div className="min-h-screen bg-[var(--store-background)] text-[var(--store-foreground)] font-sans selection:bg-[var(--store-primary)]/20">
       {/* Mobile-First Navbar */}
-      <nav className="sticky top-0 z-50 bg-white shadow-sm border-b border-slate-200">
+      <nav className="sticky top-0 z-50 bg-[var(--store-card)] shadow-sm border-b border-[var(--store-border)] backdrop-blur-md bg-opacity-80">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-gradient-to-br from-[#FF4D67] to-[#FF8E9E] rounded-xl flex items-center justify-center shadow-lg shadow-[#FF4D67]/20">
+            <div className="w-10 h-10 bg-gradient-to-br from-[var(--store-primary)] to-[var(--store-primary)]/70 rounded-xl flex items-center justify-center shadow-lg shadow-[var(--store-primary)]/20 animate-float">
               <ShoppingBag className="w-6 h-6 text-white" />
             </div>
-            <span className="text-xl font-black text-slate-800 tracking-tight">
+            <span className="text-xl font-black tracking-tight">
               {profile.store_name}
             </span>
           </div>
@@ -161,16 +165,16 @@ export default function PublicStorePage() {
       </nav>
 
       {/* Hero Banner Section */}
-      <section className="relative overflow-hidden bg-white mt-2">
-        <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-[#FF496E]/5 to-transparent pointer-events-none" />
+      <section className="relative overflow-hidden bg-[var(--store-card)] mt-2 border-b border-[var(--store-border)]">
+        <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-[var(--store-primary)]/5 to-transparent pointer-events-none" />
         <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 md:py-12 flex flex-col md:flex-row items-center gap-8">
           <div className="flex-1 text-center md:text-left">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FF4D67]/10 text-[#FF4D67] text-xs font-bold uppercase tracking-wider mb-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--store-primary)]/10 text-[var(--store-primary)] text-xs font-bold uppercase tracking-wider mb-4 animate-fade-in">
               <Sparkles size={14} />
               Featured Store
             </div>
-            <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 mb-4 tracking-tight">
-              Welcome to <span className="text-[#FF4D67]">{profile.store_name}</span>
+            <h1 className="text-4xl md:text-5xl font-extrabold mb-4 tracking-tight animate-slide-in">
+              Welcome to <span className="text-[var(--store-primary)]">{profile.store_name}</span>
             </h1>
             <p className="text-lg text-slate-600 max-w-xl leading-relaxed">
               {profile.store_description || "Discover our carefully curated selection of verified top-quality products just for you."}
@@ -194,13 +198,13 @@ export default function PublicStorePage() {
         </div>
       </section>
 
-      {/* Categories Bar (Visual Only for Shopsy feel) */}
-      <div className="bg-white border-y border-slate-100 sticky top-16 z-40 overflow-x-auto no-scrollbar">
+      {/* Categories Bar */}
+      <div className="bg-[var(--store-card)] border-y border-[var(--store-border)] sticky top-16 z-40 overflow-x-auto no-scrollbar">
         <div className="max-w-7xl mx-auto px-4 flex items-center gap-6 py-4 whitespace-nowrap">
           {['All Items', 'Best Sellers', 'New Arrivals', 'Offers', 'Trending'].map((cat, idx) => (
             <button 
               key={cat} 
-              className={`text-sm font-bold uppercase tracking-wide transition-colors ${idx === 0 ? 'text-[#FF4D67] border-b-2 border-[#FF4D67] pb-1' : 'text-slate-500 hover:text-slate-800'}`}
+              className={`text-sm font-bold uppercase tracking-wide transition-colors ${idx === 0 ? 'text-[var(--store-primary)] border-b-2 border-[var(--store-primary)] pb-1' : 'text-muted hover:text-[var(--store-foreground)]'}`}
             >
               {cat}
             </button>
@@ -211,10 +215,10 @@ export default function PublicStorePage() {
       {/* Main Product Grid */}
       <main className="max-w-7xl mx-auto px-4 py-8 sm:px-6">
         <div className="flex items-center justify-between mb-8">
-          <h2 className="text-2xl font-black text-slate-900 flex items-center gap-2">
+          <h2 className="text-2xl font-black flex items-center gap-2">
             Top Picks <Zap size={20} className="text-yellow-500 fill-yellow-500" />
           </h2>
-          <div className="text-sm font-bold text-[#FF4D67] hover:underline cursor-pointer">View All</div>
+          <div className="text-sm font-bold text-[var(--store-primary)] hover:underline cursor-pointer">View All</div>
         </div>
 
         {products.length === 0 ? (
@@ -228,10 +232,10 @@ export default function PublicStorePage() {
             {products.map((product) => (
               <div 
                 key={product.id} 
-                className="group bg-white rounded-2xl border border-slate-100 hover:border-[#FF4D67]/30 transition-all duration-300 flex flex-col shadow-sm hover:shadow-xl hover:shadow-[#FF4D67]/5 overflow-hidden"
+                className="group bg-[var(--store-card)] rounded-2xl border border-[var(--store-border)] hover:border-[var(--store-primary)]/30 transition-all duration-300 flex flex-col shadow-sm hover:shadow-xl hover:shadow-[var(--store-primary)]/5 overflow-hidden hover-lift"
               >
                 {/* Image Container */}
-                <div className="relative aspect-[4/5] bg-[#F8F9FA] flex items-center justify-center overflow-hidden">
+                <div className="relative aspect-[4/5] bg-black/5 flex items-center justify-center overflow-hidden">
                    {product.image_url ? (
                      <Image
                        src={product.image_url}
@@ -240,11 +244,11 @@ export default function PublicStorePage() {
                        className="object-contain group-hover:scale-110 transition-transform duration-500 p-4"
                      />
                    ) : (
-                     <Package className="w-12 h-12 text-slate-200" />
+                     <Package className="w-12 h-12 text-muted" />
                    )}
                    
                    {/* Badge */}
-                   <div className="absolute top-2 left-2 px-2 py-1 rounded bg-white/90 backdrop-blur shadow-sm text-[10px] font-black text-[#FF4D67] uppercase tracking-tighter z-10">
+                   <div className="absolute top-2 left-2 px-2 py-1 rounded bg-[var(--store-card)] shadow-sm text-[10px] font-black text-[var(--store-primary)] uppercase tracking-tighter z-10">
                      {product.platform} Verified
                    </div>
 
@@ -254,7 +258,7 @@ export default function PublicStorePage() {
 
                 {/* Content */}
                 <div className="p-4 flex-1 flex flex-col">
-                  <h3 className="font-bold text-slate-800 text-sm md:text-base line-clamp-2 leading-snug mb-3 min-h-[40px] group-hover:text-[#FF4D67] transition-colors duration-300">
+                  <h3 className="font-bold text-sm md:text-base line-clamp-2 leading-snug mb-3 min-h-[40px] group-hover:text-[var(--store-primary)] transition-colors duration-300">
                     {product.title}
                   </h3>
                   
@@ -274,8 +278,8 @@ export default function PublicStorePage() {
                       )}
                       <div className="flex items-end justify-between">
                         <div className="flex flex-col">
-                          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-0.5">Price</span>
-                          <div className="text-2xl font-black text-[#FF4D67] tracking-tight group-hover:scale-105 transition-transform origin-left duration-300">
+                          <span className="text-[10px] font-bold text-muted uppercase tracking-widest mb-0.5">Price</span>
+                          <div className="text-2xl font-black text-[var(--store-primary)] tracking-tight group-hover:scale-105 transition-transform origin-left duration-300">
                             {product.price || "Check Price"}
                           </div>
                         </div>
@@ -286,7 +290,7 @@ export default function PublicStorePage() {
                     </div>
                     
                     <Button 
-                      className="w-full h-11 rounded-xl bg-[#FF4D67] hover:bg-[#E6395A] text-white shadow-lg shadow-[#FF4D67]/20 flex items-center justify-center gap-2 font-black text-xs uppercase tracking-widest group/btn border-none transform active:scale-95 transition-all"
+                      className="w-full h-11 rounded-xl bg-[var(--store-primary)] hover:bg-[var(--store-primary)]/90 text-white shadow-lg shadow-[var(--store-primary)]/20 flex items-center justify-center gap-2 font-black text-xs uppercase tracking-widest group/btn border-none transform active:scale-95 transition-all"
                       onClick={() => handleBuyNow(product)}
                       disabled={trackingId === product.id}
                     >
@@ -311,7 +315,7 @@ export default function PublicStorePage() {
       </main>
 
       {/* Trust Badges */}
-      <section className="bg-white border-y border-slate-100 py-12 px-4 shadow-inner">
+      <section className="bg-[var(--store-card)] border-y border-[var(--store-border)] py-12 px-4 shadow-inner">
         <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
           {[
             { icon: Zap, title: "Lightning Deals", desc: "Best prices guaranteed" },
@@ -320,12 +324,12 @@ export default function PublicStorePage() {
             { icon: ShoppingBag, title: "Latest Trends", desc: "Fresh arrivals daily" },
           ].map((item, i) => (
             <div key={i} className="flex flex-col items-center text-center gap-3 group">
-              <div className="w-12 h-12 rounded-2xl bg-[#FF4D67]/5 text-[#FF4D67] flex items-center justify-center group-hover:bg-[#FF4D67] group-hover:text-white transition-all duration-500">
+              <div className="w-12 h-12 rounded-2xl bg-[var(--store-primary)]/5 text-[var(--store-primary)] flex items-center justify-center group-hover:bg-[var(--store-primary)] group-hover:text-white transition-all duration-500">
                 <item.icon size={22} />
               </div>
               <div>
-                <h4 className="font-bold text-slate-800 text-sm whitespace-nowrap">{item.title}</h4>
-                <p className="text-[10px] font-medium text-slate-400 uppercase tracking-tighter">{item.desc}</p>
+                <h4 className="font-bold text-sm whitespace-nowrap">{item.title}</h4>
+                <p className="text-[10px] font-medium text-muted uppercase tracking-tighter">{item.desc}</p>
               </div>
             </div>
           ))}
@@ -341,22 +345,22 @@ export default function PublicStorePage() {
       </div>
 
       {/* Footer */}
-      <footer className="bg-white border-t border-slate-200 py-16 px-4">
+      <footer className="bg-[var(--store-card)] border-t border-[var(--store-border)] py-16 px-4">
         <div className="max-w-7xl mx-auto flex flex-col items-center text-center">
           <div className="flex items-center gap-2 mb-8">
-            <div className="w-8 h-8 bg-slate-100 rounded-lg flex items-center justify-center">
-              <ShoppingBag className="w-5 h-5 text-slate-400" />
+            <div className="w-8 h-8 bg-black/5 rounded-lg flex items-center justify-center">
+              <ShoppingBag className="w-5 h-5 text-muted" />
             </div>
-            <span className="text-lg font-black text-slate-800 tracking-tight">{profile.store_name}</span>
+            <span className="text-lg font-black tracking-tight">{profile.store_name}</span>
           </div>
           
-          <div className="flex items-center gap-2 text-slate-400 font-bold text-[10px] uppercase tracking-[0.2em] mb-4">
-            Powered by <span className="text-[#A29BFE] font-black tracking-normal">Storix</span>
+          <div className="flex items-center gap-2 text-muted font-bold text-[10px] uppercase tracking-[0.2em] mb-4">
+            Powered by <span className="text-[var(--store-primary)] font-black tracking-normal">Storix</span>
           </div>
 
           <Link href="/">
-            <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-slate-50 border border-slate-200 hover:border-[#FF4D67]/30 hover:bg-[#FF4D67]/5 transition-all text-xs font-bold text-slate-600 group cursor-pointer">
-              <Sparkles size={14} className="text-[#FF4D67] group-hover:rotate-12 transition-transform" />
+            <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[var(--store-background)] border border-[var(--store-border)] hover:border-[var(--store-primary)]/30 hover:bg-[var(--store-primary)]/5 transition-all text-xs font-bold text-muted group cursor-pointer">
+              <Sparkles size={14} className="text-[var(--store-primary)] group-hover:rotate-12 transition-transform" />
               Build your own affiliate empire with Storix
               <ChevronRight size={14} />
             </div>
@@ -380,23 +384,7 @@ export default function PublicStorePage() {
           animation: pulse-subtle 3s ease-in-out infinite;
         }
       `}</style>
-    </div>
-  );
-}
-
-function ChevronRight({ size = 16 }) {
-  return (
-    <svg 
-      width={size} 
-      height={size} 
-      viewBox="0 0 24 24" 
-      fill="none" 
-      stroke="currentColor" 
-      strokeWidth="3" 
-      strokeLinecap="round" 
-      strokeLinejoin="round"
-    >
-      <path d="m9 18 6-6-6-6" />
-    </svg>
+      </div>
+    </ThemeProvider>
   );
 }

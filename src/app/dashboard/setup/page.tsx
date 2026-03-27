@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS public.profiles (
   username TEXT UNIQUE,
   store_name TEXT DEFAULT 'My Affiliate Store',
   store_description TEXT,
+  theme TEXT DEFAULT 'default',
   created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
@@ -72,8 +73,8 @@ CREATE POLICY "Users can view own clicks" ON public.clicks FOR SELECT USING (aut
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS trigger AS $$
 BEGIN
-  INSERT INTO public.profiles (id, username, store_name)
-  VALUES (new.id, split_part(new.email, '@', 1) || floor(random() * 10000)::text, split_part(new.email, '@', 1) || '''s Store');
+  INSERT INTO public.profiles (id, username, store_name, theme)
+  VALUES (new.id, split_part(new.email, '@', 1) || floor(random() * 10000)::text, split_part(new.email, '@', 1) || '''s Store', 'default');
   RETURN new;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
