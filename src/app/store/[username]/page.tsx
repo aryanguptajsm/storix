@@ -20,6 +20,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { toast } from "sonner";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { StoreSkeleton } from "@/components/ui/StoreSkeleton";
 
 interface Product {
   id: string;
@@ -56,7 +57,7 @@ export default function PublicStorePage() {
         const { data: profileData, error: profileError } = await supabase
           .from("profiles")
           .select("id, store_name, store_description, username, theme")
-          .eq("username", username)
+          .ilike("username", username as string)
           .single();
 
         if (profileError || !profileData) {
@@ -114,24 +115,36 @@ export default function PublicStorePage() {
   };
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-[#F0F2F5] flex items-center justify-center">
-        <div className="relative">
-          <div className="absolute inset-0 bg-primary/10 blur-2xl rounded-full animate-pulse" />
-          <div className="relative animate-spin h-10 w-10 border-4 border-[#FF4D67] border-t-transparent rounded-full" />
-        </div>
-      </div>
-    );
+    return <StoreSkeleton />;
   }
 
   if (!profile) {
     return (
-      <div className="min-h-screen bg-[#F0F2F5] flex flex-col items-center justify-center p-6 text-center">
-        <h1 className="text-3xl font-bold text-slate-800 mb-4">Store Not Found</h1>
-        <p className="text-slate-600 max-w-md mb-8">The store you are looking for might have moved or been deleted.</p>
-        <Link href="/">
-          <Button className="bg-[#FF4D67] hover:bg-[#E6395A] text-white rounded-full px-8">Back to Home</Button>
-        </Link>
+      <div className="min-h-screen bg-[var(--store-background)] flex flex-col items-center justify-center p-6 text-center">
+        <div className="glass-morphism-dark p-12 rounded-[3rem] border border-[var(--store-border)] max-w-lg w-full shadow-2xl animate-fade-in">
+          <div className="w-20 h-20 bg-[var(--store-primary)]/10 rounded-3xl flex items-center justify-center mx-auto mb-8 text-[var(--store-primary)] animate-float">
+            <ShoppingBag size={40} />
+          </div>
+          <h1 className="text-4xl font-black text-white mb-4 tracking-tight">
+            Store Not Found
+          </h1>
+          <p className="text-muted text-lg mb-10 leading-relaxed">
+            The store you are looking for doesn't exist or has been moved to a new coordinates.
+          </p>
+          <div className="flex flex-col gap-4">
+            <Link href="/">
+              <Button size="lg" className="w-full h-14 rounded-2xl bg-[var(--store-primary)] hover:bg-[var(--store-primary)]/90 text-white shadow-xl shadow-[var(--store-primary)]/20 text-base font-bold">
+                Back to Home Base
+              </Button>
+            </Link>
+            <Link href="/signup">
+              <Button variant="ghost" size="lg" className="w-full h-14 rounded-2xl text-muted hover:text-white hover:bg-white/5">
+                Create Your Own Store
+                <ArrowRight size={18} className="ml-2" />
+              </Button>
+            </Link>
+          </div>
+        </div>
       </div>
     );
   }
