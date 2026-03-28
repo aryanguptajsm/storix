@@ -1,5 +1,7 @@
 import { supabase } from "./supabase";
 
+let userPromise: Promise<any> | null = null;
+
 export interface UserProfile {
   id: string;
   email: string;
@@ -12,12 +14,14 @@ export interface UserProfile {
 }
 
 export async function signUp(email: string, password: string) {
+  userPromise = null;
   const { data, error } = await supabase.auth.signUp({ email, password });
   if (error) throw error;
   return data;
 }
 
 export async function signIn(email: string, password: string) {
+  userPromise = null;
   const { data, error } = await supabase.auth.signInWithPassword({
     email,
     password,
@@ -27,6 +31,7 @@ export async function signIn(email: string, password: string) {
 }
 
 export async function signInWithGoogle() {
+  userPromise = null;
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
@@ -38,17 +43,33 @@ export async function signInWithGoogle() {
 }
 
 export async function signOut() {
+  userPromise = null;
   const { error } = await supabase.auth.signOut();
   if (error) throw error;
 }
 
+// Singleton promise for getUser to prevent concurrent calls
+
+
 export async function getUser() {
-  const { data: { user }, error } = await supabase.auth.getUser();
-  if (error) {
-    console.error("getUser error:", error);
-    return null;
-  }
-  return user;
+  if (userPromise) return userPromise;
+
+  userPromise = (async () => {
+    try {
+      const { data: { user }, error } = await supabase.auth.getUser();
+      if (error) {
+        console.error("getUser error:", error);
+        return null;
+      }
+      return user;
+    } finally {
+      // Clear the promise after a short delay to allow fresh checks later
+      // but keep it long enough to catch concurrent calls during a single page load
+      setTimeout(() => { userPromise = null; }, 500);
+    }
+  })();
+
+  return userPromise;
 }
 
 export async function getProfile(userId: string): Promise<UserProfile | null> {
