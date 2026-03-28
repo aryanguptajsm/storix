@@ -74,7 +74,7 @@ CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS trigger AS $$
 BEGIN
   INSERT INTO public.profiles (id, username, store_name, theme)
-  VALUES (new.id, split_part(new.email, '@', 1) || floor(random() * 10000)::text, split_part(new.email, '@', 1) || '''s Store', 'default');
+  VALUES (new.id, lower(split_part(new.email, '@', 1)) || (floor(random() * 9000) + 1000)::text, split_part(new.email, '@', 1) || '''s Store', 'default');
   RETURN new;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;

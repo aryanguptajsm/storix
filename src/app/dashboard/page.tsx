@@ -16,7 +16,9 @@ import {
   Zap,
   ArrowRight,
   LayoutGrid,
-  Activity
+  Activity,
+  Copy,
+  Check
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -68,7 +70,7 @@ export default function DashboardPage() {
             .from("profiles")
             .insert({
               id: user.id,
-              username: user.email?.split("@")[0] + Math.random().toString(36).substring(7),
+              username: user.email?.split("@")[0].toLowerCase() + Math.floor(1000 + Math.random() * 9000).toString(),
               store_name: (user.email?.split("@")[0] || "My") + "'s Store",
             })
             .select()
@@ -154,6 +156,18 @@ export default function DashboardPage() {
           </p>
         </div>
         <div className="flex gap-3">
+          <Button 
+            variant="secondary" 
+            className="gap-2 bg-white/5 border-white/5 hover:bg-white/10 group"
+            onClick={() => {
+              const url = `${window.location.origin}/store/${profile?.username}`;
+              navigator.clipboard.writeText(url);
+              toast.success("Store link copied to clipboard!");
+            }}
+          >
+            <Copy size={16} />
+            Copy Link
+          </Button>
           <Link href={`/store/${profile?.username}`} target="_blank">
             <Button variant="secondary" className="gap-2 bg-white/5 border-white/5 hover:bg-white/10 group">
               <ExternalLink className="w-4 h-4 group-hover:rotate-12 transition-transform" />

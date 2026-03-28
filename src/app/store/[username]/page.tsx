@@ -128,19 +128,18 @@ export default function PublicStorePage() {
           <h1 className="text-4xl font-black text-white mb-4 tracking-tight">
             Store Not Found
           </h1>
-          <p className="text-muted text-lg mb-10 leading-relaxed">
-            The store you are looking for doesn't exist or has been moved to a new coordinates.
+          <p className="text-muted text-lg mb-4 leading-relaxed">
+            The coordinates <span className="text-[var(--store-primary)] font-bold">/{username}</span> don't match any active storefront in our database.
           </p>
+          <div className="p-4 rounded-2xl bg-white/5 border border-white/10 mb-8">
+            <p className="text-xs text-muted leading-relaxed">
+              <span className="text-white font-bold">Store Owners:</span> If you just created your store, please visit your <Link href="/dashboard" className="text-[var(--store-primary)] hover:underline">Command Center</Link> to find your unique deployment link.
+            </p>
+          </div>
           <div className="flex flex-col gap-4">
             <Link href="/">
               <Button size="lg" className="w-full h-14 rounded-2xl bg-[var(--store-primary)] hover:bg-[var(--store-primary)]/90 text-white shadow-xl shadow-[var(--store-primary)]/20 text-base font-bold">
                 Back to Home Base
-              </Button>
-            </Link>
-            <Link href="/signup">
-              <Button variant="ghost" size="lg" className="w-full h-14 rounded-2xl text-muted hover:text-white hover:bg-white/5">
-                Create Your Own Store
-                <ArrowRight size={18} className="ml-2" />
               </Button>
             </Link>
           </div>
