@@ -24,7 +24,8 @@ import {
   Lock,
   Camera,
   DollarSign,
-  ShoppingBag
+  ShoppingBag,
+  LayoutGrid
 } from "lucide-react";
 
 export default function SettingsPage() {
