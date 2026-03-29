@@ -1,7 +1,9 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { getUser } from "@/lib/auth";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { 
@@ -16,6 +18,32 @@ import {
 } from "lucide-react";
 
 export default function LandingPage() {
+  const router = useRouter();
+  const [checking, setChecking] = useState(true);
+
+  useEffect(() => {
+    async function checkAuth() {
+      const user = await getUser();
+      if (user) {
+        router.push("/dashboard");
+      } else {
+        setChecking(false);
+      }
+    }
+    checkAuth();
+  }, [router]);
+
+  if (checking) {
+    return (
+      <div className="min-h-screen bg-[#13131A] flex items-center justify-center">
+        <div className="relative">
+          <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full animate-pulse-glow" />
+          <div className="relative animate-spin h-10 w-10 border-4 border-primary border-t-transparent rounded-full shadow-lg shadow-primary/20" />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col min-h-screen bg-[#13131A] selection:bg-[#6C5CE7]/30 selection:text-white">
       {/* Navigation */}
