@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { signUp, updateProfile, signInWithGoogle } from "@/lib/auth";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
@@ -30,6 +30,15 @@ export default function SignupPage() {
   const [googleLoading, setGoogleLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const urlError = searchParams.get("error");
+  
+  // Sync URL error with local state
+  React.useEffect(() => {
+    if (urlError) {
+      setError(urlError);
+    }
+  }, [urlError]);
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();

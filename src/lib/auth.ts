@@ -30,12 +30,15 @@ export async function signIn(email: string, password: string) {
   return data;
 }
 
-export async function signInWithGoogle() {
+export async function signInWithGoogle(next?: string) {
   userPromise = null;
+  const url = new URL(`${window.location.origin}/auth/callback`);
+  if (next) url.searchParams.set("next", next);
+
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
-      redirectTo: `${window.location.origin}/auth/callback`,
+      redirectTo: url.toString(),
     },
   });
   if (error) throw error;
