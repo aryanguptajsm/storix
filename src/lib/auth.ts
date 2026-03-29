@@ -58,10 +58,13 @@ export async function getUser() {
     try {
       const { data: { user }, error } = await supabase.auth.getUser();
       if (error) {
-        console.error("getUser error:", error);
+        console.error("getUser error (API):", error);
         return null;
       }
       return user;
+    } catch (error) {
+       console.error("getUser fetch error:", error);
+       return null;
     } finally {
       // Clear the promise after a short delay to allow fresh checks later
       // but keep it long enough to catch concurrent calls during a single page load
@@ -71,6 +74,7 @@ export async function getUser() {
 
   return userPromise;
 }
+
 
 export async function getProfile(userId: string): Promise<UserProfile | null> {
   const { data, error } = await supabase

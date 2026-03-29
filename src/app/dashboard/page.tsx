@@ -25,16 +25,20 @@ import { useRouter } from "next/navigation";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { DashboardSkeleton } from "@/components/ui/DashboardSkeleton";
 
+import { UserProfile, Product } from "@/lib/types";
+
 export default function DashboardPage() {
   const [user, setUser] = useState<any>(null);
   const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [configError, setConfigError] = useState(false);
   const [dbStatus, setDbStatus] = useState<{ productsTable: boolean }>({ productsTable: true });
   const [stats, setStats] = useState({
     totalProducts: 0,
     totalClicks: 0,
   });
   const [loading, setLoading] = useState(true);
-  const [recentProducts, setRecentProducts] = useState<any[]>([]);
+  const [recentProducts, setRecentProducts] = useState<Product[]>([]);
+
   const router = useRouter();
 
   useEffect(() => {
@@ -79,6 +83,7 @@ export default function DashboardPage() {
           if (!initError) profile = newProfile;
         }
         
+        // Set profile
         setProfile(profile);
 
         // Fetch stats and recent products
@@ -99,17 +104,24 @@ export default function DashboardPage() {
             .limit(5)
         ]);
 
+        if (productsRes.error || clicksRes.error) {
+           console.error("Supabase Query Error (likely invalid key):", productsRes.error || clicksRes.error);
+           setConfigError(true);
+        }
+
         setStats({
           totalProducts: productsRes.count || 0,
           totalClicks: clicksRes.count || 0,
         });
-        setRecentProducts(recentRes.data || []);
+        setRecentProducts((recentRes.data as Product[]) || []);
       } catch (err) {
         console.error("Error loading dashboard:", err);
+        setConfigError(true);
         toast.error("Failed to load dashboard data");
       } finally {
         setLoading(false);
       }
+
     }
 
     loadDashboard();
@@ -121,7 +133,28 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-8 animate-fade-in pb-12">
-      {!dbStatus.productsTable && (
+      {configError && (
+        <div className="p-6 rounded-3xl border border-warning/30 bg-warning/5 backdrop-blur-md flex flex-col md:flex-row items-center justify-between gap-6 animate-pulse-glow shadow-2xl shadow-warning/10">
+          <div className="flex items-center gap-4 text-center md:text-left">
+            <div className="w-12 h-12 rounded-2xl bg-warning/20 flex items-center justify-center text-warning flex-shrink-0">
+              <Settings size={24} />
+            </div>
+            <div>
+              <h3 className="text-lg font-black text-white">Configuration Required</h3>
+              <p className="text-sm text-muted/80 max-w-md">Your Supabase environment variables are missing or invalid. Check your .env.local file to reconnect.</p>
+            </div>
+          </div>
+          <Link href="https://supabase.com/dashboard/project/lnckyrvxehzcjvyultkd/settings/api" target="_blank" className="w-full md:w-auto">
+             <Button className="w-full md:w-auto gap-2 bg-warning hover:bg-warning-dark shadow-lg shadow-warning/20 text-black">
+               <ExternalLink size={16} />
+               Get API Keys
+             </Button>
+          </Link>
+        </div>
+      )}
+
+      {!configError && !dbStatus.productsTable && (
+
         <div className="p-6 rounded-3xl border border-danger/30 bg-danger/5 backdrop-blur-md flex flex-col md:flex-row items-center justify-between gap-6 animate-pulse-glow shadow-2xl shadow-danger/10">
           <div className="flex items-center gap-4 text-center md:text-left">
             <div className="w-12 h-12 rounded-2xl bg-danger/20 flex items-center justify-center text-danger flex-shrink-0">

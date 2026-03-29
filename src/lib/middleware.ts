@@ -38,12 +38,17 @@ export async function updateSession(request: NextRequest) {
     }
   );
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  let user = null;
+  try {
+    const { data: { user: supabaseUser } } = await supabase.auth.getUser();
+    user = supabaseUser;
+  } catch (error) {
+    console.error("Middleware Auth Error (likely fetch failure):", error);
+  }
 
   // Redirect to login if user is not authenticated and trying to access dashboard
   if (!user && request.nextUrl.pathname.startsWith("/dashboard")) {
+
     const url = request.nextUrl.clone();
     url.pathname = "/login";
     return NextResponse.redirect(url);
