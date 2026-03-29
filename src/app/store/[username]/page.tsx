@@ -38,7 +38,7 @@ interface Product {
   original_price?: string;
   discount_percentage?: string;
   original_url: string;
-  user_id: string;
+  user_id?: string;
 }
 
 interface Profile {
@@ -60,15 +60,29 @@ export default function PublicStorePage() {
     async function loadStore() {
       const supabase = createClient();
       try {
-        // Fetch profile
+        console.log(`[STORE_FETCH] Attempting to load coordinates for: /${username}`);
+        
+        // Fetch profile - Normalize username to lowercase for query robustness
+        const normalizedUsername = (username as string).toLowerCase();
+
         const { data: profileData, error: profileError } = await supabase
           .from("profiles")
           .select("id, store_name, store_description, username, theme")
-          .ilike("username", username as string)
+          .eq("username", normalizedUsername)
           .single();
 
-        if (profileError || !profileData) {
-          toast.error("Store not found.");
+        if (profileError) {
+          console.error("[STORE_FETCH_ERROR] Profile acquisition failure:", profileError);
+          // Distinguish between Not Found (PGRST116) and other DB errors
+          if (profileError.code === "PGRST116") {
+             console.warn("[STORE_FETCH] Logic Error: Zero profiles matched coordinates.");
+          }
+          setLoading(false);
+          return;
+        }
+
+        if (!profileData) {
+          console.warn("[STORE_FETCH] Null mapping: Profile exists but data is void.");
           setLoading(false);
           return;
         }

@@ -202,7 +202,7 @@ export default function DashboardPage() {
             <Copy size={16} />
             Copy Link
           </Button>
-          <Link href={`/store/${profile?.username}`} target="_blank">
+          <Link href={`/store/${profile?.username?.toLowerCase()}`} target="_blank">
             <Button variant="secondary" className="gap-2 bg-white/5 border-white/5 hover:bg-white/10 group">
               <ExternalLink className="w-4 h-4 group-hover:rotate-12 transition-transform" />
               View Live Store
