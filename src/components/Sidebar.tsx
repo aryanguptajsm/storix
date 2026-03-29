@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { signOut } from "@/lib/auth";
 import { toast } from "sonner";
+import { ThemeToggle } from "./ui/ThemeToggle";
 
 const navItems = [
   { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
@@ -99,6 +100,7 @@ export function Sidebar() {
         )}
 
         <div className="space-y-1">
+          <ThemeToggle />
           {profile?.username && (
             <Link
               href={`/store/${profile.username}`}

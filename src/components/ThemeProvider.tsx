@@ -7,6 +7,8 @@ type Theme = "default" | "midnight" | "minimalist" | "neon";
 interface ThemeContextType {
   theme: Theme;
   setTheme: (theme: Theme) => void;
+  appMode: "light" | "dark";
+  toggleAppMode: () => void;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -19,21 +21,30 @@ export function ThemeProvider({
   initialTheme?: Theme;
 }) {
   const [theme, setTheme] = useState<Theme>(initialTheme);
+  const [appMode, setAppMode] = useState<"light" | "dark">("dark");
+
+  useEffect(() => {
+    const savedMode = localStorage.getItem("storix-app-mode") as "light" | "dark";
+    if (savedMode) {
+      setAppMode(savedMode);
+    } else if (window.matchMedia("(prefers-color-scheme: light)").matches) {
+      setAppMode("light");
+    }
+  }, []);
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
-  }, [theme]);
+    document.documentElement.setAttribute("data-app-theme", appMode);
+    localStorage.setItem("storix-app-mode", appMode);
+  }, [theme, appMode]);
 
-  // Update theme when initialTheme changes (e.g., when profile data is loaded)
-  useEffect(() => {
-    if (initialTheme) {
-      setTheme(initialTheme);
-    }
-  }, [initialTheme]);
+  const toggleAppMode = () => {
+    setAppMode(prev => prev === "light" ? "dark" : "light");
+  };
 
   return (
-    <ThemeContext.Provider value={{ theme, setTheme }}>
-      <div className={`theme-${theme} min-h-screen`}>
+    <ThemeContext.Provider value={{ theme, setTheme, appMode, toggleAppMode }}>
+      <div className={`theme-${theme} mode-${appMode} min-h-screen transition-colors duration-500`}>
         {children}
       </div>
     </ThemeContext.Provider>
