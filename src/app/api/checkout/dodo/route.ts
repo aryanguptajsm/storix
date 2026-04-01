@@ -45,8 +45,15 @@ export async function POST(req: Request) {
     // The snippet uses 'payments.create' or 'payments' to generate payment links
     // If we only have product_cart we use checkoutSessions typically if supported
     // Since we just ran `npm install dodopayments`, lets use standard properties.
-    // @ts-expect-error - Mismatch in dodopayments SDK types regarding billing/customer requirements
     const payment = await client.payments.create({
+      billing: {
+        country: "US",
+        city: "San Francisco",
+        state: "CA",
+        street: "123 Main St",
+        zipcode: "94111",
+      },
+      payment_link: true,
       product_cart: [
         {
           product_id: productId,
