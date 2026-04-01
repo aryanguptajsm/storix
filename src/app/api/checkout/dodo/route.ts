@@ -3,14 +3,23 @@ import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import DodoPayments from "dodopayments";
 
-const apiKey = "E7ceXGCo247-st9T.MddHSp8IBfYwwy9kt4sgSURRTLxmQqSI5_7t4aP0MYCLbBKo";
+const isProd = process.env.NODE_ENV === "production";
 
 const client = new DodoPayments({
-  bearerToken: process.env.DODO_API_KEY || apiKey,
+  bearerToken: process.env.DODO_API_KEY || "",
+  environment: isProd ? "live_mode" : "test_mode",
 });
 
 export async function POST(req: Request) {
   try {
+    if (!process.env.DODO_API_KEY) {
+      console.error("DODO_API_KEY is not configured.");
+      return NextResponse.json(
+        { error: "Payment gateway is not currently available." },
+        { status: 503 }
+      );
+    }
+
     const { productId } = await req.json();
 
     if (!productId) {
