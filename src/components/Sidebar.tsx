@@ -13,6 +13,7 @@ import {
   Sparkles,
   Menu,
   X,
+  CreditCard,
 } from "lucide-react";
 import { signOut } from "@/lib/auth";
 import { toast } from "sonner";
@@ -22,6 +23,7 @@ const navItems = [
   { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { label: "Products", href: "/dashboard/products", icon: Package },
   { label: "Earnings", href: "/dashboard/earnings", icon: DollarSign },
+  { label: "Billing & Plans", href: "/dashboard/billing", icon: CreditCard },
   { label: "Store Settings", href: "/dashboard/settings", icon: Settings },
 ];
 

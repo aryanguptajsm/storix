@@ -63,10 +63,31 @@ export default function BillingPage() {
   const handleUpgrade = async (planId: PlanId) => {
     setUpgrading(planId);
     try {
-      // Razorpay integration placeholder
-      toast.info("Payment integration coming soon! Your plan will be upgraded once Razorpay is configured.");
-      setTimeout(() => setUpgrading(null), 2000);
-    } catch {
+      if (planId === "free") return;
+      
+      const plan = PLANS[planId];
+      if (planId === "pro" && plan.dodoProductId) {
+        const res = await fetch("/api/checkout/dodo", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            productId: plan.dodoProductId,
+          }),
+        });
+        const data = await res.json();
+        
+        if (data.url) {
+          window.location.href = data.url;
+        } else {
+          toast.error(`Checkout failed: ${data.error || "Unknown error"}`);
+          setUpgrading(null);
+        }
+      } else {
+        toast.info("This plan is not fully integrated yet.");
+        setUpgrading(null);
+      }
+    } catch (e) {
+      console.error(e);
       toast.error("Failed to initiate upgrade");
       setUpgrading(null);
     }
