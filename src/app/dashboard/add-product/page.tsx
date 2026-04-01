@@ -36,6 +36,7 @@ export default function AddProductPage() {
   const [generating, setGenerating] = useState(false);
   const [saving, setSaving] = useState(false);
   
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [productData, setProductData] = useState<any>(null);
   const [aiSuggestions, setAiSuggestions] = useState<string[]>([]);
   const [uploading, setUploading] = useState(false);

@@ -20,7 +20,7 @@ const nextConfig: NextConfig = {
   devIndicators: {
     appIsrStatus: false,
     buildActivity: false,
-  } as any,
+  } as unknown,
   experimental: {
     optimizePackageImports: ["lucide-react", "recharts"],
   },

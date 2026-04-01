@@ -87,9 +87,9 @@ export default function StorixProductPage() {
             <div className="absolute top-0 left-0 w-64 h-64 bg-[#6C5CE7]/10 blur-[80px]" />
             <div className="relative z-10 flex flex-col items-center text-center max-w-2xl mx-auto">
               <Shield className="w-12 h-12 text-[#00B894] mb-8" />
-              <h2 className="text-4xl font-bold mb-6">Your store&apos;s ready!</h2>
+              <h2 className="text-4xl font-bold mb-6">Your store's ready!</h2>
               <p className="text-lg text-muted mb-10">
-                Your store&apos;s ready! Scrape products, generate AI titles, and build your empire.
+                Your store's ready! Scrape products, generate AI titles, and build your empire.
               </p>
               <div className="flex gap-4">
                 <Link href="/dashboard">
