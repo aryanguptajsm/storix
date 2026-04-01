@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import { Toaster } from "sonner";
 import { ChatWidget } from "@/components/ui/ChatWidget";
+import { ThemeProvider } from "@/components/ThemeProvider";
 import "./globals.css";
 
 const jakarta = Plus_Jakarta_Sans({
@@ -25,18 +26,20 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${jakarta.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
-        {children}
-        <Toaster
-          position="bottom-right"
-          toastOptions={{
-            style: {
-              background: "#1E1E2E",
-              border: "1px solid #3D3D5C",
-              color: "#F1F1F6",
-            },
-          }}
-        />
-        <ChatWidget />
+        <ThemeProvider>
+          {children}
+          <Toaster
+            position="bottom-right"
+            toastOptions={{
+              style: {
+                background: "#1E1E2E",
+                border: "1px solid #3D3D5C",
+                color: "#F1F1F6",
+              },
+            }}
+          />
+          <ChatWidget />
+        </ThemeProvider>
       </body>
     </html>
   );
