@@ -133,7 +133,7 @@ export const PLANS: Record<PlanId, Plan> = {
   },
 };
 
-export const PREMIUM_THEMES = ['midnight', 'neon', 'gradient', 'tokyo', 'ocean', 'sunset', 'monochrome'];
+export const PREMIUM_THEMES = ['midnight', 'neon', 'gradient', 'tokyo', 'ocean', 'sunset', 'monochrome', 'amazon', 'flipkart'];
 
 export function getPlan(planId: string | null | undefined): Plan {
   if (planId && planId in PLANS) {

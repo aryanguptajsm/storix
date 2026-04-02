@@ -265,6 +265,24 @@ body {
   --store-border: #00FFD144;
 }
 
+[data-theme='amazon'] {
+  --store-primary: #FF9900;
+  --store-primary-rgb: 255, 153, 0;
+  --store-background: #EAEDED;
+  --store-foreground: #0F1111;
+  --store-card: #FFFFFF;
+  --store-border: #D5D9D9;
+}
+
+[data-theme='flipkart'] {
+  --store-primary: #2874F0;
+  --store-primary-rgb: 40, 116, 240;
+  --store-background: #F1F3F6;
+  --store-foreground: #212121;
+  --store-card: #FFFFFF;
+  --store-border: #E0E0E0;
+}
+
 @keyframes bounce-subtle {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-3px); }

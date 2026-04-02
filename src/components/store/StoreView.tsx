@@ -31,7 +31,7 @@ interface Profile {
   store_description: string;
   username: string;
   id: string;
-  theme: "default" | "midnight" | "minimalist" | "neon";
+  theme: "default" | "midnight" | "minimalist" | "neon" | "amazon" | "flipkart";
 }
 
 interface StoreViewProps {
