@@ -3,10 +3,6 @@ import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import DodoPayments from "dodopayments";
 
-const isProd = process.env.NODE_ENV === "production";
-
-
-
 export async function POST(req: Request) {
   try {
     if (!process.env.DODO_API_KEY) {
@@ -17,9 +13,12 @@ export async function POST(req: Request) {
       );
     }
 
+    const apiKey = process.env.DODO_API_KEY;
+    const environment = apiKey.startsWith("test_") ? "test_mode" : "live_mode";
+
     const client = new DodoPayments({
-      bearerToken: process.env.DODO_API_KEY,
-      environment: isProd ? "live_mode" : "test_mode",
+      bearerToken: apiKey,
+      environment: environment,
     });
 
     const { productId } = await req.json();
@@ -56,15 +55,8 @@ export async function POST(req: Request) {
     // The snippet uses 'payments.create' or 'payments' to generate payment links
     // If we only have product_cart we use checkoutSessions typically if supported
     // Since we just ran `npm install dodopayments`, lets use standard properties.
-    const payment = await client.payments.create({
-      billing: {
-        country: "US",
-        city: "San Francisco",
-        state: "CA",
-        street: "123 Main St",
-        zipcode: "94111",
-      },
-      payment_link: true,
+    // Utilize checkoutSessions API for creating checkout links for products/subscriptions
+    const session = await client.checkoutSessions.create({
       product_cart: [
         {
           product_id: productId,
@@ -75,12 +67,10 @@ export async function POST(req: Request) {
         email: user?.email || "customer@example.com",
         name: user?.user_metadata?.full_name || "Storix User",
       },
-      return_url: `${origin}/dashboard/billing?success=true&session_id={CHECKOUT_SESSION_ID}`,
+      return_url: `${origin}/dashboard/billing?success=true`,
     });
 
-    // Check if the API returned a link or an id we must assemble
-    const p = payment as unknown as Record<string, string>;
-    return NextResponse.json({ url: p.paymentLink || p.checkoutUrl || p.url || p.payment_link });
+    return NextResponse.json({ url: session.checkout_url || "" });
 
   } catch (error: any) {
     console.error("Dodo payments creation error:", error);
