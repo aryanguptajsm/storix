@@ -6,20 +6,21 @@ import type { CheckoutSessionCreateParams } from "dodopayments/resources/checkou
 
 // Singleton-like: create the Dodo client once per cold start, not per request
 function getDodoClient(): DodoPayments | null {
-  // The SDK looks for DODO_PAYMENTS_API_KEY by default.
-  // We also support DODO_API_KEY for backward compatibility.
   const apiKey =
     process.env.DODO_PAYMENTS_API_KEY ||
     process.env.DODO_API_KEY;
 
   if (!apiKey) return null;
 
-  const environment = apiKey.startsWith("test_") ? "test_mode" : "live_mode";
+  // Use DODO_ENVIRONMENT env var if set, otherwise default to test_mode
+  // Set DODO_ENVIRONMENT=live_mode only after Dodo approves your account for live payments
+  const environment =
+    (process.env.DODO_ENVIRONMENT as "test_mode" | "live_mode") || "test_mode";
 
   return new DodoPayments({
     bearerToken: apiKey,
     environment,
-    timeout: 15000, // 15s timeout — fail fast instead of hanging
+    timeout: 15000,
   });
 }
 
