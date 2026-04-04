@@ -33,6 +33,9 @@ export default function BillingPage() {
   const [userState, setUserState] = useState<UserState | null>(null);
   const [loading, setLoading] = useState(true);
   const [upgrading, setUpgrading] = useState<string | null>(null);
+  const [verifying, setVerifying] = useState(false);
+  const [licenseKey, setLicenseKey] = useState("");
+  const [redeeming, setRedeeming] = useState(false);
 
   useEffect(() => {
     async function load() {
@@ -78,6 +81,61 @@ export default function BillingPage() {
     }
     load();
   }, []);
+
+  const handleVerify = async () => {
+    setVerifying(true);
+    try {
+      const user = await getUser();
+      if (!user) return;
+      // Force refresh by bypassing cache (short delay already in getUser)
+      const freshProfile = await getProfile(user.id);
+      if (freshProfile) {
+        setUserState(prev => prev ? { 
+          ...prev, 
+          plan: (freshProfile.plan as PlanId) || "free",
+          storeName: freshProfile.store_name || "My Store"
+        } : null);
+        
+        if (freshProfile.plan && freshProfile.plan !== "free") {
+          toast.success("Subscription Verified!", {
+            description: `Your account is now active on the ${freshProfile.plan.toUpperCase()} plan.`
+          });
+        } else {
+          toast.info("No active subscription found yet. If you just paid, please wait 1-2 minutes for the webhook to process.");
+        }
+      }
+    } catch {
+      toast.error("Failed to verify subscription.");
+    } finally {
+      setVerifying(false);
+    }
+  };
+
+  const handleRedeem = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!licenseKey.trim()) return;
+    setRedeeming(true);
+    try {
+      const res = await fetch("/api/auth/redeem-key", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ key: licenseKey }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        toast.success(data.message);
+        setLicenseKey("");
+        // Refresh state
+        handleVerify();
+      } else {
+        toast.error(data.error || "Failed to redeem key.");
+      }
+    } catch {
+      toast.error("An error occurred during redemption.");
+    } finally {
+      setRedeeming(false);
+    }
+  };
 
   const handleUpgrade = async (planId: PlanId) => {
     setUpgrading(planId);
@@ -170,25 +228,43 @@ export default function BillingPage() {
       </div>
 
       {/* Current Plan Overview */}
-      <Card className="glass overflow-hidden">
-        <CardContent className="p-8">
-          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
-            <div className="flex items-center gap-4">
-              <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center text-primary">
-                <CreditCard size={24} />
+      <Card className="glass overflow-hidden relative">
+        <div className="absolute inset-0 grid-bg-subtle opacity-10 pointer-events-none" />
+        <CardContent className="p-8 relative z-10">
+          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
+            <div className="flex items-center gap-5">
+              <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center text-primary shadow-inner border border-primary/20">
+                <CreditCard size={28} />
               </div>
               <div>
-                <h3 className="text-lg font-black text-foreground">
-                  {PLANS[currentPlan].name} Plan
-                </h3>
-                <p className="text-sm text-muted flex items-center gap-2 mt-1">
-                  <Calendar size={14} />
+                <div className="flex items-center gap-2">
+                  <h3 className="text-xl font-black text-foreground">
+                    {PLANS[currentPlan].name} Plan
+                  </h3>
+                  {currentPlan !== "free" && (
+                    <div className="w-2 h-2 rounded-full bg-success animate-pulse" />
+                  )}
+                </div>
+                <p className="text-sm text-muted flex items-center gap-2 mt-1 font-medium">
+                  <Calendar size={14} className="opacity-50" />
                   {currentPlan === "free" ? "No expiration" : "Renews monthly"}
                 </p>
               </div>
             </div>
-            <div className="w-full lg:w-72">
-              <QuotaBar plan={currentPlan} currentCount={userState?.productCount || 0} />
+            
+            <div className="flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto">
+              <Button 
+                variant="secondary" 
+                className="w-full sm:w-auto gap-2 bg-white/5 border-white/5 hover:bg-white/10 h-12 px-6"
+                onClick={handleVerify}
+                loading={verifying}
+              >
+                {!verifying && <Zap size={16} className="text-primary-light" />}
+                Verify Status
+              </Button>
+              <div className="w-full lg:w-72 hidden md:block">
+                <QuotaBar plan={currentPlan} currentCount={userState?.productCount || 0} />
+              </div>
             </div>
           </div>
         </CardContent>
@@ -272,6 +348,42 @@ export default function BillingPage() {
             </Card>
           );
         })}
+      </div>
+
+      {/* License Key Redemption */}
+      <div className="pt-4 animate-stagger-fade stagger-4">
+        <Card className="glass border-primary/20 bg-primary/5 overflow-hidden">
+          <CardContent className="p-8 flex flex-col md:flex-row items-center justify-between gap-8">
+            <div className="space-y-2 max-w-lg">
+              <h2 className="text-2xl font-black text-white flex items-center gap-3">
+                <Star size={24} className="text-primary" />
+                Redeem Activation Key
+              </h2>
+              <p className="text-muted font-medium text-sm leading-relaxed">
+                Have a promo code or a lifetime license key? Enter it here to activate your premium features immediately.
+              </p>
+            </div>
+            
+            <form onSubmit={handleRedeem} className="w-full md:w-auto flex flex-col sm:flex-row items-center gap-3">
+              <div className="relative group w-full sm:w-64">
+                <input
+                  type="text"
+                  placeholder="STRX-XXXX-XXXX"
+                  value={licenseKey}
+                  onChange={(e) => setLicenseKey(e.target.value.toUpperCase())}
+                  className="w-full h-14 bg-black/40 border border-white/10 rounded-2xl px-6 font-mono text-sm tracking-widest text-primary focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/60 transition-all uppercase placeholder:opacity-30"
+                />
+              </div>
+              <Button 
+                type="submit" 
+                className="w-full sm:w-auto h-14 px-8 rounded-2xl bg-primary shadow-xl shadow-primary/20 hover:shadow-primary/40 hover-shine font-black uppercase tracking-widest gap-2"
+                loading={redeeming}
+              >
+                Redeem Key
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Add-ons */}

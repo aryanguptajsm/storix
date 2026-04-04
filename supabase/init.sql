@@ -38,14 +38,14 @@ CREATE TABLE IF NOT EXISTS public.clicks (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
--- 4. Page Blocks (For future drag-and-drop support)
-CREATE TABLE IF NOT EXISTS public.page_blocks (
+-- 5. License Keys Table (For manual upgrades)
+CREATE TABLE IF NOT EXISTS public.license_keys (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-    user_id UUID REFERENCES public.profiles(id) ON DELETE CASCADE NOT NULL,
-    block_type TEXT NOT NULL,
-    order_index INTEGER NOT NULL,
-    content JSONB NOT NULL,
-    is_active BOOLEAN DEFAULT true,
+    key TEXT UNIQUE NOT NULL,
+    plan TEXT NOT NULL DEFAULT 'pro',
+    is_redeemed BOOLEAN DEFAULT false,
+    redeemed_by UUID REFERENCES auth.users(id),
+    redeemed_at TIMESTAMP WITH TIME ZONE,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
@@ -54,6 +54,7 @@ ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.products ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.clicks ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.page_blocks ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.license_keys ENABLE ROW LEVEL SECURITY;
 
 -- Setup RLS Policies (as defined in security_fix.sql, plus additions)
 
@@ -77,6 +78,10 @@ CREATE POLICY "Users can view their own products clicks" ON public.clicks FOR SE
 -- Page Blocks
 CREATE POLICY "Blocks are publicly viewable" ON public.page_blocks FOR SELECT USING (true);
 CREATE POLICY "Users manage own blocks" ON public.page_blocks FOR ALL USING (auth.uid() = user_id);
+
+-- License Keys
+CREATE POLICY "License keys are viewable by authenticated users" ON public.license_keys FOR SELECT USING (auth.role() = 'authenticated');
+-- Note: Insert and Update will be handled by service role (admin) for security.
 
 -- Triggers for automatic profile creation
 CREATE OR REPLACE FUNCTION public.handle_new_user()

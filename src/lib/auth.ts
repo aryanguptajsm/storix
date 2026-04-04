@@ -1,8 +1,9 @@
 import { supabase } from "./supabase";
+import { User } from "@supabase/supabase-js";
 export type { UserProfile } from "./types";
 import type { UserProfile } from "./types";
 
-let userPromise: Promise<any> | null = null;
+let userPromise: Promise<User | null> | null = null;
 
 export async function signUp(email: string, password: string) {
   userPromise = null;
