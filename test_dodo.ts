@@ -1,5 +1,5 @@
-require('dotenv').config({ path: '.env.local' });
-const DodoPayments = require('dodopayments').DodoPayments;
+import 'dotenv/config';
+import { DodoPayments } from 'dodopayments';
 
 const apiKey = process.env.DODO_API_KEY || 'test_sk_w1fdf';
 const client = new DodoPayments({
