@@ -90,7 +90,8 @@ export default function StoreManagementPage() {
   }
 
   return (
-    <div className="space-y-8 animate-fade-in pb-12">
+    <div className="space-y-8 pb-12 relative animate-fade-in">
+      <div className="absolute inset-0 grid-bg-subtle opacity-30 pointer-events-none -z-10" />
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
@@ -139,7 +140,7 @@ export default function StoreManagementPage() {
               />
               <div className="space-y-1.5">
                 <label className="block text-sm font-bold text-muted uppercase tracking-widest text-[10px]">Store Slug / URL</label>
-                <div className="relative group">
+                <div className="relative group perspective-1000">
                   <div className="absolute left-4 top-1/2 -translate-y-1/2 text-muted/30 group-focus-within:text-primary transition-colors">
                     <Globe size={16} />
                   </div>
@@ -147,13 +148,29 @@ export default function StoreManagementPage() {
                     name="username"
                     value={formData.username}
                     onChange={handleChange}
-                    className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white/5 border border-white/5 text-foreground font-bold focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/50 transition-all font-mono text-sm"
+                    className="w-full pl-10 pr-32 py-2.5 rounded-xl bg-white/5 border border-white/5 text-foreground font-bold focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/50 transition-all font-mono text-sm hover-tilt preserve-3d"
                     placeholder="my-store-slug"
                   />
-                  <div className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-black text-muted/20 tracking-tighter uppercase whitespace-nowrap">
-                    .storix.ai
+                  <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
+                    <div className="text-[10px] font-black text-muted/20 tracking-tighter uppercase whitespace-nowrap mr-2">
+                       .storix.ai
+                    </div>
+                    <Button 
+                      type="button"
+                      variant="secondary" 
+                      size="sm" 
+                      className="h-8 px-3 text-[10px] bg-primary/10 text-primary border-primary/20 hover:bg-primary/20 transition-all"
+                      onClick={() => {
+                        const url = `${window.location.origin}/store/${formData.username}`;
+                        navigator.clipboard.writeText(url);
+                        toast.success("Live link copied!");
+                      }}
+                    >
+                      Copy
+                    </Button>
                   </div>
                 </div>
+                <p className="text-[10px] text-muted/40 italic mt-1.5 ml-1">Lowercase, numbers, and dashes only. No spaces.</p>
               </div>
             </div>
 

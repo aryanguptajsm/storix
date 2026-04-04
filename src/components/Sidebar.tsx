@@ -77,13 +77,13 @@ export function Sidebar() {
               key={item.href}
               href={item.href}
               onClick={() => setMobileOpen(false)}
-              className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-300 group ${
+              className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-300 group perspective-1000 ${
                 isActive
-                  ? "bg-primary/10 text-primary-light border border-primary/20 shadow-sm"
-                  : "text-muted hover:text-foreground hover:bg-surface-light border border-transparent"
+                  ? "bg-primary/10 text-primary-light border border-primary/20 shadow-lg shadow-primary/10"
+                  : "text-muted hover:text-foreground hover:bg-white/5 border border-transparent hover-tilt preserve-3d"
               }`}
             >
-              <item.icon className={`w-5 h-5 transition-transform duration-300 group-hover:scale-110 ${isActive ? "text-primary-light" : "text-muted group-hover:text-primary-light"}`} />
+              <item.icon className={`w-5 h-5 transition-transform duration-500 group-hover:scale-110 ${isActive ? "text-primary-light" : "text-muted group-hover:text-primary-light"}`} />
               {item.label}
             </Link>
           );

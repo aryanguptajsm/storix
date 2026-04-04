@@ -11,7 +11,8 @@ import {
   Sparkles,
   Zap,
   ArrowRight,
-  Settings
+  Settings,
+  Globe,
 } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -96,7 +97,10 @@ export default async function DashboardPage() {
   const recentProducts = recentRes.data || [];
 
   return (
-    <div className="space-y-8 animate-fade-in pb-12">
+    <div className="space-y-8 pb-12 relative">
+      {/* Background decoration */}
+      <div className="absolute inset-0 grid-bg-subtle opacity-30 pointer-events-none -z-10" />
+      
       {configError && (
         <div className="p-6 rounded-3xl border border-warning/30 bg-warning/5 backdrop-blur-md flex flex-col md:flex-row items-center justify-between gap-6 animate-pulse-glow shadow-2xl shadow-warning/10">
           <div className="flex items-center gap-4 text-center md:text-left">
@@ -137,7 +141,7 @@ export default async function DashboardPage() {
         </div>
       )}
 
-      <div className="space-y-1">
+      <div className="space-y-1 animate-stagger-fade stagger-1">
         <div className="flex items-center gap-2 flex-wrap">
           <h1 className="text-2xl md:text-3xl font-black text-foreground tracking-tight leading-tight">
             Welcome back, {profile?.store_name || "Store Owner"}!
@@ -151,7 +155,7 @@ export default async function DashboardPage() {
         </p>
       </div>
       
-      <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
+      <div className="flex flex-wrap items-center gap-3 w-full md:w-auto animate-stagger-fade stagger-2">
         <CopyLinkButton username={profile?.username || ""} />
         <Link href={`/store/${profile?.username?.toLowerCase()}`} target="_blank" className="flex-1 md:flex-initial">
           <Button variant="secondary" className="w-full gap-2 bg-white/5 border-white/5 hover:bg-white/10 group h-11 px-4 text-xs md:text-sm font-bold">
@@ -168,72 +172,125 @@ export default async function DashboardPage() {
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <Card className="glass relative overflow-hidden group hover:border-primary/20 transition-all duration-500">
-          <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
-            <Package size={80} />
-          </div>
-          <CardHeader className="flex flex-row items-center justify-between pb-2 border-b border-white/5">
-            <CardTitle className="text-xs font-bold uppercase tracking-widest text-muted/80">
-              Total Products
-            </CardTitle>
-            <div className="p-2 rounded-lg bg-primary/10 text-primary">
-              <Package className="w-4 h-4" />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-stagger-fade stagger-3">
+        {/* Total Products Card */}
+        <div className="perspective-1000 group">
+          <Card className="glass relative overflow-hidden group hover-tilt preserve-3d transition-all duration-500 border-white/5 bg-white/[0.02]">
+            <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+              <Package size={80} />
             </div>
-          </CardHeader>
-          <CardContent className="pt-6">
-            <div className="text-4xl font-black text-foreground">{stats.totalProducts}</div>
-            <div className="flex items-center gap-2 mt-2">
-              <span className="text-xs font-bold text-success bg-success/10 px-2 py-0.5 rounded-full">+12%</span>
-              <span className="text-[10px] text-muted font-medium uppercase tracking-tighter">vs last month</span>
-            </div>
-          </CardContent>
-        </Card>
+            {/* Icon Glow */}
+            <div className="absolute top-[-20px] right-[-20px] w-40 h-40 icon-glow-primary rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            
+            <CardHeader className="flex flex-row items-center justify-between pb-2 border-b border-white/5">
+              <CardTitle className="text-[10px] font-black uppercase tracking-[0.2em] text-muted/60">
+                Fleet Capacity
+              </CardTitle>
+              <div className="p-2 rounded-xl bg-primary/10 text-primary shadow-lg shadow-primary/20 border border-primary/20">
+                <Package className="w-4 h-4" />
+              </div>
+            </CardHeader>
+            <CardContent className="pt-6 relative z-10">
+              <div className="text-4xl font-black text-foreground tracking-tighter">{stats.totalProducts}</div>
+              <div className="flex items-center gap-2 mt-2">
+                <span className="text-[10px] font-black text-primary bg-primary/10 px-2 py-0.5 rounded-full border border-primary/10 uppercase tracking-widest">Active Units</span>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
 
-        <Card className="glass relative overflow-hidden group hover:border-secondary/20 transition-all duration-500">
-          <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
-            <MousePointerClick size={80} />
-          </div>
-          <CardHeader className="flex flex-row items-center justify-between pb-2 border-b border-white/5">
-            <CardTitle className="text-xs font-bold uppercase tracking-widest text-muted/80">
-              Total Clicks
-            </CardTitle>
-            <div className="p-2 rounded-lg bg-secondary/10 text-secondary">
-              <MousePointerClick className="w-4 h-4" />
+        {/* Total Clicks Card */}
+        <div className="perspective-1000 group">
+          <Card className="glass relative overflow-hidden group hover-tilt preserve-3d transition-all duration-500 border-white/5 bg-white/[0.02]">
+            <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+              <MousePointerClick size={80} />
             </div>
-          </CardHeader>
-          <CardContent className="pt-6">
-            <div className="text-4xl font-black text-foreground">{stats.totalClicks}</div>
-            <div className="flex items-center gap-2 mt-2">
-              <span className="text-xs font-bold text-success bg-success/10 px-2 py-0.5 rounded-full">+5.2%</span>
-              <span className="text-[10px] text-muted font-medium uppercase tracking-tighter">vs last month</span>
-            </div>
-          </CardContent>
-        </Card>
+            {/* Icon Glow */}
+            <div className="absolute top-[-20px] right-[-20px] w-40 h-40 icon-glow-secondary rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-        <Card className="glass relative overflow-hidden group hover:border-accent/20 transition-all duration-500">
-          <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
-            <TrendingUp size={80} />
+            <CardHeader className="flex flex-row items-center justify-between pb-2 border-b border-white/5">
+              <CardTitle className="text-[10px] font-black uppercase tracking-[0.2em] text-muted/60">
+                Engagement Intel
+              </CardTitle>
+              <div className="p-2 rounded-xl bg-secondary/10 text-secondary shadow-lg shadow-secondary/20 border border-secondary/20">
+                <MousePointerClick className="w-4 h-4" />
+              </div>
+            </CardHeader>
+            <CardContent className="pt-6 relative z-10">
+              <div className="text-4xl font-black text-foreground tracking-tighter">{stats.totalClicks}</div>
+              <div className="flex items-center gap-2 mt-2">
+                <span className="text-[10px] font-black text-secondary bg-secondary/10 px-2 py-0.5 rounded-full border border-secondary/10 uppercase tracking-widest">Inbound Links</span>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Earnings Card */}
+        <div className="perspective-1000 group">
+          <Card className="glass relative overflow-hidden group hover-tilt preserve-3d transition-all duration-500 border-white/5 bg-white/[0.02]">
+            <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+              <TrendingUp size={80} />
+            </div>
+            {/* Icon Glow */}
+            <div className="absolute top-[-20px] right-[-20px] w-40 h-40 icon-glow-accent rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+            <CardHeader className="flex flex-row items-center justify-between pb-2 border-b border-white/5">
+              <CardTitle className="text-[10px] font-black uppercase tracking-[0.2em] text-muted/60">
+                Revenue Stream
+              </CardTitle>
+              <div className="p-2 rounded-xl bg-accent/10 text-accent shadow-lg shadow-accent/20 border border-accent/20">
+                <TrendingUp className="w-4 h-4" />
+              </div>
+            </CardHeader>
+            <CardContent className="pt-6 relative z-10">
+              <div className="text-4xl font-black text-foreground tracking-tighter">$0.00</div>
+              <div className="flex items-center gap-2 mt-2">
+                <span className="text-[10px] font-black text-accent bg-accent/10 px-2 py-0.5 rounded-full border border-accent/10 uppercase tracking-widest">Pending Payout</span>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+
+      {/* ─── NEW: Deployment Status Monitor ─── */}
+      <div className="animate-stagger-fade stagger-4">
+        <Card className="glass overflow-hidden border-primary/20 bg-primary/[0.02] shadow-2xl shadow-primary/5">
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
+          <div className="p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-8">
+            <div className="flex items-center gap-6">
+              <div className="relative">
+                <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center text-primary border border-primary/20 animate-float-slow">
+                  <Globe size={32} />
+                </div>
+                <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-success border-4 border-[#09090F] animate-pulse" />
+              </div>
+              <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                   <h3 className="text-xl font-black text-white">Live Deployment Status</h3>
+                   <span className="px-2 py-0.5 rounded-md bg-success/20 text-success text-[10px] font-black uppercase tracking-widest">Online</span>
+                </div>
+                <p className="text-sm text-muted/60 font-medium max-w-md">
+                   Your storefront is currently active at your coordinates. All systems functional.
+                </p>
+              </div>
+            </div>
+            
+            <div className="w-full md:w-auto flex flex-col sm:flex-row items-center gap-4">
+              <div className="w-full sm:w-auto p-4 rounded-xl bg-black/40 border border-white/5 font-mono text-sm text-primary-light flex items-center justify-between gap-4">
+                 <span className="opacity-40">/store/</span>
+                 <span className="font-black tracking-tight">{profile?.username || "loading..."}</span>
+              </div>
+              <Link href={`/store/${profile?.username}`} target="_blank" className="w-full sm:w-auto">
+                <Button className="w-full sm:w-auto h-12 rounded-xl bg-primary px-8 font-black uppercase tracking-widest shadow-xl shadow-primary/20 hover-shine">
+                   View Live Station
+                </Button>
+              </Link>
+            </div>
           </div>
-          <CardHeader className="flex flex-row items-center justify-between pb-2 border-b border-white/5">
-            <CardTitle className="text-xs font-bold uppercase tracking-widest text-muted/80">
-              Est. Earnings
-            </CardTitle>
-            <div className="p-2 rounded-lg bg-accent/10 text-accent">
-              <TrendingUp className="w-4 h-4" />
-            </div>
-          </CardHeader>
-          <CardContent className="pt-6">
-            <div className="text-4xl font-black text-foreground">$0.00</div>
-            <div className="flex items-center gap-2 mt-2">
-              <span className="text-xs font-bold text-muted bg-surface-light px-2 py-0.5 rounded-full">Pending</span>
-              <span className="text-[10px] text-muted font-medium uppercase tracking-tighter whitespace-nowrap">Verification in progress</span>
-            </div>
-          </CardContent>
         </Card>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 animate-stagger-fade stagger-5">
         <Card className="glass hover:border-white/10 transition-colors">
           <CardHeader className="border-b border-white/5 flex flex-row items-center justify-between">
             <CardTitle className="text-lg font-bold">Recent Hangar Activity</CardTitle>
