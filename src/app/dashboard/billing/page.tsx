@@ -51,6 +51,25 @@ export default function BillingPage() {
           productCount: count || 0,
           storeName: profile?.store_name || "My Store",
         });
+
+        // Check for success query parameter from Dodo redirect
+        const params = new URLSearchParams(window.location.search);
+        if (params.get("success") === "true") {
+          toast.success("Payment Received! Your account is being upgraded.", {
+            description: "It may take a few moments for your plan to update.",
+            duration: 6000,
+          });
+          // Remove the query param to avoid repeated toasts
+          window.history.replaceState({}, document.title, window.location.pathname);
+          
+          // Refresh the profile after a short delay to see the updated plan
+          setTimeout(async () => {
+             const freshProfile = await getProfile(user.id);
+             if (freshProfile?.plan) {
+               setUserState(prev => prev ? { ...prev, plan: freshProfile.plan as PlanId } : null);
+             }
+          }, 3000);
+        }
       } catch {
         toast.error("Failed to load billing data");
       } finally {
@@ -79,7 +98,7 @@ export default function BillingPage() {
         if (data.url) {
           window.location.href = data.url;
         } else {
-          toast.error(`Checkout failed: ${data.error || "Unknown error"}`);
+          toast.error(`Checkout failed: ${data.error || "Please check your connection and try again."}`);
           setUpgrading(null);
         }
       } else {
