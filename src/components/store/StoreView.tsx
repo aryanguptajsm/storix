@@ -32,6 +32,7 @@ interface Profile {
   username: string;
   id: string;
   theme: "default" | "midnight" | "minimalist" | "neon" | "amazon" | "flipkart";
+  store_logo?: string | null;
 }
 
 interface StoreViewProps {
@@ -70,7 +71,16 @@ export function StoreView({ profile, products }: StoreViewProps) {
             <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-[var(--store-primary)]/[0.03] to-transparent" />
             <div className="absolute -top-32 -left-32 w-96 h-96 bg-[var(--store-primary)]/[0.06] rounded-full blur-[120px] animate-morph" />
             <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-[var(--store-primary)]/[0.04] rounded-full blur-[120px] animate-float" />
+            <div className="absolute inset-0 grid-bg-subtle opacity-20" />
             <div className="absolute inset-0 dot-grid opacity-30" />
+            
+            {/* 3D Floating Icons */}
+            <div className="absolute top-1/4 left-[10%] opacity-20 animate-float-slow hidden md:block">
+              <ShoppingBag className="w-16 h-16 text-[var(--store-primary)] rotate-12" />
+            </div>
+            <div className="absolute bottom-1/4 right-[10%] opacity-20 animate-float-delayed hidden md:block">
+              <Sparkles className="w-20 h-20 text-[var(--store-primary)] -rotate-12" />
+            </div>
           </div>
         )}
 
@@ -80,9 +90,9 @@ export function StoreView({ profile, products }: StoreViewProps) {
             <span className="text-[10px] md:text-xs font-bold text-[var(--store-foreground)]/60 tracking-widest uppercase">Curated Collection</span>
           </div>
 
-          <h1 className="text-[clamp(2rem,6vw,5rem)] font-black tracking-tight mb-5 md:mb-7 leading-[1.1] animate-slide-up">
-            <span className="block text-[var(--store-foreground)]">{profile.store_name}</span>
-            <span className="text-gradient">Affiliate Hub</span>
+          <h1 className="text-[clamp(2rem,6vw,5rem)] font-black tracking-tight mb-5 md:mb-7 leading-[1.1] animate-slide-up perspective-1000">
+            <span className="block text-[var(--store-foreground)] hover-tilt inline-block preserve-3d">{profile.store_name}</span>
+            <span className="text-gradient block text-shadow-glow">Affiliate Hub</span>
           </h1>
 
           <p className="max-w-2xl mx-auto text-base md:text-lg text-[var(--store-foreground)]/40 mb-8 md:mb-12 animate-fade-in leading-relaxed px-4 font-medium">

@@ -40,17 +40,36 @@ export default async function PublicStorePage({ params }: Props) {
   const normalizedUsername = username.toLowerCase();
 
   // Single profile fetch — we use .ilike for case-insensitive robust lookups
-  const { data: profile } = await supabase
+  let { data: profile } = await supabase
     .from("profiles")
-    .select("id, store_name, store_description, username, theme")
+    .select("id, store_name, store_description, username, theme, store_logo")
     .ilike("username", normalizedUsername)
     .single();
 
-  // Check if current visitor is the potential owner (for CTA)
+  // Check if current visitor is logged in
   const { data: { user } } = await supabase.auth.getUser();
-  const isPotentialOwner = user && (
-    !profile && (user.email?.split('@')[0].toLowerCase() === normalizedUsername)
-  );
+
+  // GREEDY FALLBACK: If not found, check if the current logged-in user's email prefix matches
+  // This helps when a user hasn't set a username yet but visits their expected URL
+  let isPotentialOwner = false;
+  if (!profile && user) {
+    const emailPrefix = user.email?.split('@')[0].toLowerCase();
+    if (emailPrefix === normalizedUsername) {
+      isPotentialOwner = true;
+      // Fetch their profile by ID to see if it exists but has a different/no username
+      const { data: ownProfile } = await supabase
+        .from("profiles")
+        .select("id, store_name, store_description, username, theme, store_logo")
+        .eq("id", user.id)
+        .single();
+      
+      if (ownProfile) {
+        // We found the owner's profile! We can show them their store even if the username doesn't match yet
+        // and prompt them to "Confirm this URL"
+        profile = ownProfile;
+      }
+    }
+  }
 
   // Only fetch products if we have a valid profile
   const productsRes = profile

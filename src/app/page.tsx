@@ -131,11 +131,22 @@ export default function LandingPage() {
           {/* Animated Background */}
           <div className="absolute inset-0 -z-10">
             {/* Grid pattern */}
-            <div className="absolute inset-0 grid-pattern opacity-60" />
+            <div className="absolute inset-0 grid-bg-subtle opacity-40" />
+            <div className="absolute inset-0 grid-pattern opacity-30" />
+            
             {/* Gradient orbs */}
             <div className="absolute top-20 left-[10%] w-[400px] h-[400px] bg-[#6C5CE7]/15 rounded-full blur-[150px] animate-morph" />
             <div className="absolute bottom-10 right-[10%] w-[400px] h-[400px] bg-[#FD79A8]/12 rounded-full blur-[150px] animate-morph animation-delay-400" />
             <div className="absolute top-[40%] left-[50%] w-[300px] h-[300px] bg-[#00CEC9]/8 rounded-full blur-[120px] animate-float" />
+            
+            {/* Floating 3D Elements */}
+            <div className="absolute top-1/3 right-[15%] opacity-10 animate-float-slow hidden lg:block">
+              <Zap className="w-32 h-32 text-primary rotate-12" />
+            </div>
+            <div className="absolute bottom-1/3 left-[15%] opacity-10 animate-float-delayed hidden lg:block">
+              <Layers className="w-32 h-32 text-secondary -rotate-12" />
+            </div>
+
             {/* Orbiting particle */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
               <div className="w-2 h-2 rounded-full bg-primary/40 animate-orbit" />
@@ -157,10 +168,10 @@ export default function LandingPage() {
             </div>
 
             {/* Headline */}
-            <h1 className="text-[clamp(2.5rem,8vw,6rem)] font-black tracking-tighter mb-6 leading-[0.95] animate-fade-in-up animation-delay-100">
-              <span className="text-white">Build Your Affiliate</span>
+            <h1 className="text-[clamp(2.5rem,8vw,6rem)] font-black tracking-tighter mb-6 leading-[0.95] animate-fade-in-up animation-delay-100 perspective-1000">
+              <span className="text-white hover-tilt inline-block preserve-3d">Build Your Affiliate</span>
               <br />
-              <span className="bg-gradient-to-r from-[#6C5CE7] via-[#A29BFE] to-[#FD79A8] bg-clip-text text-transparent animate-gradient-x text-glow">
+              <span className="bg-gradient-to-r from-[#6C5CE7] via-[#A29BFE] to-[#FD79A8] bg-clip-text text-transparent animate-gradient-x text-glow block mt-2">
                 Storefront in Minutes
               </span>
             </h1>
@@ -173,13 +184,13 @@ export default function LandingPage() {
             {/* CTAs */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up animation-delay-300">
               <Link href="/signup">
-                <Button size="lg" className="h-14 px-8 text-base rounded-2xl min-w-[240px] shadow-2xl shadow-primary/30 hover:shadow-primary/50 group hover-shine">
+                <Button size="lg" className="h-14 px-8 text-base rounded-2xl min-w-[240px] shadow-2xl shadow-primary/30 hover:shadow-primary/50 group hover-shine hover-tilt preserve-3d transition-all">
                   Start Building Free
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Link>
               <Link href="/store/demo">
-                <Button variant="secondary" size="lg" className="h-14 px-8 text-base rounded-2xl min-w-[200px] border-white/10 hover:border-white/20 backdrop-blur-md group hover-lift">
+                <Button variant="secondary" size="lg" className="h-14 px-8 text-base rounded-2xl min-w-[200px] border-white/10 hover:border-white/20 backdrop-blur-md group hover-lift hover-tilt preserve-3d transition-all">
                   Live Demo
                   <ArrowUpRight className="w-4 h-4 opacity-50 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
                 </Button>
