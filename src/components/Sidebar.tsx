@@ -14,6 +14,7 @@ import {
   Menu,
   X,
   CreditCard,
+  LayoutGrid,
 } from "lucide-react";
 import { signOut } from "@/lib/auth";
 import { toast } from "sonner";
