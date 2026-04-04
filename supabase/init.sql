@@ -82,7 +82,7 @@ CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS trigger AS $$
 BEGIN
   INSERT INTO public.profiles (id, username, store_name)
-  VALUES (new.id, split_part(new.email, '@', 1), split_part(new.email, '@', 1));
+  VALUES (new.id, LOWER(split_part(new.email, '@', 1)), split_part(new.email, '@', 1));
   RETURN new;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;

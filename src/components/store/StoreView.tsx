@@ -65,12 +65,14 @@ export function StoreView({ profile, products }: StoreViewProps) {
       {/* ─── Hero Section ─── */}
       <section className="relative pt-28 md:pt-36 pb-16 md:pb-24 px-4 sm:px-6 overflow-hidden bg-[var(--store-card)]">
         {/* Background effects */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-[var(--store-primary)]/[0.03] to-transparent" />
-          <div className="absolute -top-32 -left-32 w-96 h-96 bg-[var(--store-primary)]/[0.06] rounded-full blur-[120px] animate-morph" />
-          <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-[var(--store-primary)]/[0.04] rounded-full blur-[120px] animate-float" />
-          <div className="absolute inset-0 dot-grid opacity-30" />
-        </div>
+        {profile.theme !== 'amazon' && profile.theme !== 'flipkart' && (
+          <div className="absolute inset-0 pointer-events-none overflow-hidden">
+            <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-[var(--store-primary)]/[0.03] to-transparent" />
+            <div className="absolute -top-32 -left-32 w-96 h-96 bg-[var(--store-primary)]/[0.06] rounded-full blur-[120px] animate-morph" />
+            <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-[var(--store-primary)]/[0.04] rounded-full blur-[120px] animate-float" />
+            <div className="absolute inset-0 dot-grid opacity-30" />
+          </div>
+        )}
 
         <div className="max-w-7xl mx-auto text-center relative z-10">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-morphism-premium mb-6 md:mb-8 animate-fade-in shadow-lg">

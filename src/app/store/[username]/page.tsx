@@ -2,7 +2,7 @@ import React from "react";
 import { createClient } from "@/lib/supabase-server";
 import { StoreView } from "@/components/store/StoreView";
 import { Button } from "@/components/ui/Button";
-import { ShoppingBag } from "lucide-react";
+import { ShoppingBag, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { Metadata } from "next";
 
@@ -39,12 +39,18 @@ export default async function PublicStorePage({ params }: Props) {
   // Normalized username for query robustness
   const normalizedUsername = username.toLowerCase();
 
-  // Single profile fetch — id is reused for products query (no double roundtrip)
+  // Single profile fetch — we use .ilike for case-insensitive robust lookups
   const { data: profile } = await supabase
     .from("profiles")
     .select("id, store_name, store_description, username, theme")
-    .eq("username", normalizedUsername)
+    .ilike("username", normalizedUsername)
     .single();
+
+  // Check if current visitor is the potential owner (for CTA)
+  const { data: { user } } = await supabase.auth.getUser();
+  const isPotentialOwner = user && (
+    !profile && (user.email?.split('@')[0].toLowerCase() === normalizedUsername)
+  );
 
   // Only fetch products if we have a valid profile
   const productsRes = profile
@@ -59,22 +65,43 @@ export default async function PublicStorePage({ params }: Props) {
 
   if (!profile) {
     return (
-      <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center p-6 text-center">
-        <div className="bg-white/5 p-12 rounded-[3rem] border border-white/10 max-w-lg w-full shadow-2xl">
-          <div className="w-20 h-20 bg-primary/10 rounded-3xl flex items-center justify-center mx-auto mb-8 text-primary">
-            <ShoppingBag size={40} />
+      <div className="min-h-screen bg-[#09090F] flex flex-col items-center justify-center p-6 text-center noise-overlay">
+        <div className="glass p-10 md:p-14 rounded-[3.5rem] border border-white/10 max-w-xl w-full shadow-2xl relative overflow-hidden">
+          <div className="absolute -top-24 -left-24 w-48 h-48 bg-primary/10 rounded-full blur-[80px]" />
+          <div className="absolute -bottom-24 -right-24 w-48 h-48 bg-secondary/10 rounded-full blur-[80px]" />
+          
+          <div className="w-24 h-24 bg-primary/10 rounded-[2rem] flex items-center justify-center mx-auto mb-8 text-primary shadow-inner border border-primary/20">
+            <ShoppingBag size={44} />
           </div>
-          <h1 className="text-4xl font-black text-white mb-4 tracking-tight">
+          
+          <h1 className="text-4xl md:text-5xl font-black text-white mb-5 tracking-tighter leading-none animate-fade-in-up">
             Store Not Found
           </h1>
-          <p className="text-slate-400 text-lg mb-8 leading-relaxed">
+          
+          <p className="text-white/40 text-lg mb-10 leading-relaxed font-medium animate-fade-in-up animation-delay-100 px-4">
             The coordinates <span className="text-primary font-bold">/{username}</span> don't match any active storefront in our database.
           </p>
-          <Link href="/">
-            <Button size="lg" className="w-full h-14 rounded-2xl bg-primary hover:bg-primary/90 text-white shadow-xl shadow-primary/20 text-base font-bold">
-              Back to Home Base
-            </Button>
-          </Link>
+          
+          <div className="flex flex-col gap-4 animate-fade-in-up animation-delay-200">
+            {isPotentialOwner ? (
+              <Link href="/dashboard/settings" className="w-full">
+                <Button size="lg" className="w-full h-16 rounded-2xl bg-primary hover:bg-primary/90 text-white shadow-2xl shadow-primary/30 text-base font-black uppercase tracking-widest gap-3 hover-shine">
+                  Claim This URL Now
+                  <Sparkles size={18} />
+                </Button>
+              </Link>
+            ) : (
+              <Link href="/" className="w-full">
+                <Button size="lg" className="w-full h-16 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 text-white shadow-xl text-base font-bold transition-all">
+                  Back to Home Base
+                </Button>
+              </Link>
+            )}
+            
+            <p className="text-[10px] font-bold text-white/20 uppercase tracking-[0.2em] mt-4">
+              Verified by Storix Deployment System
+            </p>
+          </div>
         </div>
       </div>
     );
