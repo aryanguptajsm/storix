@@ -23,6 +23,14 @@ import {
 export default function LandingPage() {
   const router = useRouter();
   const [checking, setChecking] = useState(true);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    const { clientX, clientY } = e;
+    const moveX = (clientX - window.innerWidth / 2) / 25;
+    const moveY = (clientY - window.innerHeight / 2) / 25;
+    setMousePos({ x: moveX, y: moveY });
+  };
 
   useEffect(() => {
     async function checkAuth() {
@@ -127,27 +135,55 @@ export default function LandingPage() {
       <main className="flex-1">
 
         {/* ═══════ HERO ═══════ */}
-        <section className="relative pt-32 md:pt-44 pb-20 md:pb-32 px-4 sm:px-6 overflow-hidden">
-          {/* Animated Background */}
+        <section 
+          className="relative pt-32 md:pt-44 pb-20 md:pb-32 px-4 sm:px-6 overflow-hidden"
+          onMouseMove={handleMouseMove}
+        >
+          {/* Animated Background Layers */}
           <div className="absolute inset-0 -z-10">
-            {/* Grid pattern */}
-            <div className="absolute inset-0 grid-bg-subtle opacity-40" />
-            <div className="absolute inset-0 grid-pattern opacity-30" />
+            {/* 1. Base Mesh Flow */}
+            <div className="absolute inset-0 mesh-primary opacity-40 animate-mesh-flow" />
             
-            {/* Gradient orbs */}
-            <div className="absolute top-20 left-[10%] w-[400px] h-[400px] bg-[#6C5CE7]/15 rounded-full blur-[150px] animate-morph" />
-            <div className="absolute bottom-10 right-[10%] w-[400px] h-[400px] bg-[#FD79A8]/12 rounded-full blur-[150px] animate-morph animation-delay-400" />
-            <div className="absolute top-[40%] left-[50%] w-[300px] h-[300px] bg-[#00CEC9]/8 rounded-full blur-[120px] animate-float" />
+            {/* 2. Interactive Grid with Mouse Glow */}
+            <div 
+              className="absolute inset-0 grid-bg-subtle opacity-30 transition-opacity duration-500"
+              style={{
+                maskImage: `radial-gradient(circle at ${50 + mousePos.x/2}% ${50 + mousePos.y/2}%, black, transparent 80%)`,
+                WebkitMaskImage: `radial-gradient(circle at ${50 + mousePos.x/2}% ${50 + mousePos.y/2}%, black, transparent 80%)`,
+              }}
+            />
             
-            {/* Floating 3D Elements */}
-            <div className="absolute top-1/3 right-[15%] opacity-10 animate-float-slow hidden lg:block">
-              <Zap className="w-32 h-32 text-primary rotate-12" />
-            </div>
-            <div className="absolute bottom-1/3 left-[15%] opacity-10 animate-float-delayed hidden lg:block">
-              <Layers className="w-32 h-32 text-secondary -rotate-12" />
+            {/* 3. Sweeping Light Beams */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+              <div className="absolute top-0 left-[-20%] w-[140%] h-[2px] bg-gradient-to-r from-transparent via-primary/20 to-transparent animate-beam-sweep" />
+              <div className="absolute bottom-[20%] left-[-20%] w-[140%] h-[2px] bg-gradient-to-r from-transparent via-accent/10 to-transparent animate-beam-sweep animation-delay-2000" />
             </div>
 
-            {/* Orbiting particle */}
+            {/* 4. Drifting Orbs (Enhanced) */}
+            <div 
+              className="absolute top-20 left-[10%] w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px] animate-morph transition-transform duration-700 ease-out"
+              style={{ transform: `translate(${mousePos.x * 0.5}px, ${mousePos.y * 0.5}px)` }}
+            />
+            <div 
+              className="absolute bottom-10 right-[10%] w-[450px] h-[450px] bg-accent/8 rounded-full blur-[120px] animate-morph animation-delay-400 transition-transform duration-700 ease-out"
+              style={{ transform: `translate(${mousePos.x * -0.4}px, ${mousePos.y * -0.4}px)` }}
+            />
+            
+            {/* 5. Floating 3D Elements with Parallax */}
+            <div 
+              className="absolute top-1/3 right-[12%] opacity-20 animate-float-slow hidden lg:block transition-transform duration-500 ease-out"
+              style={{ transform: `translate(${mousePos.x * 1.5}px, ${mousePos.y * 1.5}px) rotate(12deg)` }}
+            >
+              <Zap className="w-32 h-32 text-primary filter drop-shadow(0 0 20px rgba(108,92,231,0.3))" />
+            </div>
+            <div 
+              className="absolute bottom-1/3 left-[12%] opacity-20 animate-float-delayed hidden lg:block transition-transform duration-500 ease-out"
+              style={{ transform: `translate(${mousePos.x * -1.2}px, ${mousePos.y * -1.2}px) rotate(-12deg)` }}
+            >
+              <Layers className="w-32 h-32 text-secondary filter drop-shadow(0 0 20px rgba(0,206,201,0.2))" />
+            </div>
+
+            {/* 6. Orbiting particle */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
               <div className="w-2 h-2 rounded-full bg-primary/40 animate-orbit" />
             </div>
@@ -169,10 +205,16 @@ export default function LandingPage() {
 
             {/* Headline */}
             <h1 className="text-[clamp(2.5rem,8vw,6rem)] font-black tracking-tighter mb-6 leading-[0.95] animate-fade-in-up animation-delay-100 perspective-1000">
-              <span className="text-white hover-tilt inline-block preserve-3d">Build Your Affiliate</span>
+              <span className="text-white hover-tilt inline-block preserve-3d transition-transform duration-300">
+                Build Your Affiliate
+              </span>
               <br />
-              <span className="bg-gradient-to-r from-[#6C5CE7] via-[#A29BFE] to-[#FD79A8] bg-clip-text text-transparent animate-gradient-x text-glow block mt-2">
-                Storefront in Minutes
+              <span className="relative inline-block mt-2">
+                <span className="bg-gradient-to-r from-primary via-primary-light to-accent bg-clip-text text-transparent animate-gradient-x text-glow block animate-pulse-breathing">
+                  Storefront in Minutes
+                </span>
+                {/* Decorative underline/glow */}
+                <span className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent blur-sm" />
               </span>
             </h1>
 
@@ -223,53 +265,95 @@ export default function LandingPage() {
             </div>
 
             {/* ─── 3D Browser Mockup ─── */}
-            <div className="mt-16 md:mt-24 relative max-w-5xl mx-auto animate-fade-in-up animation-delay-500">
-              {/* Glow behind mockup */}
-              <div className="absolute -inset-10 bg-gradient-to-t from-[#6C5CE7]/10 via-transparent to-transparent blur-3xl -z-10" />
+            <div 
+              className="mt-16 md:mt-24 relative max-w-5xl mx-auto animate-fade-in-up animation-delay-500 perspective-1000 group"
+              style={{ transform: `rotateX(${mousePos.y * -0.2}deg) rotateY(${mousePos.x * 0.2}deg)` }}
+            >
+              {/* Complex Glow behind mockup */}
+              <div className="absolute -inset-10 bg-gradient-to-t from-primary/20 via-accent/10 to-transparent blur-[100px] -z-10 group-hover:opacity-100 opacity-60 transition-opacity duration-700" />
+              <div className="absolute -inset-4 bg-primary/20 blur-2xl -z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+              
               {/* Reflection/fade */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#09090F] via-[#09090F]/30 to-transparent z-10 pointer-events-none rounded-3xl" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#09090F] via-transparent to-transparent z-10 pointer-events-none rounded-3xl" />
 
-              <div className="rounded-2xl md:rounded-3xl border border-white/[0.06] bg-[#13131E]/60 p-2 md:p-3 backdrop-blur-xl shadow-2xl shadow-black/30">
+              <div className="relative rounded-2xl md:rounded-3xl border border-white/[0.08] bg-[#13131E]/80 p-2 md:p-3 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5),0_0_0_1px_rgba(255,255,255,0.05),0_10px_30px_rgba(108,92,231,0.1)] overflow-hidden glass-shine">
                 {/* Browser chrome */}
-                <div className="flex items-center gap-2 px-3 py-2.5 border-b border-white/[0.04]">
-                  <div className="flex gap-1.5">
-                    <div className="w-2.5 h-2.5 rounded-full bg-[#FF6B6B]/40" />
-                    <div className="w-2.5 h-2.5 rounded-full bg-[#FDCB6E]/40" />
-                    <div className="w-2.5 h-2.5 rounded-full bg-[#00B894]/40" />
+                <div className="flex items-center gap-2 px-4 py-3 border-b border-white/[0.04] bg-white/[0.02]">
+                  <div className="flex gap-2">
+                    <div className="w-3 h-3 rounded-full bg-[#FF6B6B] opacity-60" />
+                    <div className="w-3 h-3 rounded-full bg-[#FDCB6E] opacity-60" />
+                    <div className="w-3 h-3 rounded-full bg-[#00B894] opacity-60" />
                   </div>
-                  <div className="flex-1 mx-4">
-                    <div className="h-6 rounded-lg bg-white/[0.03] border border-white/[0.04] flex items-center px-3">
-                      <div className="w-3 h-3 rounded-full border border-white/10 mr-2" />
-                      <div className="h-2.5 w-28 bg-white/[0.06] rounded-full" />
+                  <div className="flex-1 mx-6">
+                    <div className="h-7 rounded-full bg-white/[0.05] border border-white/[0.08] flex items-center px-4">
+                      <div className="w-3 h-3 rounded-full border border-white/20 mr-3" />
+                      <div className="h-1.5 w-32 bg-white/[0.1] rounded-full" />
                     </div>
+                  </div>
+                  <div className="flex gap-2">
+                    <div className="w-4 h-1 bg-white/10 rounded-full" />
                   </div>
                 </div>
 
                 {/* Content area */}
                 <div className="aspect-[16/9] rounded-xl bg-[#09090F] overflow-hidden relative">
-                  {/* Fake dashboard content */}
-                  <div className="absolute inset-0 p-6 md:p-8 flex flex-col gap-4">
+                  {/* Fake dashboard content with living elements */}
+                  <div className="absolute inset-0 p-6 md:p-10 flex flex-col gap-6">
                     {/* Top bar */}
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-lg gradient-primary" />
-                        <div className="h-3 w-20 bg-white/[0.06] rounded-full" />
+                      <div className="flex items-center gap-4">
+                        <div className="w-10 h-10 rounded-xl gradient-primary shadow-lg shadow-primary/20 animate-pulse-glow" />
+                        <div className="space-y-2">
+                          <div className="h-3 w-24 bg-white/[0.1] rounded-full" />
+                          <div className="h-2 w-16 bg-white/[0.05] rounded-full" />
+                        </div>
                       </div>
-                      <div className="flex gap-2">
-                        <div className="h-7 w-16 bg-white/[0.04] rounded-lg" />
-                        <div className="h-7 w-7 bg-primary/20 rounded-lg" />
+                      <div className="flex gap-3">
+                        <div className="h-9 w-20 bg-white/[0.05] rounded-xl border border-white/5" />
+                        <div className="h-9 w-9 bg-primary/20 rounded-xl border border-primary/20 flex items-center justify-center">
+                          <Sparkles className="w-4 h-4 text-primary animate-pulse" />
+                        </div>
                       </div>
                     </div>
 
-                    {/* Product grid */}
-                    <div className="flex-1 grid grid-cols-3 gap-3 mt-2">
+                    {/* Product grid / Stats */}
+                    <div className="flex-1 grid grid-cols-3 gap-4">
                       {[1, 2, 3, 4, 5, 6].map(i => (
-                        <div key={i} className="rounded-xl bg-white/[0.02] border border-white/[0.04] p-3 flex flex-col gap-2 hover:border-primary/20 transition-colors">
-                          <div className={`aspect-square rounded-lg ${i % 3 === 0 ? 'bg-primary/10' : i % 2 === 0 ? 'bg-pink-500/10' : 'bg-cyan-500/10'}`} />
-                          <div className="h-2 w-3/4 bg-white/[0.06] rounded-full" />
-                          <div className="h-2 w-1/2 bg-white/[0.04] rounded-full" />
+                        <div 
+                          key={i} 
+                          className="rounded-2xl bg-white/[0.03] border border-white/[0.06] p-4 flex flex-col gap-3 hover:bg-white/[0.05] hover:border-primary/30 transition-all group/card"
+                        >
+                          <div className={`aspect-video rounded-xl relative overflow-hidden ${
+                            i % 3 === 0 ? 'bg-primary/10' : i % 2 === 0 ? 'bg-accent/10' : 'bg-secondary/10'
+                          }`}>
+                            <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent" />
+                            <div className="absolute inset-0 opacity-0 group-hover/card:opacity-100 transition-opacity bg-gradient-to-t from-black/20 to-transparent" />
+                          </div>
+                          <div className="space-y-2">
+                            <div className="h-3 w-3/4 bg-white/[0.1] rounded-full" />
+                            <div className="h-2 w-1/2 bg-white/[0.05] rounded-full" />
+                          </div>
+                          <div className="mt-auto flex justify-between items-center">
+                            <div className="h-5 w-12 bg-white/[0.05] rounded-lg" />
+                            <div className="h-6 w-6 rounded-full bg-primary/20 flex items-center justify-center">
+                              <ArrowRight className="w-3 h-3 text-primary" />
+                            </div>
+                          </div>
                         </div>
                       ))}
+                    </div>
+                  </div>
+                  
+                  {/* Floating Notification (Premium touch) */}
+                  <div className="absolute bottom-6 right-6 w-48 glass-premium p-3 rounded-2xl border border-white/10 animate-bounce-subtle z-20">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-lg bg-success/20 flex items-center justify-center">
+                        <TrendingUp className="w-4 h-4 text-success" />
+                      </div>
+                      <div>
+                        <div className="text-[10px] text-white/40 font-bold uppercase tracking-wider">Sale!</div>
+                        <div className="text-xs font-black text-white">+₹2,490</div>
+                      </div>
                     </div>
                   </div>
                 </div>

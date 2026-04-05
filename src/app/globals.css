@@ -124,6 +124,36 @@ body {
   50% { transform: translateY(-4px); }
 }
 
+/* ─── Premium Animations ─── */
+@keyframes pulse-breathing {
+  0%, 100% { filter: drop-shadow(0 0 15px rgba(108, 92, 231, 0.3)); opacity: 1; }
+  50% { filter: drop-shadow(0 0 35px rgba(108, 92, 231, 0.6)); opacity: 0.85; }
+}
+@keyframes beam-sweep {
+  0% { transform: translateX(-150%) skewX(-35deg); opacity: 0; }
+  20% { opacity: 0.5; }
+  80% { opacity: 0.5; }
+  100% { transform: translateX(150%) skewX(-35deg); opacity: 0; }
+}
+@keyframes grid-glow {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 0.5; }
+}
+@keyframes shimmer-glass {
+  0% { transform: translateX(-100%) skewX(-20deg); }
+  100% { transform: translateX(200%) skewX(-20deg); }
+}
+@keyframes drift-slow {
+  0%, 100% { transform: translate(0, 0); }
+  33% { transform: translate(15px, -10px); }
+  66% { transform: translate(-10px, 15px); }
+}
+@keyframes mesh-flow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
 /* ─── Animation Utilities ─── */
 .animate-fade-in { animation: fadeIn 0.5s ease-out forwards; }
 .animate-fade-in-up { animation: fadeInUp 0.7s cubic-bezier(0.23, 1, 0.32, 1) forwards; }
@@ -136,6 +166,11 @@ body {
 .animate-morph { animation: morph 8s ease-in-out infinite; }
 .animate-bounce-subtle { animation: bounce-subtle 3s ease-in-out infinite; }
 .animate-orbit { animation: orbit 20s linear infinite; }
+.animate-pulse-breathing { animation: pulse-breathing 4s ease-in-out infinite; }
+.animate-beam-sweep { animation: beam-sweep 10s ease-in-out infinite; }
+.animate-shimmer-glass { animation: shimmer-glass 3s ease-in-out infinite; }
+.animate-drift-slow { animation: drift-slow 12s ease-in-out infinite; }
+.animate-mesh-flow { background-size: 400% 400%; animation: mesh-flow 15s ease infinite; }
 
 /* Staggered Delays */
 .animation-delay-100 { animation-delay: 100ms; }
@@ -144,6 +179,8 @@ body {
 .animation-delay-400 { animation-delay: 400ms; }
 .animation-delay-500 { animation-delay: 500ms; }
 .animation-delay-600 { animation-delay: 600ms; }
+.animation-delay-1000 { animation-delay: 1000ms; }
+.animation-delay-2000 { animation-delay: 2000ms; }
 
 /* ─── Glass & Surfaces ─── */
 .glass {
@@ -442,18 +479,40 @@ body {
 }
 
 .text-shadow-glow {
-  text-shadow: 0 0 20px rgba(var(--primary-rgb), 0.3);
+  text-shadow: 0 0 20px rgba(108, 92, 231, 0.3);
+}
+
+/* Premium Mesh Backgrounds */
+.mesh-primary {
+  background: radial-gradient(at 0% 0%, rgba(108, 92, 231, 0.15) 0px, transparent 50%),
+              radial-gradient(at 100% 0%, rgba(253, 121, 168, 0.1) 0px, transparent 50%),
+              radial-gradient(at 100% 100%, rgba(0, 206, 201, 0.08) 0px, transparent 50%),
+              radial-gradient(at 0% 100%, rgba(253, 203, 110, 0.05) 0px, transparent 50%);
+}
+
+.glass-shine {
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-shine::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%; width: 50%; height: 100%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transform: skewX(-25deg);
+  animation: shine 4s ease-in-out infinite;
 }
 
 /* Modern Icon Glows */
 .icon-glow-primary {
-  background: radial-gradient(circle, rgba(var(--primary-rgb), 0.15) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(108, 92, 231, 0.15) 0%, transparent 70%);
 }
 .icon-glow-secondary {
-  background: radial-gradient(circle, rgba(var(--secondary-rgb), 0.15) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(0, 206, 201, 0.15) 0%, transparent 70%);
 }
 .icon-glow-accent {
-  background: radial-gradient(circle, rgba(var(--accent-rgb), 0.15) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(253, 121, 168, 0.15) 0%, transparent 70%);
 }
 
 /* Staggered Animations */
@@ -478,3 +537,11 @@ body {
 .stagger-3 { animation-delay: 0.3s; }
 .stagger-4 { animation-delay: 0.4s; }
 .stagger-5 { animation-delay: 0.5s; }
+
+/* ─── Premium Glass Layer ─── */
+.glass-premium {
+  background: rgba(19, 19, 30, 0.4);
+  backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
