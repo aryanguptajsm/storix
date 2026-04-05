@@ -19,6 +19,8 @@ import {
   Layers,
   MousePointerClick,
 } from "lucide-react";
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { TiltCard } from "@/components/ui/TiltCard";
 
 export default function LandingPage() {
   const router = useRouter();
@@ -96,7 +98,7 @@ export default function LandingPage() {
             <div className="w-10 h-10 rounded-xl gradient-primary flex items-center justify-center shadow-lg shadow-primary/25 group-hover:shadow-primary/40 group-hover:scale-110 transition-all duration-300">
               <ShoppingBag className="w-5 h-5 text-white" />
             </div>
-            <span className="text-xl font-black bg-gradient-to-r from-white to-white/60 bg-clip-text text-transparent tracking-tighter">
+            <span className="text-xl font-black bg-gradient-to-r from-white to-white/60 bg-clip-text text-transparent tracking-tighter font-display">
               Storix
             </span>
           </Link>
@@ -191,53 +193,61 @@ export default function LandingPage() {
 
           <div className="max-w-7xl mx-auto text-center relative">
             {/* Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.04] border border-white/[0.08] mb-8 animate-fade-in-up backdrop-blur-sm">
-              <div className="relative">
-                <Sparkles className="w-4 h-4 text-amber-400" />
-                <div className="absolute inset-0 animate-ping">
-                  <Sparkles className="w-4 h-4 text-amber-400 opacity-30" />
+            <ScrollReveal animation="reveal-scale">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.04] border border-white/[0.08] mb-8 animate-fade-in-up backdrop-blur-sm">
+                <div className="relative">
+                  <Sparkles className="w-4 h-4 text-emerald-400" />
+                  <div className="absolute inset-0 animate-ping">
+                    <Sparkles className="w-4 h-4 text-emerald-400 opacity-30" />
+                  </div>
                 </div>
+                <span className="text-sm font-semibold text-white/70">AI-Powered Affiliate Magic</span>
+                <div className="w-px h-4 bg-white/10" />
+                <span className="text-xs font-bold text-primary">New</span>
               </div>
-              <span className="text-sm font-semibold text-white/70">AI-Powered Affiliate Magic</span>
-              <div className="w-px h-4 bg-white/10" />
-              <span className="text-xs font-bold text-primary">New</span>
-            </div>
+            </ScrollReveal>
 
             {/* Headline */}
-            <h1 className="text-[clamp(2.5rem,8vw,6rem)] font-black tracking-tighter mb-6 leading-[0.95] animate-fade-in-up animation-delay-100 perspective-1000">
-              <span className="text-white hover-tilt inline-block preserve-3d transition-transform duration-300">
-                Build Your Affiliate
-              </span>
-              <br />
-              <span className="relative inline-block mt-2">
-                <span className="bg-gradient-to-r from-primary via-primary-light to-accent bg-clip-text text-transparent animate-gradient-x text-glow block animate-pulse-breathing">
-                  Storefront in Minutes
+            <ScrollReveal delay={100}>
+              <h1 className="text-[clamp(2.5rem,8vw,6.5rem)] font-black tracking-tighter mb-6 leading-[0.9] animate-fade-in-up font-display perspective-1000">
+                <span className="text-white hover-tilt inline-block preserve-3d transition-transform duration-300">
+                  Build Your Affiliate
                 </span>
-                {/* Decorative underline/glow */}
-                <span className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent blur-sm" />
-              </span>
-            </h1>
+                <br />
+                <span className="relative inline-block mt-4">
+                  <span className="bg-gradient-to-r from-emerald-400 via-emerald-500 to-cyan-400 bg-clip-text text-transparent animate-gradient-x text-glow block">
+                    Storefront in Minutes
+                  </span>
+                  {/* Decorative underline/glow */}
+                  <span className="absolute -bottom-2 left-0 right-0 h-1.5 bg-gradient-to-r from-transparent via-emerald-500/50 to-transparent blur-sm" />
+                </span>
+              </h1>
+            </ScrollReveal>
 
             {/* Subheadline */}
-            <p className="max-w-2xl mx-auto text-lg md:text-xl text-white/50 mb-10 animate-fade-in-up animation-delay-200 leading-relaxed font-medium">
-              Paste product links, let AI generate high-converting titles, and launch your stunning affiliate store. Start earning from every click.
-            </p>
+            <ScrollReveal delay={200}>
+              <p className="max-w-2xl mx-auto text-lg md:text-2xl text-white/50 mb-10 animate-fade-in-up leading-relaxed font-medium">
+                Paste product links, let AI generate high-converting titles, and launch your stunning affiliate store. Start earning from every click.
+              </p>
+            </ScrollReveal>
 
             {/* CTAs */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up animation-delay-300">
-              <Link href="/signup">
-                <Button size="lg" className="h-14 px-8 text-base rounded-2xl min-w-[240px] shadow-2xl shadow-primary/30 hover:shadow-primary/50 group hover-shine hover-tilt preserve-3d transition-all">
-                  Start Building Free
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </Button>
-              </Link>
-              <Link href="/store/demo">
-                <Button variant="secondary" size="lg" className="h-14 px-8 text-base rounded-2xl min-w-[200px] border-white/10 hover:border-white/20 backdrop-blur-md group hover-lift hover-tilt preserve-3d transition-all">
-                  Live Demo
-                  <ArrowUpRight className="w-4 h-4 opacity-50 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
-                </Button>
-              </Link>
-            </div>
+            <ScrollReveal delay={300}>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-5 animate-fade-in-up">
+                <Link href="/signup">
+                  <Button size="lg" className="h-16 px-10 text-lg rounded-2xl min-w-[260px] shadow-2xl shadow-emerald-500/30 hover:shadow-emerald-500/50 group hover-shine transition-all font-black">
+                    Start Building Free
+                    <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                </Link>
+                <Link href="/store/demo">
+                  <Button variant="secondary" size="lg" className="h-16 px-10 text-lg rounded-2xl min-w-[220px] border-white/10 hover:border-white/20 backdrop-blur-md group hover-lift transition-all font-black">
+                    Live Demo
+                    <ArrowUpRight className="w-5 h-5 opacity-50 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
+                  </Button>
+                </Link>
+              </div>
+            </ScrollReveal>
 
             {/* Social Proof */}
             <div className="flex items-center justify-center gap-4 mt-10 animate-fade-in-up animation-delay-400">
@@ -265,13 +275,11 @@ export default function LandingPage() {
             </div>
 
             {/* ─── 3D Browser Mockup ─── */}
-            <div 
-              className="mt-16 md:mt-24 relative max-w-5xl mx-auto animate-fade-in-up animation-delay-500 perspective-1000 group"
-              style={{ transform: `rotateX(${mousePos.y * -0.2}deg) rotateY(${mousePos.x * 0.2}deg)` }}
-            >
-              {/* Complex Glow behind mockup */}
-              <div className="absolute -inset-10 bg-gradient-to-t from-primary/20 via-accent/10 to-transparent blur-[100px] -z-10 group-hover:opacity-100 opacity-60 transition-opacity duration-700" />
-              <div className="absolute -inset-4 bg-primary/20 blur-2xl -z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+            <ScrollReveal delay={500} animation="reveal-scale">
+              <TiltCard intensity={5} perspective={2000} className="mt-16 md:mt-24 relative max-w-5xl mx-auto group">
+                {/* Complex Glow behind mockup */}
+                <div className="absolute -inset-10 bg-gradient-to-t from-emerald-500/20 via-cyan-500/10 to-transparent blur-[100px] -z-10 group-hover:opacity-100 opacity-60 transition-opacity duration-700" />
+                <div className="absolute -inset-4 bg-emerald-500/20 blur-2xl -z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
               
               {/* Reflection/fade */}
               <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent z-10 pointer-events-none rounded-3xl" />
@@ -358,9 +366,10 @@ export default function LandingPage() {
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </section>
+            </TiltCard>
+          </ScrollReveal>
+        </div>
+      </section>
 
         {/* ═══════ FEATURES ═══════ */}
         <section id="features" className="py-24 md:py-32 px-4 sm:px-6 relative">
@@ -382,67 +391,72 @@ export default function LandingPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
               {features.map((feature, i) => (
-                <div
-                  key={i}
-                  className="group relative rounded-2xl md:rounded-3xl border border-white/[0.08] bg-white/[0.02] p-8 md:p-10 hover:border-primary/20 transition-all duration-500 hover-lift card-3d overflow-hidden glass-morphism"
-                >
-                  {/* Hover gradient overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                <ScrollReveal key={i} delay={i * 100} animation="reveal-scale">
+                  <TiltCard intensity={10} className="h-full">
+                    <div className="group h-full relative rounded-2xl md:rounded-3xl border border-white/[0.08] bg-white/[0.02] p-8 md:p-10 hover:border-emerald-500/20 transition-all duration-500 card-3d overflow-hidden glass-morphism">
+                      {/* Hover gradient overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
-                  <div className="card-3d-inner relative z-10">
-                    <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${feature.gradient} flex items-center justify-center mb-7 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-xl ${feature.shadow}`}>
-                      <feature.icon className="w-7 h-7 text-white" />
+                      <div className="card-3d-inner relative z-10">
+                        <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${feature.gradient} flex items-center justify-center mb-7 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-xl ${feature.shadow}`}>
+                          <feature.icon className="w-7 h-7 text-white" />
+                        </div>
+                        <h3 className="text-2xl font-black mb-3 text-white group-hover:text-emerald-400 transition-colors duration-300 font-display">{feature.title}</h3>
+                        <p className="text-white/50 leading-relaxed font-medium">{feature.desc}</p>
+                      </div>
                     </div>
-                    <h3 className="text-xl font-bold mb-3 text-white group-hover:text-primary transition-colors duration-300">{feature.title}</h3>
-                    <p className="text-white/50 leading-relaxed font-medium">{feature.desc}</p>
-                  </div>
-                </div>
+                  </TiltCard>
+                </ScrollReveal>
               ))}
             </div>
           </div>
         </section>
 
         {/* ═══════ HOW IT WORKS ═══════ */}
-        <section id="how-it-works" className="py-24 md:py-32 px-4 sm:px-6 relative">
-          <div className="absolute inset-0 -z-10">
-            <div className="absolute top-1/2 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/10 to-transparent" />
-          </div>
-
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-16 md:mb-20">
-              <h2 className="text-3xl md:text-5xl lg:text-6xl font-black mb-5 text-white tracking-tight">
-                Three steps to <span className="text-gradient">launch</span>
-              </h2>
-              <p className="text-white/40 text-lg max-w-xl mx-auto font-medium">
-                From zero to earning in under 5 minutes. No design or coding skills needed.
-              </p>
+        <ScrollReveal animation="reveal" delay={200}>
+          <section id="how-it-works" className="py-24 md:py-32 px-4 sm:px-6 relative">
+            <div className="absolute inset-0 -z-10">
+              <div className="absolute top-1/2 left-0 right-0 h-px bg-gradient-to-r from-transparent via-emerald-500/10 to-transparent" />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
-              {/* Connecting line */}
-              <div className="hidden md:block absolute top-16 left-[16%] right-[16%] h-px bg-gradient-to-r from-primary/20 via-primary/40 to-primary/20" />
+            <div className="max-w-7xl mx-auto">
+              <div className="text-center mb-16 md:mb-20">
+                <h2 className="text-3xl md:text-5xl lg:text-6xl font-black mb-5 text-white tracking-tight font-display">
+                  Three steps to <span className="text-gradient">launch</span>
+                </h2>
+                <p className="text-white/40 text-lg max-w-xl mx-auto font-medium">
+                  From zero to earning in under 5 minutes. No design or coding skills needed.
+                </p>
+              </div>
 
-              {steps.map((step, i) => (
-                <div key={i} className="relative group">
-                  <div className="text-center flex flex-col items-center">
-                    {/* Step number circle */}
-                    <div className="relative mb-8">
-                      <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/20 flex items-center justify-center group-hover:scale-110 group-hover:border-primary/40 transition-all duration-500 hover-glow">
-                        <step.icon className="w-7 h-7 text-primary" />
-                      </div>
-                      <div className="absolute -top-2 -right-2 w-7 h-7 rounded-lg bg-black border border-white/10 flex items-center justify-center text-[10px] font-black text-white/60">
-                        {step.num}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+                {/* Connecting line */}
+                <div className="hidden md:block absolute top-16 left-[16%] right-[16%] h-px bg-gradient-to-r from-emerald-500/20 via-emerald-500/40 to-emerald-500/20" />
+
+                {steps.map((step, i) => (
+                  <ScrollReveal key={i} delay={i * 200} animation="reveal-scale">
+                    <div className="relative group">
+                      <div className="text-center flex flex-col items-center">
+                        {/* Step number circle */}
+                        <div className="relative mb-8">
+                          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-emerald-500/5 border border-emerald-500/20 flex items-center justify-center group-hover:scale-110 group-hover:border-emerald-500/40 transition-all duration-500 hover-glow">
+                            <step.icon className="w-7 h-7 text-emerald-400" />
+                          </div>
+                          <div className="absolute -top-2 -right-2 w-7 h-7 rounded-lg bg-black border border-white/10 flex items-center justify-center text-[10px] font-black text-white/60">
+                            {step.num}
+                          </div>
+                        </div>
+
+                        <h3 className="text-xl font-bold text-white mb-3 font-display">{step.title}</h3>
+                        <p className="text-white/40 font-medium max-w-xs">{step.desc}</p>
                       </div>
                     </div>
-
-                    <h3 className="text-xl font-bold text-white mb-3">{step.title}</h3>
-                    <p className="text-white/40 font-medium max-w-xs">{step.desc}</p>
-                  </div>
-                </div>
-              ))}
+                  </ScrollReveal>
+                ))}
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        </ScrollReveal>
 
         {/* ═══════ SHOWCASE ═══════ */}
         <section className="py-24 md:py-32 px-4 sm:px-6 relative overflow-hidden">
@@ -452,35 +466,37 @@ export default function LandingPage() {
           </div>
 
           <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-16 lg:gap-20">
-            <div className="flex-1 max-w-xl">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 mb-6">
-                <Globe size={14} className="text-cyan-400" />
-                <span className="text-xs font-bold text-cyan-400 uppercase tracking-wider">Global Reach</span>
-              </div>
-              <h2 className="text-3xl md:text-5xl font-black mb-6 text-white leading-tight tracking-tight">
-                Your Store, Your Brand,<br />
-                <span className="text-gradient">Everywhere.</span>
-              </h2>
-              <p className="text-lg text-white/50 mb-10 leading-relaxed font-medium">
-                Storix provides a custom subdomain and a blazing fast storefront that looks premium on every device. No design skills required.
-              </p>
+            <ScrollReveal animation="reveal-left" className="flex-1 max-w-xl">
+              <div>
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 mb-6">
+                  <Globe size={14} className="text-cyan-400" />
+                  <span className="text-xs font-bold text-cyan-400 uppercase tracking-wider font-display">Global Reach</span>
+                </div>
+                <h2 className="text-3xl md:text-5xl font-black mb-6 text-white leading-tight tracking-tight font-display">
+                  Your Store, Your Brand,<br />
+                  <span className="text-gradient">Everywhere.</span>
+                </h2>
+                <p className="text-lg text-white/50 mb-10 leading-relaxed font-medium">
+                  Storix provides a custom subdomain and a blazing fast storefront that looks premium on every device. No design skills required.
+                </p>
 
-              <div className="space-y-5">
-                {[
-                  { icon: Shield, text: "Mobile-first responsive design", color: "text-green-400 bg-green-400/10" },
-                  { icon: TrendingUp, text: "Built-in click tracking & analytics", color: "text-blue-400 bg-blue-400/10" },
-                  { icon: Sparkles, text: "AI-optimized meta tags & SEO", color: "text-purple-400 bg-purple-400/10" },
-                  { icon: Zap, text: "Sub-second page loads globally", color: "text-amber-400 bg-amber-400/10" },
-                ].map((item, i) => (
-                  <div key={i} className="flex items-center gap-4 group">
-                    <div className={`w-10 h-10 rounded-xl ${item.color} flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
-                      <item.icon className="w-5 h-5" />
+                <div className="space-y-5">
+                  {[
+                    { icon: Shield, text: "Mobile-first responsive design", color: "text-emerald-400 bg-emerald-400/10" },
+                    { icon: TrendingUp, text: "Built-in click tracking & analytics", color: "text-blue-400 bg-blue-400/10" },
+                    { icon: Sparkles, text: "AI-optimized meta tags & SEO", color: "text-purple-400 bg-purple-400/10" },
+                    { icon: Zap, text: "Sub-second page loads globally", color: "text-emerald-500 bg-emerald-500/10" },
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-center gap-4 group">
+                      <div className={`w-10 h-10 rounded-xl ${item.color} flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
+                        <item.icon className="w-5 h-5" />
+                      </div>
+                      <span className="text-white/60 font-semibold group-hover:text-white transition-colors">{item.text}</span>
                     </div>
-                    <span className="text-white/60 font-semibold group-hover:text-white transition-colors">{item.text}</span>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
+            </ScrollReveal>
 
             {/* 3D-style showcase grid */}
             <div className="flex-1 relative w-full max-w-lg">
