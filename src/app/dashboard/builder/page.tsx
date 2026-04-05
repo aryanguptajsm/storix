@@ -56,7 +56,7 @@ const BLOCK_TEMPLATES: { type: BlockType; label: string; icon: React.ReactNode; 
     label: "Promo Banner",
     icon: <ImageIcon size={18} />,
     desc: "Eye-catching promotional banner with custom text.",
-    defaultContent: { text: "🔥 Limited Time Deals — Shop Now!", bg_color: "#6C5CE7" },
+    defaultContent: { text: "🔥 Limited Time Deals — Shop Now!", bg_color: "#10B981" },
   },
   {
     type: "text",

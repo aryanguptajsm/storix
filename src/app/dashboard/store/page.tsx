@@ -226,10 +226,10 @@ export default function StoreManagementPage() {
           <CardContent className="p-8">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {[
-                { id: "default", name: "Default (Shopify-like)", color: "bg-[#FF4D67]", desc: "Clean and high-energy." },
-                { id: "midnight", name: "Midnight (Premium)", color: "bg-[#6C5CE7]", desc: "Sleek and professional." },
-                { id: "minimalist", name: "Minimalist", color: "bg-[#111111]", desc: "Pure white label feel." },
-                { id: "neon", name: "Cyber Neon", color: "bg-[#00FFD1]", desc: "Futuristic and bold." },
+                { id: "default", name: "Emerald (Standard)", color: "bg-[#10B981]", desc: "Clean and high-energy." },
+                { id: "midnight", name: "Midnight (Pure Black)", color: "bg-[#0A0A0A]", desc: "Sleek and professional." },
+                { id: "minimalist", name: "Minimalist", color: "bg-[#f9f9f9]", desc: "Pure white label feel." },
+                { id: "neon", name: "Cyber Mint", color: "bg-[#34D399]", desc: "Futuristic and bold." },
                 { id: "amazon", name: "Amazon Style", color: "bg-[#FF9900]", desc: "Trusted e-commerce feel." },
                 { id: "flipkart", name: "Flipkart Style", color: "bg-[#2874F0]", desc: "Vibrant marketplace look." }
               ].map((themeItem) => (
