@@ -98,13 +98,13 @@ export default function PricingPage() {
     <div className="min-h-screen bg-[#0A0A0F] text-slate-200 selection:bg-[var(--store-primary)]/30 selection:text-white font-sans overflow-hidden">
       {/* Dynamic Background */}
       <div className="fixed inset-0 z-0 pointer-events-none">
-        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-[var(--store-primary)]/20 rounded-full blur-[150px] mix-blend-screen" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-amber-500/10 rounded-full blur-[150px] mix-blend-screen" />
-        <div className="absolute top-[20%] right-[20%] w-[20%] h-[20%] bg-blue-500/10 rounded-full blur-[120px] mix-blend-screen animate-pulse-slow" />
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/20 rounded-full blur-[150px] mix-blend-screen" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-primary/10 rounded-full blur-[150px] mix-blend-screen" />
+        <div className="absolute top-[20%] right-[20%] w-[20%] h-[20%] bg-primary/10 rounded-full blur-[120px] mix-blend-screen animate-pulse-slow" />
       </div>
 
       {/* Nav */}
-      <nav className="fixed top-0 w-full z-50 bg-[#0A0A0F]/60 backdrop-blur-xl border-b border-white/5">
+      <nav className="fixed top-0 w-full z-50 bg-black/60 backdrop-blur-xl border-b border-white/5">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3 group cursor-pointer">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[var(--store-primary)] to-purple-600 flex items-center justify-center shadow-lg shadow-[var(--store-primary)]/20 group-hover:shadow-[var(--store-primary)]/40 transition-all duration-300">
@@ -134,7 +134,7 @@ export default function PricingPage() {
           </div>
           
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight mb-6 text-white leading-[1.1] animate-fade-in-up animation-delay-100">
-            Build your <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--store-primary)] via-purple-400 to-[var(--store-primary)] animate-gradient-x">Empire</span>
+            Build your <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-primary-light to-primary animate-gradient-x">Empire</span>
           </h1>
           
           <p className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto mb-12 leading-relaxed font-medium animate-fade-in-up animation-delay-200">
@@ -190,15 +190,15 @@ export default function PricingPage() {
                 key={id}
                 className={`group relative flex flex-col rounded-[2.5rem] transition-all duration-500 hover:-translate-y-2 ${
                   popular 
-                    ? "bg-[#13131A] border-2 border-[var(--store-primary)]/50 shadow-[0_0_50px_rgba(var(--store-primary-rgb),0.2)] md:-mt-8 md:mb-8" 
-                    : "bg-[#13131A]/50 border border-white/5 hover:border-white/20 backdrop-blur-xl hover:shadow-2xl hover:shadow-white/5"
+                    ? "bg-[#0A0A0A] border-2 border-primary/50 shadow-[0_0_50px_rgba(16,185,129,0.2)] md:-mt-8 md:mb-8" 
+                    : "bg-[#0A0A0A]/50 border border-white/5 hover:border-white/20 backdrop-blur-xl hover:shadow-2xl hover:shadow-white/5"
                 }`}
               >
                 {/* Glow Background inside card */}
                 <div className={`absolute inset-0 rounded-[2.5rem] bg-gradient-to-b ${bgHighlight} opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none`} />
 
                 {popular && (
-                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[var(--store-primary)] to-purple-600 text-white text-[10px] font-black uppercase tracking-[0.2em] px-4 py-1.5 rounded-full shadow-lg shadow-[var(--store-primary)]/30 z-20">
+                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-primary to-primary-light text-white text-[10px] font-black uppercase tracking-[0.2em] px-4 py-1.5 rounded-full shadow-lg shadow-primary/30 z-20">
                     Most Popular Choice
                   </div>
                 )}
@@ -274,7 +274,7 @@ export default function PricingPage() {
       </section>
 
       {/* Trust Badges */}
-      <section className="pb-32 px-6 relative z-10 border-t border-white/5 pt-20 bg-[#0A0A0F]">
+      <section className="pb-32 px-6 relative z-10 border-t border-white/5 pt-20 bg-black">
         <div className="max-w-5xl mx-auto text-center">
           <h3 className="text-xl font-black text-white mb-10">Trusted by top affiliates & secured by the best</h3>
           <div className="flex flex-wrap items-center justify-center gap-6 md:gap-12">
@@ -293,7 +293,7 @@ export default function PricingPage() {
       </section>
 
       {/* Minimal Footer */}
-      <footer className="py-8 px-6 border-t border-white/5 relative z-10 bg-[#0A0A0F]">
+      <footer className="py-8 px-6 border-t border-white/5 relative z-10 bg-black">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-xs font-bold text-slate-500">
           <p>© 2026 Storix. Empowering Affiliates worldwide.</p>
           <div className="flex items-center gap-6">

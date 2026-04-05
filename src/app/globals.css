@@ -322,12 +322,12 @@ body {
    ═══════════════════════════════════════════════ */
 
 :root {
-  --store-primary: #FF4D67;
-  --store-primary-rgb: 255, 77, 103;
-  --store-background: #0A0A12;
+  --store-primary: #10B981;
+  --store-primary-rgb: 16, 185, 129;
+  --store-background: #000000;
   --store-foreground: #F1F1F6;
-  --store-card: #12121E;
-  --store-border: rgba(255, 255, 255, 0.06);
+  --store-card: #0A0A0A;
+  --store-border: rgba(255, 255, 255, 0.08);
 }
 
 [data-theme='midnight'] {
