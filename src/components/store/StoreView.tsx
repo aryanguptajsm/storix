@@ -7,6 +7,8 @@ import {
   Sparkles,
   Package,
   ChevronRight,
+  ArrowUp,
+  Search,
 } from "lucide-react";
 import Link from "next/link";
 import { ThemeProvider } from "@/components/ThemeProvider";
@@ -41,6 +43,20 @@ interface StoreViewProps {
 }
 
 export function StoreView({ profile, products }: StoreViewProps) {
+  const [showBackToTop, setShowBackToTop] = React.useState(false);
+
+  React.useEffect(() => {
+    const handleScroll = () => {
+      setShowBackToTop(window.scrollY > 500);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   const handleBuyNow = (product: Product) => {
     // Open the product URL IMMEDIATELY — no waiting for the API
     window.open(product.original_url, "_blank");
@@ -148,27 +164,49 @@ export function StoreView({ profile, products }: StoreViewProps) {
           </div>
 
           {products.length === 0 ? (
-            <div className="text-center py-16 md:py-24 bg-[var(--store-card)] rounded-2xl md:rounded-3xl border-2 border-dashed border-[var(--store-border)] animate-fade-in group">
-              <div className="w-16 h-16 md:w-20 md:h-20 bg-[var(--store-primary)]/5 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-500">
-                <Package className="w-8 h-8 md:w-10 md:h-10 text-[var(--store-foreground)]/20" />
+            <div className="text-center py-24 md:py-36 bg-[var(--store-card)]/30 rounded-[3rem] border-2 border-dashed border-[var(--store-border)] animate-fade-in group relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-b from-[var(--store-primary)]/[0.02] to-transparent pointer-events-none" />
+              <div className="w-20 h-20 md:w-24 md:h-24 bg-[var(--store-primary)]/10 rounded-3xl flex items-center justify-center mx-auto mb-8 group-hover:scale-110 transition-transform duration-700 shadow-2xl shadow-[var(--store-primary)]/5">
+                <Package className="w-10 h-10 md:w-12 md:h-12 text-[var(--store-primary)]/40" />
               </div>
-              <h3 className="text-xl md:text-2xl font-black mb-3">Inventory Refueling...</h3>
-              <p className="text-[var(--store-foreground)]/30 text-sm md:text-base max-w-sm mx-auto font-medium px-4">Our latest discovery is currently being cataloged. Check back soon!</p>
+              <h3 className="text-2xl md:text-3xl font-black mb-4 tracking-tight">Fleet Resupply in Progress</h3>
+              <p className="text-[var(--store-foreground)]/40 text-sm md:text-lg max-w-md mx-auto font-medium px-8 leading-relaxed">
+                Our scouts are currently vetting new gear for this collection. Stand by for the next drop!
+              </p>
+              <div className="mt-10 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/5 text-[10px] font-bold uppercase tracking-widest text-muted animate-pulse">
+                <Search size={12} />
+                Scanning for premium deals...
+              </div>
             </div>
           ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 lg:gap-8">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 lg:gap-10">
               {products.map((product, index) => (
-                <ProductCard
-                  key={product.id}
-                  product={product}
-                  onBuyNow={handleBuyNow}
-                  priority={index < 4}
-                />
+                <div 
+                  key={product.id} 
+                  className="animate-slide-up"
+                  style={{ animationDelay: `${index * 100}ms`, animationFillMode: 'both' }}
+                >
+                  <ProductCard
+                    product={product}
+                    onBuyNow={handleBuyNow}
+                    priority={index < 4}
+                  />
+                </div>
               ))}
             </div>
           )}
         </div>
       </section>
+
+      {/* Back to Top Button */}
+      <button
+        onClick={scrollToTop}
+        className={`fixed bottom-8 right-8 z-[70] w-14 h-14 rounded-2xl bg-[var(--store-primary)] text-white shadow-2xl shadow-[var(--store-primary)]/40 flex items-center justify-center transition-all duration-500 hover:scale-110 hover:-translate-y-1 active:scale-95 group ${
+          showBackToTop ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10 pointer-events-none"
+        }`}
+      >
+        <ArrowUp className="w-6 h-6 group-hover:animate-bounce-slow" />
+      </button>
 
       {/* ─── Footer ─── */}
       <footer className="bg-[var(--store-card)] border-t border-[var(--store-border)] py-12 md:py-20 relative overflow-hidden">

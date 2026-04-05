@@ -67,10 +67,10 @@ export default function StoreManagementPage() {
     setSaving(true);
     try {
       await updateProfile(profile.id, {
-        store_name: formData.store_name,
-        username: formData.username.toLowerCase().replace(/\s+/g, "-"),
-        store_description: formData.store_description,
-        store_logo: formData.store_logo,
+        store_name: formData.store_name.trim(),
+        username: formData.username.trim().toLowerCase().replace(/[^a-z0-9-]/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, ""),
+        store_description: formData.store_description.trim(),
+        store_logo: formData.store_logo.trim(),
         theme: formData.theme,
       });
       toast.success("Store configuration updated!");
