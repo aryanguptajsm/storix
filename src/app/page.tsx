@@ -46,7 +46,7 @@ export default function LandingPage() {
 
   if (checking) {
     return (
-      <div className="min-h-screen bg-[#09090F] flex items-center justify-center">
+      <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="relative">
           <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full animate-pulse-glow" />
           <div className="relative animate-spin h-10 w-10 border-4 border-primary border-t-transparent rounded-full shadow-lg shadow-primary/20" />
@@ -86,7 +86,7 @@ export default function LandingPage() {
   ];
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#09090F] selection:bg-[#6C5CE7]/30 selection:text-white overflow-x-hidden noise-overlay">
+    <div className="flex flex-col min-h-screen bg-black selection:bg-primary/30 selection:text-white overflow-x-hidden noise-overlay">
 
 
       {/* ─── Navigation ─── */}
@@ -245,12 +245,12 @@ export default function LandingPage() {
                 {[0, 1, 2, 3, 4].map((i) => (
                   <div
                     key={i}
-                    className="w-9 h-9 rounded-full border-2 border-[#09090F] overflow-hidden"
+                    className="w-9 h-9 rounded-full border-2 border-black overflow-hidden"
                     style={{
                       background: `linear-gradient(135deg, ${
-                        ["#6C5CE7", "#FD79A8", "#00CEC9", "#FDCB6E", "#A29BFE"][i]
+                        ["#10B981", "#34D399", "#00CEC9", "#059669", "#A7F3D0"][i]
                       }, ${
-                        ["#A29BFE", "#FDCB6E", "#55EFC4", "#FD79A8", "#6C5CE7"][i]
+                        ["#34D399", "#059669", "#55EFC4", "#10B981", "#10B981"][i]
                       })`,
                     }}
                   />
@@ -274,7 +274,7 @@ export default function LandingPage() {
               <div className="absolute -inset-4 bg-primary/20 blur-2xl -z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
               
               {/* Reflection/fade */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#09090F] via-transparent to-transparent z-10 pointer-events-none rounded-3xl" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent z-10 pointer-events-none rounded-3xl" />
 
               <div className="relative rounded-2xl md:rounded-3xl border border-white/[0.08] bg-[#13131E]/80 p-2 md:p-3 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5),0_0_0_1px_rgba(255,255,255,0.05),0_10px_30px_rgba(108,92,231,0.1)] overflow-hidden glass-shine">
                 {/* Browser chrome */}
@@ -296,7 +296,7 @@ export default function LandingPage() {
                 </div>
 
                 {/* Content area */}
-                <div className="aspect-[16/9] rounded-xl bg-[#09090F] overflow-hidden relative">
+                <div className="aspect-[16/9] rounded-xl bg-black overflow-hidden relative">
                   {/* Fake dashboard content with living elements */}
                   <div className="absolute inset-0 p-6 md:p-10 flex flex-col gap-6">
                     {/* Top bar */}
@@ -430,7 +430,7 @@ export default function LandingPage() {
                       <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/20 flex items-center justify-center group-hover:scale-110 group-hover:border-primary/40 transition-all duration-500 hover-glow">
                         <step.icon className="w-7 h-7 text-primary" />
                       </div>
-                      <div className="absolute -top-2 -right-2 w-7 h-7 rounded-lg bg-[#09090F] border border-white/10 flex items-center justify-center text-[10px] font-black text-white/60">
+                      <div className="absolute -top-2 -right-2 w-7 h-7 rounded-lg bg-black border border-white/10 flex items-center justify-center text-[10px] font-black text-white/60">
                         {step.num}
                       </div>
                     </div>
@@ -487,7 +487,7 @@ export default function LandingPage() {
               <div className="absolute inset-0 bg-primary/10 blur-[100px] -z-10 animate-morph" />
               <div className="grid grid-cols-2 gap-4" style={{ perspective: "800px" }}>
                 <div className="space-y-4 mt-12">
-                  <div className="rounded-2xl bg-[#13131E] border border-white/[0.06] p-5 shadow-2xl hover:border-primary/20 transition-all duration-500 hover:-translate-y-2" style={{ transform: "rotateY(4deg)" }}>
+                  <div className="rounded-2xl bg-[#0A0A0A] border border-white/[0.06] p-5 shadow-2xl hover:border-primary/20 transition-all duration-500 hover:-translate-y-2" style={{ transform: "rotateY(4deg)" }}>
                     <div className="flex items-center gap-2 mb-4">
                       <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
                         <TrendingUp size={16} className="text-primary" />
@@ -506,14 +506,14 @@ export default function LandingPage() {
                       </div>
                     </div>
                   </div>
-                  <div className="rounded-2xl bg-[#13131E] border border-white/[0.06] p-5 hover:border-cyan-500/20 transition-all duration-500 hover:-translate-y-2" style={{ transform: "rotateY(4deg)" }}>
+                  <div className="rounded-2xl bg-[#0A0A0A] border border-white/[0.06] p-5 hover:border-cyan-500/20 transition-all duration-500 hover:-translate-y-2" style={{ transform: "rotateY(4deg)" }}>
                     <div className="aspect-square rounded-xl bg-gradient-to-br from-cyan-500/10 to-blue-500/5 border border-cyan-500/10 flex items-center justify-center">
                       <Globe size={32} className="text-cyan-500/40" />
                     </div>
                   </div>
                 </div>
                 <div className="space-y-4">
-                  <div className="rounded-2xl bg-[#13131E] border border-white/[0.06] p-5 hover:border-pink-500/20 transition-all duration-500 hover:-translate-y-2" style={{ transform: "rotateY(-4deg)" }}>
+                  <div className="rounded-2xl bg-[#0A0A0A] border border-white/[0.06] p-5 hover:border-pink-500/20 transition-all duration-500 hover:-translate-y-2" style={{ transform: "rotateY(-4deg)" }}>
                     <div className="aspect-[4/5] rounded-xl bg-gradient-to-br from-pink-500/10 to-purple-500/5 border border-pink-500/10 flex flex-col items-center justify-center gap-3 p-4">
                       <div className="w-12 h-12 rounded-xl bg-white/[0.04] flex items-center justify-center">
                         <ShoppingBag size={20} className="text-pink-400/60" />
@@ -523,7 +523,7 @@ export default function LandingPage() {
                       <div className="h-6 w-full bg-pink-500/10 rounded-lg mt-2" />
                     </div>
                   </div>
-                  <div className="rounded-2xl bg-[#13131E] border border-white/[0.06] p-5 hover:border-amber-500/20 transition-all duration-500 hover:-translate-y-2" style={{ transform: "rotateY(-4deg)" }}>
+                  <div className="rounded-2xl bg-[#0A0A0A] border border-white/[0.06] p-5 hover:border-amber-500/20 transition-all duration-500 hover:-translate-y-2" style={{ transform: "rotateY(-4deg)" }}>
                     <div className="flex items-center justify-between mb-3">
                       <span className="text-[10px] font-bold text-white/30 uppercase">Revenue</span>
                       <span className="text-xs font-black text-green-400">+24%</span>
@@ -543,7 +543,7 @@ export default function LandingPage() {
             {/* Glow */}
             <div className="absolute -inset-4 bg-gradient-to-r from-primary/10 via-pink-500/10 to-primary/10 rounded-[3.5rem] blur-2xl -z-10" />
 
-            <div className="rounded-[2.5rem] md:rounded-[3rem] p-10 md:p-20 relative overflow-hidden bg-[#13131E] border border-white/[0.06] shadow-2xl text-center">
+            <div className="rounded-[2.5rem] md:rounded-[3rem] p-10 md:p-20 relative overflow-hidden bg-[#0A0A0A] border border-white/[0.06] shadow-2xl text-center">
               {/* Background decoration */}
               <div className="absolute top-0 right-0 w-80 h-80 bg-primary/8 rounded-full -translate-y-1/2 translate-x-1/3 blur-[100px]" />
               <div className="absolute bottom-0 left-0 w-80 h-80 bg-pink-500/8 rounded-full translate-y-1/2 -translate-x-1/3 blur-[100px]" />
@@ -570,7 +570,7 @@ export default function LandingPage() {
       </main>
 
       {/* ═══════ FOOTER ═══════ */}
-      <footer className="py-12 md:py-16 px-4 sm:px-6 border-t border-white/[0.04] bg-[#09090F]">
+      <footer className="py-12 md:py-16 px-4 sm:px-6 border-t border-white/[0.04] bg-black">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-10">
           <div>
             <div className="flex items-center gap-2.5 mb-3">

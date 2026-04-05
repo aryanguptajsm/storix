@@ -57,8 +57,8 @@ export default async function DashboardPage() {
       .from("profiles")
       .insert({
         id: user.id,
-        username: user.email?.split("@")[0].toLowerCase() + Math.floor(1000 + Math.random() * 9000).toString(),
-        store_name: (user.email?.split("@")[0] || "My") + "'s Store",
+        username: (user.email?.split("@")[0].toLowerCase() || "user") + "_" + user.id.slice(0, 5),
+        store_name: (user.email?.split("@")[0] || "My") + "&apos;s Store",
       })
       .select()
       .single();
@@ -143,15 +143,15 @@ export default async function DashboardPage() {
 
       <div className="space-y-1 animate-stagger-fade stagger-1">
         <div className="flex items-center gap-2 flex-wrap">
-          <h1 className="text-2xl md:text-3xl font-black text-foreground tracking-tight leading-tight">
-            Welcome back, {profile?.store_name || "Store Owner"}!
-          </h1>
+            <h1 className="text-2xl md:text-3xl font-black text-foreground tracking-tight leading-tight">
+              Welcome back, {profile?.store_name || "Store Owner"}!
+            </h1>
           <div className="p-1 rounded-md bg-primary/10 text-primary animate-bounce-subtle hidden sm:block">
             <Sparkles size={16} />
           </div>
         </div>
         <p className="text-sm md:text-base text-muted font-medium">
-          Your affiliate empire is growing. Here's the latest intel.
+          Your affiliate empire is growing. Here&apos;s the latest intel.
         </p>
       </div>
       

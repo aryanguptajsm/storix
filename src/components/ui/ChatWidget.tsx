@@ -117,7 +117,7 @@ export function ChatWidget() {
 
     // Add user message
     const userMsg: ChatMessage = {
-      id: Date.now().toString(),
+      id: `user_${Date.now()}`,
       role: 'user',
       content: messageText.trim(),
       timestamp: new Date(),
@@ -133,7 +133,7 @@ export function ChatWidget() {
       
       if (isGreeting(messageText)) {
         response = {
-          id: (Date.now() + 1).toString(),
+          id: `bot_${crypto.randomUUID()}`,
           role: 'assistant',
           content: getGreetingResponse(),
           timestamp: new Date(),
@@ -143,12 +143,13 @@ export function ChatWidget() {
           ]
         };
       } else {
-        response = findBestResponse(messageText, surface);
+        const bestRes = findBestResponse(messageText, surface);
+        response = { ...bestRes, id: `bot_${Date.now()}` };
       }
       
       setMessages(prev => [...prev, response!]);
       setIsTyping(false);
-    }, 600 + Math.random() * 800);
+    }, 800);
   };
 
   const handleActionClick = (action: QuickAction) => {
