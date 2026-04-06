@@ -24,8 +24,6 @@ export const metadata: Metadata = {
   keywords: ["affiliate", "store builder", "AI", "passive income", "storix"],
 };
 
-import { CursorFollower } from "@/components/ui/CursorFollower";
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -34,7 +32,6 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${jakarta.variable} ${outfit.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col noise-overlay">
-        <CursorFollower />
         <ThemeProvider>
           {children}
           <Toaster
