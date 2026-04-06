@@ -12,6 +12,11 @@ export interface ProductScrapeResult {
   product_title: string;
   product_url: string;
   image_url: string | null;
+  description?: string;
+  price?: string;
+  original_price?: string;
+  discount?: string;
+  rating?: string;
   image_status: "ok" | "not_found" | "error";
   http_code: number;
   error_reason?: string;
@@ -191,8 +196,46 @@ export class ProductScraper {
 
   private extractDataFromCheerio($: cheerio.CheerioAPI, url: string): Partial<ProductScrapeResult> {
     const title = this.extractTitle($);
-    const image_url = this.extractImage($);
-    return { product_title: title, image_url };
+    const image_url = this.extractImage($, url);
+    const description = this.extractDescription($);
+    const priceData = this.extractPrice($, url);
+    
+    return { 
+      product_title: title, 
+      image_url,
+      description,
+      ...priceData
+    };
+  }
+
+  private extractDescription($: cheerio.CheerioAPI): string {
+    return (
+      $('meta[property="og:description"]').attr("content") ||
+      $('meta[name="description"]').attr("content") ||
+      ""
+    );
+  }
+
+  private extractPrice($: cheerio.CheerioAPI, url: string): Partial<ProductScrapeResult> {
+    let price = "";
+    let original_price = "";
+    let discount = "";
+    let rating = "";
+
+    if (/amazon/i.test(url)) {
+      const priceWhole = $(".a-price-whole").first().text().trim();
+      const priceFraction = $(".a-price-fraction").first().text().trim();
+      if (priceWhole) price = `${priceWhole}${priceFraction ? "." + priceFraction : ""}`;
+      original_price = $(".a-price.a-text-price span.a-offscreen").first().text().trim();
+      discount = $(".savingsPercentage").first().text().trim().replace(/[^0-9]/g, "");
+      const ratingText = $("span.a-icon-alt").first().text().trim();
+      if (ratingText) {
+        const match = ratingText.match(/([\d.]+)/);
+        if (match) rating = match[1];
+      }
+    }
+    
+    return { price, original_price, discount, rating };
   }
 
   private extractTitle($: cheerio.CheerioAPI): string {
@@ -205,7 +248,7 @@ export class ProductScraper {
     );
   }
 
-  private extractImage($: cheerio.CheerioAPI): string | null {
+  private extractImage($: cheerio.CheerioAPI, url: string): string | null {
     // 1. JSON-LD
     const jsonLd = $('script[type="application/ld+json"]');
     if (jsonLd.length) {
