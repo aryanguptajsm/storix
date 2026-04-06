@@ -17,16 +17,7 @@ import { StoreHeader } from "@/components/store/StoreHeader";
 import { TrustSection } from "@/components/store/TrustSection";
 import { Button } from "@/components/ui/Button";
 
-interface Product {
-  id: string;
-  title: string;
-  image_url: string;
-  platform: string;
-  price: string;
-  original_price?: string;
-  discount_percentage?: string;
-  original_url: string;
-}
+import { Product } from "@/lib/types";
 
 interface Profile {
   store_name: string;
