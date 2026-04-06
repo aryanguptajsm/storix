@@ -75,8 +75,8 @@ export function StoreView({ profile, products }: StoreViewProps) {
         {/* Advanced Background Architecture */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute inset-0 mesh-layered" />
-          <div className="absolute inset-0 dot-grid opacity-20" />
-          <div className="absolute inset-0 grid-bg-subtle opacity-10" />
+          <div className="absolute inset-0 dot-grid opacity-40" />
+          <div className="absolute inset-0 grid-bg-subtle opacity-20" />
           <div className="scan-line" />
           
           {/* Ambient Glows */}
@@ -129,10 +129,10 @@ export function StoreView({ profile, products }: StoreViewProps) {
         </div>
 
         {/* Ambient Decorative Icons */}
-        <div className="absolute top-1/3 left-[5%] opacity-10 animate-float-slow hidden lg:block">
+        <div className="absolute top-1/3 left-[5%] opacity-20 animate-float-slow hidden lg:block">
           <ShoppingBag size={120} className="text-white" />
         </div>
-        <div className="absolute bottom-1/4 right-[5%] opacity-10 animate-float-delayed hidden lg:block">
+        <div className="absolute bottom-1/4 right-[5%] opacity-20 animate-float-delayed hidden lg:block">
           <Sparkles size={160} className="text-white" />
         </div>
       </section>
