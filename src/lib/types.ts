@@ -23,6 +23,8 @@ export interface Product {
   image_url?: string;
   platform: string;
   original_url: string;
+  affiliate_url?: string;
+  category?: string;
   created_at: string;
 }
 

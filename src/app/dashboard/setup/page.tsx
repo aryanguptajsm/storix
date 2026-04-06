@@ -42,6 +42,8 @@ CREATE TABLE IF NOT EXISTS public.products (
   image_url TEXT,
   platform TEXT,
   original_url TEXT NOT NULL,
+  affiliate_url TEXT,
+  category TEXT,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
