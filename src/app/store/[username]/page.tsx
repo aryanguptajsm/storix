@@ -8,7 +8,9 @@ import { Metadata } from "next";
 import { StoreSearch } from "@/components/store/StoreSearch";
 
 // Cache rendered pages for 60s (ISR) — drastically speeds up repeat visits
-export const revalidate = 60;
+// Dynamic rendering ensures newly created stores are immediately available
+export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store";
 
 interface Props {
   params: { username: string };
@@ -96,7 +98,7 @@ export default async function PublicStorePage({ params }: Props) {
   const productsRes = profile
     ? await supabase
         .from("products")
-        .select("id, title, image_url, platform, price, original_price, discount_percentage, original_url")
+        .select("id, user_id, title, image_url, platform, price, original_price, discount_percentage, original_url, created_at")
         .eq("user_id", profile.id)
         .order("created_at", { ascending: false })
     : { data: [] };
@@ -134,7 +136,11 @@ export default async function PublicStorePage({ params }: Props) {
           
           <p className="text-white/40 text-lg mb-10 leading-relaxed font-medium animate-fade-in-up animation-delay-100 px-4">
             We couldn&apos;t find a storefront at <span className="text-primary font-bold">/{username}</span>.
-            {isPotentialOwner && " But it looks like this could be your new home."}
+            {isPotentialOwner ? (
+               <span className="block mt-2 text-white/60">But it looks like this could be your new home.</span>
+            ) : (
+               <span className="block mt-2">Check the URL or explore some of our top fleets below.</span>
+            )}
           </p>
 
           {!isPotentialOwner && (
