@@ -15,6 +15,7 @@ import {
   X,
   CreditCard,
   LayoutGrid,
+  Layers,
 } from "lucide-react";
 import { signOut } from "@/lib/auth";
 import { toast } from "sonner";
@@ -24,6 +25,7 @@ const navItems = [
   { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { label: "Manage Store", href: "/dashboard/store", icon: LayoutGrid },
   { label: "Products", href: "/dashboard/products", icon: Package },
+  { label: "Bulk Import", href: "/dashboard/bulk", icon: Layers, tier: "business" },
   { label: "Earnings", href: "/dashboard/earnings", icon: DollarSign },
   { label: "Billing & Plans", href: "/dashboard/billing", icon: CreditCard },
   { label: "Account Settings", href: "/dashboard/settings", icon: Settings },

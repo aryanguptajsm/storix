@@ -240,6 +240,8 @@ export default function AddProductPage() {
     }
   }
 
+  const isPro = profile?.plan && profile?.plan !== "free";
+
   return (
     <div className="max-w-5xl mx-auto space-y-8 animate-fade-in pb-24">
       <AnimatedSection delay={0.1}>
@@ -428,16 +430,17 @@ export default function AddProductPage() {
                     <div className="flex items-center justify-between">
                       <label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted/60">Display Signal (Title)</label>
                       <button
-                        onClick={handleGenerateTitle}
+                        onClick={handleNeuralForge}
                         disabled={generating}
-                        className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-secondary hover:text-secondary-light transition-all group/ai py-1 px-3 rounded-lg bg-secondary/10 hover:bg-secondary/20 border border-secondary/20"
+                        className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.15em] text-secondary hover:text-secondary-light transition-all group/ai py-1.5 px-3.5 rounded-xl bg-secondary/10 hover:bg-secondary/20 border border-secondary/20 shadow-lg shadow-secondary/5"
                       >
                         {generating ? (
                           <Loader2 size={12} className="animate-spin" />
                         ) : (
                           <Sparkles size={12} className="group-hover/ai:rotate-12 transition-transform" />
                         )}
-                        AI Signal Sync
+                        {profile?.plan && profile?.plan !== "free" ? "Neural Forge Master" : "Neural Forge (Free)"}
+                        {!isPro && <div className="ml-1 w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" />}
                       </button>
                     </div>
                     <Input
