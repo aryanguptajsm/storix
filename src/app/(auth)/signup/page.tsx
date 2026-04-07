@@ -32,6 +32,8 @@ export default function SignupPage() {
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [usernameStatus, setUsernameStatus] = useState<"idle" | "checking" | "available" | "taken">("idle");
+  
   const router = useRouter();
   const searchParams = useSearchParams();
   const urlError = searchParams.get("error");
@@ -43,8 +45,34 @@ export default function SignupPage() {
     }
   }, [urlError]);
 
+  // Real-time Username Check
+  useEffect(() => {
+    if (formData.username.length < 3) {
+      setUsernameStatus("idle");
+      return;
+    }
+
+    const checkUsername = async () => {
+      setUsernameStatus("checking");
+      const { data } = await supabase
+        .from("profiles")
+        .select("username")
+        .ilike("username", formData.username)
+        .maybeSingle();
+      
+      setUsernameStatus(data ? "taken" : "available");
+    };
+
+    const debounce = setTimeout(checkUsername, 500);
+    return () => clearTimeout(debounce);
+  }, [formData.username]);
+
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (usernameStatus === "taken") {
+      toast.error("Username is already claimed by another node.");
+      return;
+    }
     setLoading(true);
     setError(null);
 
@@ -54,13 +82,13 @@ export default function SignupPage() {
         // Update profile with username and store name
         await updateProfile(user.id, {
           username: formData.username.toLowerCase().replace(/\s+/g, ""),
-          store_name: formData.storeName,
+          store_name: formData.storeName || `${formData.username}'s Store`,
         });
-        toast.success("Account created successfully!");
+        toast.success("Station fully initialized!");
         router.push("/dashboard");
       }
     } catch (err: any) {
-      const msg = err.message || "Signup failed. Please try again.";
+      const msg = err.message || "Signup failed. Protocol interrupted.";
       setError(msg);
       toast.error(msg);
     } finally {
@@ -74,7 +102,7 @@ export default function SignupPage() {
     try {
       await signInWithGoogle();
     } catch (err: any) {
-      const msg = err.message || "Google signup failed";
+      const msg = err.message || "Google link failed";
       setError(msg);
       toast.error(msg);
       setGoogleLoading(false);
@@ -82,204 +110,189 @@ export default function SignupPage() {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData(prev => {
+      const newData = { ...prev, [name]: value };
+      // Auto-suggest store name from username if store name is empty
+      if (name === "username" && !prev.storeName) {
+        newData.storeName = value.charAt(0).toUpperCase() + value.slice(1) + " Store";
+      }
+      return newData;
+    });
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-background relative overflow-hidden">
-      {/* Decorative Background Elements */}
-      <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-primary/10 rounded-full blur-[120px] animate-pulse-glow" />
-      <div className="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] bg-secondary/10 rounded-full blur-[120px] animate-pulse-glow" style={{ animationDelay: '2s' }} />
+    <div className="min-h-screen flex items-center justify-center p-4 bg-[#020205] relative overflow-hidden">
+      {/* Dynamic Background Elements */}
+      <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-primary/5 rounded-full blur-[150px] animate-pulse-breathing" />
+      <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-secondary/5 rounded-full blur-[150px] animate-pulse-breathing" style={{ animationDelay: '3s' }} />
 
-      {/* Mesh Background */}
-      <div className="absolute inset-0 mesh-primary opacity-20 pointer-events-none" />
+      <div className="absolute inset-0 grid-bg-premium opacity-10 pointer-events-none" />
+      <div className="absolute inset-0 noise-subtle opacity-30 pointer-events-none" />
 
       <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        className="w-full max-w-md relative z-10"
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ type: "spring", stiffness: 260, damping: 20 }}
+        className="w-full max-w-lg relative z-10"
       >
-        <div className="text-center mb-8">
+        <div className="text-center mb-10">
           <motion.div 
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.2, duration: 0.5 }}
-            className="inline-block p-3 rounded-2xl bg-surface-light border border-border mb-4 animate-bounce-subtle"
+            initial={{ y: -20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.1 }}
+            className="flex justify-center mb-6"
           >
-            <h1 className="text-4xl font-black bg-gradient-to-r from-primary via-primary-light to-secondary bg-clip-text text-transparent tracking-tighter font-display">
-              Storix
-            </h1>
+             <div className="p-4 rounded-[2rem] bg-black/60 border border-white/5 backdrop-blur-2xl shadow-2xl relative group overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-tr from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                <Rocket className="text-primary w-10 h-10 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-500" />
+             </div>
           </motion.div>
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
+            transition={{ delay: 0.2 }}
+            className="space-y-2"
           >
-            <p className="text-white text-2xl font-black tracking-tight font-display">Create your empire</p>
-            <p className="text-muted/60 text-sm mt-2 font-medium">Start building your AI-powered affiliate store.</p>
+            <h1 className="text-5xl font-black bg-gradient-to-r from-primary-light via-white to-secondary-light bg-clip-text text-transparent tracking-tighter uppercase italic">Storix</h1>
+            <p className="text-white/40 text-sm font-bold tracking-[0.3em] uppercase">Join the Elite Fleet</p>
           </motion.div>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, scale: 0.98 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.4, duration: 0.5 }}
-        >
-          <Card className="glass-premium border-white/5 shadow-2xl overflow-hidden hover:border-primary/20 transition-all duration-500 glass-premium-animated">
-            <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-secondary via-primary-light to-primary opacity-80" />
-            
-            <CardHeader className="pb-2">
-              <CardTitle className="text-2xl font-black font-display flex items-center gap-2">
-                <Rocket className="text-primary-light w-6 h-6" />
-                Join the Fleet
-              </CardTitle>
-            </CardHeader>
-            
-            <CardContent>
-              <form onSubmit={handleSignup} className="space-y-5">
-                <motion.div
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.5 }}
-                >
-                  <Input
-                    label="Email Address"
-                    name="email"
-                    type="email"
-                    placeholder="commander@storix.ai"
-                    value={formData.email}
-                    onChange={handleChange}
-                    icon={<Mail size={18} />}
-                    className="bg-white/5 border-white/5 focus:glow-primary transition-all"
-                    required
-                  />
-                </motion.div>
-
-                <motion.div
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.6 }}
-                >
-                  <Input
-                    label="Password"
-                    name="password"
-                    type="password"
-                    placeholder="••••••••"
-                    value={formData.password}
-                    onChange={handleChange}
-                    icon={<Lock size={18} />}
-                    className="bg-white/5 border-white/5 focus:glow-primary transition-all"
-                    required
-                  />
-                </motion.div>
+        <div className="relative">
+          <Card size="medium" variant="glass" className="overflow-hidden border-white/5 shadow-3xl glass-premium-animated">
+            <CardContent className="space-y-6 pt-10">
+              <form onSubmit={handleSignup} className="space-y-6">
+                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}>
+                       <Input
+                          label="Email Target"
+                          name="email"
+                          type="email"
+                          placeholder="node@storix.ai"
+                          value={formData.email}
+                          onChange={handleChange}
+                          icon={<Mail size={18} />}
+                          className="bg-white/[0.02] border-white/5 h-14"
+                          required
+                       />
+                    </motion.div>
+                    <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 }}>
+                       <Input
+                          label="Secret Key"
+                          name="password"
+                          type="password"
+                          placeholder="••••••••"
+                          value={formData.password}
+                          onChange={handleChange}
+                          icon={<Lock size={18} />}
+                          className="bg-white/[0.02] border-white/5 h-14"
+                          required
+                       />
+                    </motion.div>
+                 </div>
                 
-                <motion.div 
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.7 }}
-                  className="grid grid-cols-1 sm:grid-cols-2 gap-5"
-                >
-                  <Input
-                    label="Username"
-                    name="username"
-                    placeholder="johndoe"
-                    value={formData.username}
-                    onChange={handleChange}
-                    icon={<User size={18} />}
-                    className="w-full bg-white/5 border-white/5"
-                    required
-                  />
-                  <Input
-                    label="Store Name"
-                    name="storeName"
-                    placeholder="My AI Store"
-                    value={formData.storeName}
-                    onChange={handleChange}
-                    icon={<Layout size={18} />}
-                    className="w-full bg-white/5 border-white/5"
-                    required
-                  />
-                </motion.div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}>
+                    <div className="relative">
+                       <Input
+                          label="Username"
+                          name="username"
+                          placeholder="commander1"
+                          value={formData.username}
+                          onChange={handleChange}
+                          icon={<User size={18} />}
+                          className={cn(
+                             "bg-white/[0.02] h-14 transition-all",
+                             usernameStatus === "available" && "border-primary/40 focus:border-primary",
+                             usernameStatus === "taken" && "border-danger/40 focus:border-danger"
+                          )}
+                          required
+                       />
+                       <div className="absolute right-4 top-[38px]">
+                          {usernameStatus === "checking" && <div className="w-4 h-4 border-2 border-primary/20 border-t-primary rounded-full animate-spin" />}
+                          {usernameStatus === "available" && <ShieldCheck size={18} className="text-primary animate-pulse" />}
+                          {usernameStatus === "taken" && <AlertCircle size={18} className="text-danger" />}
+                       </div>
+                    </div>
+                  </motion.div>
+                  <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}>
+                    <Input
+                      label="Store Designation"
+                      name="storeName"
+                      placeholder="Omega Fleet"
+                      value={formData.storeName}
+                      onChange={handleChange}
+                      icon={<Layout size={18} />}
+                      className="bg-white/[0.02] h-14 h-14"
+                    />
+                  </motion.div>
+                </div>
 
                 <AnimatePresence mode="wait">
                   {error && (
                     <motion.div 
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      className="p-4 rounded-2xl bg-danger/10 border border-danger/20 text-danger text-xs font-bold flex items-start gap-3"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      className="p-5 rounded-2xl bg-danger/5 border border-danger/10 text-danger text-[11px] font-black uppercase tracking-widest flex items-center gap-4"
                     >
-                      <AlertCircle size={16} className="shrink-0 mt-0.5" />
-                      <div className="space-y-1">
-                         <p className="uppercase tracking-wider text-[10px] opacity-70">Signup Fault</p>
-                         <p className="leading-relaxed">{error}</p>
-                      </div>
+                      <AlertCircle size={20} className="shrink-0" />
+                      <p>{error}</p>
                     </motion.div>
                   )}
                 </AnimatePresence>
 
                 <motion.div
-                  initial={{ opacity: 0, y: 10 }}
+                  initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.8 }}
+                  transition={{ delay: 0.7 }}
                 >
-                  <Button type="submit" className="w-full py-7 group text-base font-black shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all hover-lift mt-4" loading={loading}>
-                    <span>Initialize Store</span>
-                    <ArrowRight size={20} className="group-hover:translate-x-1.5 transition-transform" />
+                  <Button type="submit" className="w-full h-16 group text-xs font-black uppercase tracking-[0.3em] shadow-[0_20px_50px_rgba(16,185,129,0.2)] hover:shadow-primary/40 transition-all rounded-2xl" loading={loading}>
+                    <span>Initialize Interface</span>
+                    <Sparkles size={18} className="group-hover:rotate-12 transition-transform" />
                   </Button>
                 </motion.div>
               </form>
 
-              <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.9 }}
-                className="relative my-10"
-              >
+              <div className="relative py-4">
                 <div className="absolute inset-0 flex items-center">
                   <div className="w-full border-t border-white/5"></div>
                 </div>
-                <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-background px-4 text-muted/30 font-black uppercase tracking-widest text-[9px]">Direct Auth Access</span>
+                <div className="relative flex justify-center">
+                  <span className="bg-[#020205] px-4 text-[9px] font-black uppercase tracking-[0.4em] text-white/20">Secure Auth Link</span>
                 </div>
-              </motion.div>
+              </div>
 
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.0 }}
+                transition={{ delay: 0.8 }}
               >
                 <Button
                   type="button"
                   variant="secondary"
-                  className="w-full py-7 bg-white/5 border-white/5 hover:bg-white/10 transition-all duration-300 font-bold hover:glow-primary"
+                  className="w-full h-16 bg-white/[0.03] border-white/5 hover:bg-white/[0.06] transition-all duration-300 font-bold group rounded-2xl"
                   onClick={handleGoogleLogin}
                   loading={googleLoading}
                 >
-                  <div className="mr-3">
-                    <GoogleIcon />
-                  </div>
-                  <span>Continue with Google</span>
+                  <GoogleIcon />
+                  <span className="ml-3 text-xs uppercase tracking-widest font-black">Google Handshake</span>
                 </Button>
               </motion.div>
 
-              <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 1.1 }}
-                className="mt-10 text-center text-sm"
-              >
-                <span className="text-muted/40 font-medium">Already have a station? </span>
-                <Link
-                  href="/login"
-                  className="text-primary hover:text-primary-light font-black transition-all hover:underline decoration-2 underline-offset-4"
-                >
-                  Log in
-                </Link>
-              </motion.div>
+              <div className="text-center pt-4">
+                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/30">
+                  Already registered? <Link href="/login" className="text-primary hover:text-primary-light transition-colors ml-2">Open Station</Link>
+                </p>
+              </div>
             </CardContent>
           </Card>
-        </motion.div>
+        </div>
+      </motion.div>
+    </div>
+  );
+}
 
       </motion.div>
 
