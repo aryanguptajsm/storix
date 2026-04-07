@@ -265,7 +265,7 @@ export default function LandingPage() {
               </AnimatePresence>
 
               {/* Main 3D Browser Mockup */}
-              <ScrollReveal animation="reveal-scale" delay={800}>
+              <ScrollReveal variant="zoom-in" delay={0.8}>
                 <TiltCard intensity={3} perspective={3000} className="relative group">
                   {/* Ambient Glows */}
                   <div className="absolute -inset-20 bg-emerald-500/10 blur-[120px] rounded-full -z-10 opacity-60 group-hover:opacity-100 transition-opacity duration-1000" />
@@ -344,7 +344,7 @@ export default function LandingPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
               {features.map((feature, i) => (
-                <ScrollReveal key={i} delay={i * 100} animation="reveal-scale">
+                <ScrollReveal key={i} delay={i * 0.1} variant="zoom-in">
                   <TiltCard intensity={8} className="h-full">
                     <div className="group h-full relative rounded-[2.5rem] border border-white/[0.08] bg-white/[0.01] p-10 md:p-12 hover:border-emerald-500/20 transition-all duration-700 overflow-hidden backdrop-blur-3xl">
                       <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
