@@ -17,8 +17,9 @@ import {
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { CopyLinkButton } from "@/components/dashboard/CopyLinkButton";
+import { DashboardEntrance } from "@/components/dashboard/DashboardEntrance";
+import { ScrollReveal, StaggerReveal } from "@/components/ui/ScrollReveal";
 import Image from "next/image";
-import { DashboardEntrance, AnimatedSection } from "@/components/dashboard/DashboardEntrance";
 
 export default async function DashboardPage() {
   const supabase = await createClient();
@@ -114,7 +115,7 @@ export default async function DashboardPage() {
       <div className="max-w-7xl mx-auto space-y-10 relative z-10 px-4 sm:px-6 lg:px-8">
         <div className="space-y-6">
           {configError && (
-            <AnimatedSection delay={0.1}>
+            <ScrollReveal delay={0.1}>
               <div className="p-8 rounded-[2.5rem] border border-warning/30 bg-warning/5 backdrop-blur-xl flex flex-col md:flex-row items-center justify-between gap-8 animate-pulse-glow shadow-2xl shadow-warning/10 overflow-hidden relative group">
                 <div className="absolute inset-0 bg-gradient-to-r from-warning/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                 <div className="flex items-center gap-6 relative z-10">
@@ -127,17 +128,17 @@ export default async function DashboardPage() {
                   </div>
                 </div>
                 <Link href="https://supabase.com/dashboard/project/lnckyrvxehzcjvyultkd/settings/api" target="_blank" className="w-full md:w-auto relative z-10">
-                   <Button className="w-full md:w-auto h-14 px-8 gap-3 bg-warning hover:bg-warning-dark shadow-xl shadow-warning/20 text-black font-black uppercase tracking-widest rounded-2xl transition-all hover:scale-105 active:scale-95">
+                   <Button className="w-full md:w-auto h-14 px-8 gap-3 bg-warning hover:bg-warning-dark shadow-xl shadow-warning/20 text-black font-black uppercase tracking-widest rounded-2xl">
                      <ExternalLink size={18} />
                      Access API Console
                    </Button>
                 </Link>
               </div>
-            </AnimatedSection>
+            </ScrollReveal>
           )}
 
           {!configError && !productsTableExists && (
-            <AnimatedSection delay={0.1}>
+            <ScrollReveal delay={0.1}>
               <div className="p-8 rounded-[2.5rem] border border-danger/30 bg-danger/5 backdrop-blur-xl flex flex-col md:flex-row items-center justify-between gap-8 animate-pulse-glow shadow-2xl shadow-danger/10 overflow-hidden relative group">
                 <div className="absolute inset-0 bg-gradient-to-r from-danger/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                 <div className="flex items-center gap-6 relative z-10">
@@ -150,16 +151,16 @@ export default async function DashboardPage() {
                   </div>
                 </div>
                 <Link href="/dashboard/setup" className="w-full md:w-auto relative z-10">
-                   <Button variant="danger" className="w-full md:w-auto h-14 px-8 gap-3 bg-danger hover:bg-danger-dark shadow-xl shadow-danger/20 font-black uppercase tracking-widest rounded-2xl transition-all hover:scale-105 active:scale-95">
+                   <Button variant="danger" className="w-full md:w-auto h-14 px-8 gap-3 bg-danger shadow-xl shadow-danger/20 font-black uppercase tracking-widest rounded-2xl transition-all">
                      <ArrowRight size={18} />
                      Run Setup Script
                    </Button>
                 </Link>
               </div>
-            </AnimatedSection>
+            </ScrollReveal>
           )}
 
-          <AnimatedSection delay={0.2}>
+          <ScrollReveal delay={0.2}>
             <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8">
               <div className="space-y-4">
                 <div className="flex items-center gap-4">
@@ -184,116 +185,110 @@ export default async function DashboardPage() {
               <div className="flex flex-wrap items-center gap-3 w-full lg:w-auto">
                 <CopyLinkButton username={profile?.username || ""} />
                 <Link href={`/store/${profile?.username?.toLowerCase()}`} target="_blank" className="flex-1 lg:flex-initial">
-                  <Button variant="secondary" className="w-full gap-2.5 bg-white/[0.03] border-white/5 hover:bg-white/[0.08] group h-12 px-6 text-xs font-black uppercase tracking-widest rounded-xl transition-all hover:glow-primary">
-                    <ExternalLink className="w-4 h-4 group-hover:rotate-12 transition-transform" />
+                  <Button variant="secondary" className="w-full bg-white/[0.03] border-white/5 h-12 px-6">
+                    <ExternalLink className="w-4 h-4" />
                     Live Store
                   </Button>
                 </Link>
                 <Link href="/dashboard/add-product" className="w-full sm:w-auto flex-1 lg:flex-initial">
-                  <Button className="w-full gap-2.5 shadow-2xl shadow-primary/20 group h-12 px-8 text-xs font-black uppercase tracking-[0.2em] rounded-xl hover-lift bg-primary hover:bg-primary-light transition-all">
-                    <Plus className="w-4 h-4 group-hover:rotate-90 transition-transform duration-500" />
+                  <Button className="w-full h-12 px-8 shadow-2xl shadow-primary/20">
+                    <Plus className="w-4 h-4" />
                     New Unit
                   </Button>
                 </Link>
               </div>
             </div>
-          </AnimatedSection>
+          </ScrollReveal>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <AnimatedSection delay={0.4}>
-            <div className="perspective-1000 group h-full">
-              <Card size="medium" variant="glass" className="relative overflow-hidden group hover:glow-primary transition-all duration-700 h-full animate-glow-border border-beam">
-                <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity">
-                  <Package size={80} />
+        <StaggerReveal stagger={0.1} delay={0.4} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="perspective-1000 group">
+            <Card size="medium" variant="glass" className="relative overflow-hidden group hover:glow-primary transition-all duration-700 h-full animate-glow-border border-beam">
+              <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity">
+                <Package size={80} />
+              </div>
+              <div className="absolute top-[-40px] right-[-40px] w-60 h-60 icon-glow-primary rounded-full blur-[80px] opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+              <CardHeader className="flex flex-row items-center justify-between pb-4 border-b border-white/5">
+                <CardTitle className="text-[10px] font-extrabold uppercase tracking-[0.25em] text-muted/50 font-display">
+                  Fleet Capacity
+                </CardTitle>
+                <div className="p-2.5 rounded-xl bg-primary/10 text-primary shadow-xl shadow-primary/10 border border-primary/20 group-hover:scale-110 transition-transform duration-500">
+                  <Package className="w-4 h-4" />
                 </div>
-                <div className="absolute top-[-40px] right-[-40px] w-60 h-60 icon-glow-primary rounded-full blur-[80px] opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
-                <CardHeader className="flex flex-row items-center justify-between pb-4 border-b border-white/5">
-                  <CardTitle className="text-[10px] font-extrabold uppercase tracking-[0.25em] text-muted/50 font-display">
-                    Fleet Capacity
-                  </CardTitle>
-                  <div className="p-2.5 rounded-xl bg-primary/10 text-primary shadow-xl shadow-primary/10 border border-primary/20 group-hover:scale-110 transition-transform duration-500">
-                    <Package className="w-4 h-4" />
-                  </div>
-                </CardHeader>
-                <CardContent className="pt-6 relative z-10">
-                  <div className="text-6xl font-extrabold text-white tracking-tighter group-hover:scale-105 transition-transform duration-700 origin-left italic">
-                    {stats.totalProducts}
-                  </div>
-                  <div className="flex items-center gap-3 mt-4">
-                    <div className="h-1 flex-1 bg-white/5 rounded-full overflow-hidden">
-                      <div className="h-full bg-primary w-[70%] animate-shimmer" />
-                    </div>
-                    <span className="text-[9px] font-black text-primary uppercase tracking-widest">Active nodes</span>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </AnimatedSection>
-
-          <AnimatedSection delay={0.5}>
-            <div className="perspective-1000 group h-full">
-              <Card size="medium" variant="glass" className="relative overflow-hidden group hover:glow-secondary transition-all duration-700 h-full animate-glow-border">
-                <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity">
-                  <MousePointerClick size={80} />
+              </CardHeader>
+              <CardContent className="pt-6 relative z-10">
+                <div className="text-6xl font-extrabold text-white tracking-tighter group-hover:scale-105 transition-transform duration-700 origin-left italic">
+                  {stats.totalProducts}
                 </div>
-                <div className="absolute top-[-40px] right-[-40px] w-60 h-60 icon-glow-secondary rounded-full blur-[80px] opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
-                <CardHeader className="flex flex-row items-center justify-between pb-4 border-b border-white/5">
-                  <CardTitle className="text-[10px] font-extrabold uppercase tracking-[0.25em] text-muted/50 font-display">
-                    Engagement Intel
-                  </CardTitle>
-                  <div className="p-2.5 rounded-xl bg-secondary/10 text-secondary shadow-xl shadow-secondary/10 border border-secondary/20 group-hover:scale-110 transition-transform duration-500">
-                    <MousePointerClick className="w-4 h-4" />
+                <div className="flex items-center gap-3 mt-4">
+                  <div className="h-1 flex-1 bg-white/5 rounded-full overflow-hidden">
+                    <div className="h-full bg-primary w-[70%] animate-shimmer" />
                   </div>
-                </CardHeader>
-                <CardContent className="pt-6 relative z-10">
-                  <div className="text-6xl font-extrabold text-white tracking-tighter group-hover:scale-105 transition-transform duration-700 origin-left italic">
-                    {stats.totalClicks}
-                  </div>
-                  <div className="flex items-center gap-3 mt-4">
-                    <div className="h-1 flex-1 bg-white/5 rounded-full overflow-hidden">
-                      <div className="h-full bg-secondary w-[45%] animate-shimmer" />
-                    </div>
-                    <span className="text-[9px] font-black text-secondary uppercase tracking-widest">Intercepts</span>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </AnimatedSection>
-
-          <AnimatedSection delay={0.6}>
-            <div className="perspective-1000 group h-full">
-              <Card size="medium" variant="glass" className="relative overflow-hidden group hover:glow-accent transition-all duration-700 h-full animate-glow-border">
-                <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity">
-                  <TrendingUp size={80} />
+                  <span className="text-[9px] font-black text-primary uppercase tracking-widest">Active nodes</span>
                 </div>
-                <div className="absolute top-[-40px] right-[-40px] w-60 h-60 icon-glow-accent rounded-full blur-[80px] opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
-                <CardHeader className="flex flex-row items-center justify-between pb-4 border-b border-white/5">
-                  <CardTitle className="text-[10px] font-extrabold uppercase tracking-[0.25em] text-muted/50 font-display">
-                    Revenue Stream
-                  </CardTitle>
-                  <div className="p-2.5 rounded-xl bg-accent/10 text-accent shadow-xl shadow-accent/10 border border-accent/20 group-hover:scale-110 transition-transform duration-500">
-                    <TrendingUp className="w-4 h-4" />
-                  </div>
-                </CardHeader>
-                <CardContent className="pt-6 relative z-10">
-                  <div className="text-6xl font-extrabold text-white tracking-tighter group-hover:scale-105 transition-transform duration-700 origin-left italic">
-                    $0.00
-                  </div>
-                  <div className="flex items-center gap-3 mt-4">
-                    <div className="h-1 flex-1 bg-white/5 rounded-full overflow-hidden">
-                      <div className="h-full bg-accent w-[20%] animate-shimmer" />
-                    </div>
-                    <span className="text-[9px] font-black text-accent uppercase tracking-widest">Pending Sync</span>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </AnimatedSection>
-        </div>
+              </CardContent>
+            </Card>
+          </div>
 
-        <AnimatedSection delay={0.7}>
-          <Card size="medium" variant="premium" className="shadow-[0_0_50px_rgba(0,0,0,0.5)] relative group transition-all duration-1000 hover:border-primary/40 focus-within:border-primary/40">
+          <div className="perspective-1000 group">
+            <Card size="medium" variant="glass" className="relative overflow-hidden group hover:glow-secondary transition-all duration-700 h-full animate-glow-border">
+              <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity">
+                <MousePointerClick size={80} />
+              </div>
+              <div className="absolute top-[-40px] right-[-40px] w-60 h-60 icon-glow-secondary rounded-full blur-[80px] opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+              <CardHeader className="flex flex-row items-center justify-between pb-4 border-b border-white/5">
+                <CardTitle className="text-[10px] font-extrabold uppercase tracking-[0.25em] text-muted/50 font-display">
+                  Engagement Intel
+                </CardTitle>
+                <div className="p-2.5 rounded-xl bg-secondary/10 text-secondary shadow-xl shadow-secondary/10 border border-secondary/20 group-hover:scale-110 transition-transform duration-500">
+                  <MousePointerClick className="w-4 h-4" />
+                </div>
+              </CardHeader>
+              <CardContent className="pt-6 relative z-10">
+                <div className="text-6xl font-extrabold text-white tracking-tighter group-hover:scale-105 transition-transform duration-700 origin-left italic">
+                  {stats.totalClicks}
+                </div>
+                <div className="flex items-center gap-3 mt-4">
+                  <div className="h-1 flex-1 bg-white/5 rounded-full overflow-hidden">
+                    <div className="h-full bg-secondary w-[45%] animate-shimmer" />
+                  </div>
+                  <span className="text-[9px] font-black text-secondary uppercase tracking-widest">Intercepts</span>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          <div className="perspective-1000 group">
+            <Card size="medium" variant="glass" className="relative overflow-hidden group hover:glow-accent transition-all duration-700 h-full animate-glow-border">
+              <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity">
+                <TrendingUp size={80} />
+              </div>
+              <div className="absolute top-[-40px] right-[-40px] w-60 h-60 icon-glow-accent rounded-full blur-[80px] opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+              <CardHeader className="flex flex-row items-center justify-between pb-4 border-b border-white/5">
+                <CardTitle className="text-[10px] font-extrabold uppercase tracking-[0.25em] text-muted/50 font-display">
+                  Revenue Stream
+                </CardTitle>
+                <div className="p-2.5 rounded-xl bg-accent/10 text-accent shadow-xl shadow-accent/10 border border-accent/20 group-hover:scale-110 transition-transform duration-500">
+                  <TrendingUp className="w-4 h-4" />
+                </div>
+              </CardHeader>
+              <CardContent className="pt-6 relative z-10">
+                <div className="text-6xl font-extrabold text-white tracking-tighter group-hover:scale-105 transition-transform duration-700 origin-left italic">
+                  $0.00
+                </div>
+                <div className="flex items-center gap-3 mt-4">
+                  <div className="h-1 flex-1 bg-white/5 rounded-full overflow-hidden">
+                    <div className="h-full bg-accent w-[20%] animate-shimmer" />
+                  </div>
+                  <span className="text-[9px] font-black text-accent uppercase tracking-widest">Pending Sync</span>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </StaggerReveal>
+
+        <ScrollReveal variant="zoom-in" delay={0.7}>
+          <Card size="medium" variant="premium" className="shadow-[0_0_50px_rgba(0,0,0,0.5)] relative group transition-all duration-1000 overflow-hidden">
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent opacity-50" />
             <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
             
@@ -324,7 +319,7 @@ export default async function DashboardPage() {
                    <span className="font-black tracking-tight">{profile?.username || "..."}</span>
                 </div>
                 <Link href={`/store/${profile?.username}`} target="_blank" className="w-full sm:w-auto">
-                  <Button className="w-full sm:w-auto h-16 rounded-2xl bg-primary px-10 font-black uppercase tracking-[0.2em] shadow-[0_20px_50px_rgba(16,185,129,0.3)] transition-all hover:bg-primary-light hover:scale-105 active:scale-95 group text-xs">
+                  <Button className="w-full sm:w-auto h-16 rounded-2xl px-10">
                      <span>Enter Station</span>
                      <ArrowRight size={18} className="ml-3 group-hover:translate-x-2 transition-transform duration-700" />
                   </Button>
@@ -332,10 +327,10 @@ export default async function DashboardPage() {
               </div>
             </div>
           </Card>
-        </AnimatedSection>
+        </ScrollReveal>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-          <AnimatedSection delay={0.8}>
+          <ScrollReveal delay={0.8}>
             <Card size="medium" variant="glass" className="hover:border-white/10 transition-all duration-700 overflow-hidden group h-full">
               <CardHeader className="border-b border-white/5 flex flex-row items-center justify-between p-8">
                 <CardTitle className="text-xl font-extrabold italic tracking-tight">Recent Inventory Hangar</CardTitle>
@@ -381,9 +376,9 @@ export default async function DashboardPage() {
                 )}
               </CardContent>
             </Card>
-          </AnimatedSection>
+          </ScrollReveal>
 
-          <AnimatedSection delay={0.9}>
+          <ScrollReveal delay={0.9}>
             <Card size="medium" variant="glass" className="hover:border-white/10 transition-all duration-700 h-full group">
               <CardHeader className="border-b border-white/5 p-8">
                 <CardTitle className="text-xl font-extrabold italic tracking-tight">Strategic Intelligence</CardTitle>
@@ -419,7 +414,7 @@ export default async function DashboardPage() {
                 </div>
               </CardContent>
             </Card>
-          </AnimatedSection>
+          </ScrollReveal>
         </div>
       </div>
     </div>

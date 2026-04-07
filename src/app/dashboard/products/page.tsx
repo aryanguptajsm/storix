@@ -22,6 +22,7 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 import { ProductsSkeleton } from "@/components/ui/ProductsSkeleton";
+import { ScrollReveal, StaggerReveal } from "@/components/ui/ScrollReveal";
 
 interface Product {
   id: string;
@@ -101,26 +102,28 @@ export default function ProductsPage() {
   }
 
   return (
-    <div className="space-y-8 animate-fade-in pb-12">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <div className="space-y-1">
-          <div className="flex items-center gap-2">
-            <h1 className="text-3xl font-black text-foreground tracking-tight">Your Inventory</h1>
-            <div className="p-1 rounded-md bg-secondary/10 text-secondary">
-              <ShoppingBag size={18} />
+    <div className="space-y-8 pb-12">
+      <ScrollReveal>
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <h1 className="text-3xl font-black text-foreground tracking-tight italic">Your Inventory</h1>
+              <div className="p-2 rounded-xl bg-secondary/10 text-secondary border border-secondary/20">
+                <ShoppingBag size={18} />
+              </div>
             </div>
+            <p className="text-muted font-medium">
+              Manage your high-performance affiliate collection.
+            </p>
           </div>
-          <p className="text-muted font-medium">
-            Manage your high-performance affiliate collection.
-          </p>
+          <Link href="/dashboard/add-product">
+            <Button className="gap-2 shadow-xl shadow-primary/20 group whitespace-nowrap">
+              <Plus className="w-4 h-4 group-hover:rotate-90 transition-transform duration-500" />
+              Add New Product
+            </Button>
+          </Link>
         </div>
-        <Link href="/dashboard/add-product">
-          <Button className="gap-2 shadow-lg shadow-primary/25 group whitespace-nowrap">
-            <Plus className="w-4 h-4 group-hover:rotate-90 transition-transform duration-300" />
-            Add New Product
-          </Button>
-        </Link>
-      </div>
+      </ScrollReveal>
 
       <div className="relative max-w-md">
         <Input
@@ -161,9 +164,9 @@ export default function ProductsPage() {
           )}
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <StaggerReveal stagger={0.08} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredProducts.map((product) => (
-            <Card key={product.id} className="group glass-morphism-dark overflow-hidden flex flex-col hover:border-primary/30 transition-all duration-500 hover:shadow-2xl hover:shadow-primary/5 hover-lift">
+            <Card key={product.id} className="group glass-morphism-dark overflow-hidden flex flex-col hover:border-primary/30 transition-all duration-500 hover:shadow-2xl hover:shadow-primary/5">
               <div className="relative h-56 bg-white overflow-hidden flex items-center justify-center p-6">
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/5 opacity-0 group-hover:opacity-100 transition-opacity z-10" />
                 
@@ -235,7 +238,7 @@ export default function ProductsPage() {
               </CardContent>
             </Card>
           ))}
-        </div>
+        </StaggerReveal>
       )}
     </div>
   );
