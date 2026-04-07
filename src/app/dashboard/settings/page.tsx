@@ -99,9 +99,12 @@ export default function SettingsPage() {
 
   const tabs = [
     { label: "Account", icon: User },
+    { label: "Storefront", icon: ShoppingBag },
     { label: "Payouts", icon: CreditCard },
     { label: "Security", icon: Shield },
   ];
+
+  const isPro = profile?.plan && profile?.plan !== "free";
 
   return (
     <div className="space-y-8 animate-fade-in pb-12">
@@ -112,6 +115,11 @@ export default function SettingsPage() {
             <div className="p-1 rounded-md bg-primary/10 text-primary">
               <Settings size={18} />
             </div>
+            {isPro && (
+              <div className="px-2 py-0.5 rounded-full bg-primary/10 text-primary text-[8px] font-black uppercase tracking-[0.2em] border border-primary/20">
+                Premium Access
+              </div>
+            )}
           </div>
           <p className="text-muted font-medium">
             Configure your store deployment and personal preferences.
@@ -155,49 +163,156 @@ export default function SettingsPage() {
                 </div>
               </CardHeader>
               <CardContent className="p-8 space-y-8">
-                <div className="flex items-center gap-6">
-                  <div className="relative group">
-                    <div className="w-24 h-24 rounded-3xl bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center text-3xl font-black text-white border-2 border-white/5 overflow-hidden">
-                      {profile?.store_name?.[0]?.toUpperCase() || "S"}
+                <form onSubmit={handleUpdate} className="space-y-6">
+                  <div className="flex items-center gap-6">
+                    <div className="relative group">
+                      <div className="w-24 h-24 rounded-3xl bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center text-3xl font-black text-white border-2 border-white/5 overflow-hidden">
+                        {profile?.store_name?.[0]?.toUpperCase() || "S"}
+                      </div>
+                      <button type="button" className="absolute -bottom-2 -right-2 p-2 rounded-xl bg-surface border border-white/10 text-muted hover:text-primary transition-all shadow-xl">
+                        <Camera size={16} />
+                      </button>
                     </div>
-                    <button className="absolute -bottom-2 -right-2 p-2 rounded-xl bg-surface border border-white/10 text-muted hover:text-primary transition-all shadow-xl">
-                      <Camera size={16} />
-                    </button>
-                  </div>
-                  <div>
-                    <h4 className="text-lg font-bold text-foreground">{profile?.store_name || "Merchant"}</h4>
-                    <p className="text-sm text-muted">{formData.email}</p>
-                    <div className="mt-2 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-success/10 text-success text-[10px] font-black uppercase tracking-widest">
-                       <Shield size={10} />
-                       Verified account
+                    <div>
+                      <h4 className="text-lg font-bold text-foreground">{profile?.store_name || "Merchant"}</h4>
+                      <p className="text-sm text-muted">{formData.email}</p>
+                      <div className="mt-2 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-success/10 text-success text-[10px] font-black uppercase tracking-widest">
+                         <Shield size={10} />
+                         Verified account
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-white/5">
-                  <Input
-                    label="Account Email"
-                    value={formData.email}
-                    disabled
-                    icon={<Mail size={16} />}
-                    className="bg-white/5 border-white/5 opacity-60 cursor-not-allowed"
-                  />
-                  <div className="space-y-1.5">
-                    <label className="block text-sm font-bold text-muted uppercase tracking-widest text-[10px]">Access Key</label>
-                    <Link href="/auth/reset-password">
-                      <Button variant="secondary" className="w-full h-11 gap-2 bg-white/5 border-white/5 hover:bg-white/10">
-                        <Lock size={16} />
-                        Update Security Key
-                      </Button>
-                    </Link>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-white/5">
+                    <Input
+                      label="Account Email"
+                      value={formData.email}
+                      disabled
+                      icon={<Mail size={16} />}
+                      className="bg-white/5 border-white/5 opacity-60 cursor-not-allowed"
+                    />
+                    <div className="space-y-1.5">
+                      <label className="block text-sm font-bold text-muted uppercase tracking-widest text-[10px]">Access Key</label>
+                      <Link href="/auth/reset-password">
+                        <Button type="button" variant="secondary" className="w-full h-11 gap-2 bg-white/5 border-white/5 hover:bg-white/10">
+                          <Lock size={16} />
+                          Update Security Key
+                        </Button>
+                      </Link>
+                    </div>
                   </div>
+                  
+                  <div className="flex justify-end pt-4">
+                    <Button type="submit" loading={saving} className="gap-2 px-8">
+                      {!saving && <Save size={18} />}
+                      Save Profile
+                    </Button>
+                  </div>
+                </form>
+              </CardContent>
+            </Card>
+          )}
+
+          {activeTab === "Storefront" && (
+            <Card className="glass overflow-hidden shadow-2xl shadow-black/20">
+              <CardHeader className="p-6 border-b border-white/5 bg-white/[0.01]">
+                <div className="flex items-center gap-3">
+                   <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+                     <ShoppingBag size={20} />
+                   </div>
+                   <div>
+                     <CardTitle className="text-lg font-bold">Store Configuration</CardTitle>
+                     <p className="text-xs text-muted font-medium mt-0.5">Customize your storefront aesthetic and metadata.</p>
+                   </div>
                 </div>
+              </CardHeader>
+              <CardContent className="p-8">
+                <form onSubmit={handleUpdate} className="space-y-8">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <Input
+                      label="Store Name"
+                      name="store_name"
+                      value={formData.store_name}
+                      onChange={handleChange}
+                      placeholder="My Premium Store"
+                      icon={<ShoppingBag size={16} />}
+                    />
+                    <Input
+                      label="Store Username"
+                      name="username"
+                      value={formData.username}
+                      onChange={handleChange}
+                      placeholder="my-store"
+                      icon={<User size={16} />}
+                    />
+                  </div>
+
+                  <Textarea
+                    label="Store Description"
+                    name="store_description"
+                    value={formData.store_description}
+                    onChange={handleChange}
+                    placeholder="Short description of your store..."
+                    className="min-h-[120px]"
+                  />
+
+                  {/* Theme Picker */}
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-muted/60">Deployment Theme</label>
+                      {!isPro && (
+                        <Link href="/dashboard/billing">
+                          <span className="text-[9px] font-black uppercase tracking-widest text-primary hover:underline cursor-pointer">Unlock Premium Themes</span>
+                        </Link>
+                      )}
+                    </div>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                      {["default", "midnight", "neon", "minimalist", "amazon", "flipkart"].map((t) => {
+                        const isPremium = ["midnight", "neon", "amazon", "flipkart"].includes(t);
+                        const locked = isPremium && !isPro;
+                        const active = formData.theme === t;
+
+                        return (
+                          <div
+                            key={t}
+                            onClick={() => !locked && setFormData({ ...formData, theme: t })}
+                            className={`relative cursor-pointer group transition-all duration-300 ${locked ? "opacity-50 grayscale cursor-not-allowed" : "hover:scale-105"}`}
+                          >
+                            <div className={`aspect-video rounded-xl border-2 transition-all overflow-hidden ${
+                              active ? "border-primary shadow-[0_0_15px_rgba(var(--primary-rgb),0.3)]" : "border-white/5 group-hover:border-white/10"
+                            }`}>
+                               <div className={`w-full h-full theme-preview-${t}`} />
+                               {locked && (
+                                 <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                                    <Lock size={16} className="text-white/40" />
+                                 </div>
+                               )}
+                            </div>
+                            <div className="mt-2 flex items-center justify-between px-1">
+                              <span className={`text-[10px] font-bold uppercase tracking-widest ${active ? "text-primary" : "text-muted"}`}>{t}</span>
+                              {isPremium && !locked && (
+                                <Sparkles size={10} className="text-primary-light" />
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  <div className="flex justify-end pt-4">
+                    <Button type="submit" loading={saving} className="gap-2 px-8 h-12 rounded-2xl bg-primary shadow-xl shadow-primary/20">
+                      {!saving && <Save size={18} />}
+                      Deploy Configuration
+                    </Button>
+                  </div>
+                </form>
               </CardContent>
             </Card>
           )}
 
           {activeTab === "Payouts" && (
-            <Card className="glass overflow-hidden">
+            <Card className="glass overflow-hidden shadow-2xl shadow-black/20">
               <CardHeader className="p-6 border-b border-white/5 bg-white/[0.01]">
                 <div className="flex items-center gap-3">
                    <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
@@ -210,43 +325,45 @@ export default function SettingsPage() {
                 </div>
               </CardHeader>
               <CardContent className="p-8 space-y-6">
-                <div className="grid grid-cols-1 gap-6">
-                  <Input
-                    label="PayPal Receiver Email"
-                    name="paypal_email"
-                    placeholder="payments@yourdomain.com"
-                    value={formData.paypal_email}
-                    onChange={handleChange}
-                    icon={<DollarSign size={16} />}
-                    className="bg-white/5 border-white/5"
-                  />
-                  <Input
-                    label="Amazon Associate Tag"
-                    name="amazon_id"
-                    placeholder="yourtag-20"
-                    value={formData.amazon_id}
-                    onChange={handleChange}
-                    icon={<ShoppingBag size={16} />}
-                    className="bg-white/5 border-white/5"
-                  />
-                </div>
-                <div className="p-4 rounded-2xl bg-primary/5 border border-primary/10 flex items-start gap-4 mt-4">
-                   <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary flex-shrink-0">
-                     <Sparkles size={16} />
-                   </div>
-                   <div>
-                     <h5 className="text-xs font-bold text-foreground">Automated Tracking</h5>
-                     <p className="text-[11px] text-muted leading-relaxed mt-1">
-                       Your affiliate handles are automatically injected into all product links across your fleet.
-                     </p>
-                   </div>
-                </div>
-                <div className="flex justify-end pt-4">
-                  <Button className="gap-2 px-8">
-                    <Save size={18} />
-                    Commit Payout Config
-                  </Button>
-                </div>
+                <form onSubmit={handleUpdate} className="space-y-6">
+                  <div className="grid grid-cols-1 gap-6">
+                    <Input
+                      label="PayPal Receiver Email"
+                      name="paypal_email"
+                      placeholder="payments@yourdomain.com"
+                      value={formData.paypal_email}
+                      onChange={handleChange}
+                      icon={<DollarSign size={16} />}
+                      className="bg-white/5 border-white/5"
+                    />
+                    <Input
+                      label="Amazon Associate Tag"
+                      name="amazon_id"
+                      placeholder="yourtag-20"
+                      value={formData.amazon_id}
+                      onChange={handleChange}
+                      icon={<ShoppingBag size={16} />}
+                      className="bg-white/5 border-white/5"
+                    />
+                  </div>
+                  <div className="p-4 rounded-2xl bg-primary/5 border border-primary/10 flex items-start gap-4 mt-4">
+                    <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary flex-shrink-0">
+                      <Sparkles size={16} />
+                    </div>
+                    <div>
+                      <h5 className="text-xs font-bold text-foreground">Automated Tracking</h5>
+                      <p className="text-[11px] text-muted leading-relaxed mt-1">
+                        Your affiliate handles are automatically injected into all product links across your fleet.
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex justify-end pt-4">
+                    <Button type="submit" loading={saving} className="gap-2 px-8">
+                      {!saving && <Save size={18} />}
+                      Commit Payout Config
+                    </Button>
+                  </div>
+                </form>
               </CardContent>
             </Card>
           )}

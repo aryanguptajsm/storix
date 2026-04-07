@@ -19,14 +19,16 @@ import { StoreHeader } from "@/components/store/StoreHeader";
 import { TrustSection } from "@/components/store/TrustSection";
 import { Button } from "@/components/ui/Button";
 import { Product } from "@/lib/types";
+import { isPremiumTheme } from "@/lib/plans";
 
 interface Profile {
   store_name: string;
   store_description: string;
   username: string;
   id: string;
-  theme: "default" | "midnight" | "minimalist" | "neon" | "amazon" | "flipkart";
+  theme: string;
   store_logo?: string | null;
+  plan?: string | null;
 }
 
 interface StoreViewProps {
