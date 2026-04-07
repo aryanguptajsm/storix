@@ -112,7 +112,7 @@ export default async function DashboardPage() {
       <DashboardEntrance />
 
       <div className="max-w-7xl mx-auto space-y-10 relative z-10 px-4 sm:px-6 lg:px-8">
-        <div className="space-y-8">
+        <div className="space-y-6">
           {configError && (
             <AnimatedSection delay={0.1}>
               <div className="p-8 rounded-[2.5rem] border border-warning/30 bg-warning/5 backdrop-blur-xl flex flex-col md:flex-row items-center justify-between gap-8 animate-pulse-glow shadow-2xl shadow-warning/10 overflow-hidden relative group">
@@ -169,29 +169,29 @@ export default async function DashboardPage() {
                   <div className="w-2 h-2 rounded-full bg-success shadow-[0_0_10px_#10B981] animate-pulse" />
                 </div>
                 <div className="space-y-1">
-                  <h1 className="text-4xl md:text-6xl font-extrabold text-white tracking-tighter leading-[0.9] italic">
+                  <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tighter leading-[0.9] italic">
                     Welcome back, <br/>
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-light via-white to-secondary-light uppercase not-italic tracking-tighter block mt-2">
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-light via-white to-secondary-light uppercase not-italic tracking-tighter block mt-2 animate-mesh-flow">
                        {profile?.store_name || "Agent"}
                     </span>
                   </h1>
                 </div>
-                <p className="text-base md:text-lg text-white/40 font-medium max-w-2xl leading-relaxed">
-                  Your affiliate commerce network is operating at <span className="text-primary-light">peak efficiency</span>. Analyzing global intercept nodes...
+                <p className="text-sm md:text-base text-white/30 font-medium max-w-xl leading-relaxed">
+                  Your affiliate commerce network is operating at <span className="text-primary-light/80 shadow-primary/20">peak efficiency</span>. Analyzing global intercept nodes...
                 </p>
               </div>
 
-              <div className="flex flex-wrap items-center gap-4 w-full lg:w-auto">
+              <div className="flex flex-wrap items-center gap-3 w-full lg:w-auto">
                 <CopyLinkButton username={profile?.username || ""} />
                 <Link href={`/store/${profile?.username?.toLowerCase()}`} target="_blank" className="flex-1 lg:flex-initial">
-                  <Button variant="secondary" className="w-full gap-3 bg-white/[0.03] border-white/5 hover:bg-white/[0.08] group h-14 px-8 text-sm font-black uppercase tracking-widest rounded-2xl transition-all hover:glow-primary">
-                    <ExternalLink className="w-5 h-5 group-hover:rotate-12 transition-transform" />
+                  <Button variant="secondary" className="w-full gap-2.5 bg-white/[0.03] border-white/5 hover:bg-white/[0.08] group h-12 px-6 text-xs font-black uppercase tracking-widest rounded-xl transition-all hover:glow-primary">
+                    <ExternalLink className="w-4 h-4 group-hover:rotate-12 transition-transform" />
                     Live Store
                   </Button>
                 </Link>
                 <Link href="/dashboard/add-product" className="w-full sm:w-auto flex-1 lg:flex-initial">
-                  <Button className="w-full gap-3 shadow-2xl shadow-primary/20 group h-14 px-10 text-sm font-black uppercase tracking-[0.2em] rounded-2xl hover-lift bg-primary hover:bg-primary-light transition-all">
-                    <Plus className="w-5 h-5 group-hover:rotate-90 transition-transform duration-500" />
+                  <Button className="w-full gap-2.5 shadow-2xl shadow-primary/20 group h-12 px-8 text-xs font-black uppercase tracking-[0.2em] rounded-xl hover-lift bg-primary hover:bg-primary-light transition-all">
+                    <Plus className="w-4 h-4 group-hover:rotate-90 transition-transform duration-500" />
                     New Unit
                   </Button>
                 </Link>

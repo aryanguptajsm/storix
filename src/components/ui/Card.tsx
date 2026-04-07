@@ -1,4 +1,6 @@
+import React from "react";
 import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
 
 interface CardProps {
   children: React.ReactNode;
