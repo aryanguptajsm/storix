@@ -687,3 +687,51 @@ h1, h2, h3, h4, h5, h6 {
   from { transform: rotate(0deg) translate(20%) rotate(0deg); }
   to { transform: rotate(360deg) translate(20%) rotate(-360deg); }
 }
+/* ─── Senior Modern UI Utilities ─── */
+.grid-bg-premium {
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: radial-gradient(circle at 50% 50%, black 10%, transparent 90%);
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, black 10%, transparent 90%);
+}
+
+.grid-bg-dots {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 24px 24px;
+  mask-image: radial-gradient(circle at 50% 50%, black 10%, transparent 85%);
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, black 10%, transparent 85%);
+}
+
+.noise-subtle {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  opacity: 0.4;
+  mix-blend-mode: overlay;
+}
+
+.border-beam {
+  position: relative;
+  overflow: hidden;
+}
+
+.border-beam::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-primary), transparent);
+  animation: beam-sweep 3s ease-in-out infinite;
+  opacity: 0.6;
+}
+
+.animate-glow-border {
+  transition: border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.animate-glow-border:hover {
+  border-color: rgba(16, 185, 129, 0.4);
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.1);
+}
