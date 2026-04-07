@@ -92,9 +92,9 @@ export function DashboardSkeleton() {
                      key={step.id}
                      animate={{ 
                        scale: idx === currentStep ? 1.2 : 1,
-                       bg: idx <= currentStep ? "var(--color-primary)" : "rgba(255,255,255,0.1)"
+                       backgroundColor: idx <= currentStep ? "var(--color-primary)" : "rgba(255,255,255,0.1)"
                      }}
-                     className={`w-1.5 h-1.5 rounded-full ${idx <= currentStep ? "bg-primary" : "bg-white/10"}`}
+                     className="w-1.5 h-1.5 rounded-full"
                    />
                  ))}
               </div>
