@@ -26,7 +26,13 @@ async function verify() {
   if (apiKey && result.http_code === 200) {
     console.log("2. Starting Content Generation...");
     const agent = new ContentAgent(apiKey);
-    const content = await agent.generateReview(result);
+    const content = await agent.generateReview({
+      title: result.product_title,
+      description: result.description,
+      price: result.price,
+      platform: "Flipkart",
+      original_url: result.product_url
+    });
     const title = await agent.generateSEOTitle(result.product_title);
 
     console.log("\n🚀 Generated SEO Title:", title);
