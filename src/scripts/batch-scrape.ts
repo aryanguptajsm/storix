@@ -22,11 +22,17 @@ async function main() {
   }
 
   const fileContent = fs.readFileSync(inputPath, "utf-8");
+  interface CsvRecord {
+    product_url?: string;
+    url?: string;
+    [key: string]: any;
+  }
+
   const records = parse(fileContent, {
     columns: true,
     skip_empty_lines: true,
     trim: true,
-  });
+  }) as CsvRecord[];
 
   console.log(`\n🚀 ProductScrapeAgent: Starting batch process for ${records.length} items...`);
   console.log(`Mode: CSV Batch (Pro)`);
