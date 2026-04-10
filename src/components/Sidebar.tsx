@@ -65,7 +65,7 @@ export function Sidebar() {
           <span className="text-xl font-black bg-gradient-to-r from-primary-light to-secondary bg-clip-text text-transparent tracking-tighter leading-none">
             Storix
           </span>
-          <span className="text-[10px] text-muted/50 font-bold uppercase tracking-widest mt-0.5">Fleet Command</span>
+          <span className="text-[10px] text-muted/50 font-bold uppercase tracking-widest mt-0.5">Dashboard</span>
         </div>
       </div>
 
@@ -85,10 +85,10 @@ export function Sidebar() {
               key={item.href}
               href={isLocked ? "/dashboard/billing" : item.href}
               onClick={() => setMobileOpen(false)}
-              className={`flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-300 group perspective-1000 ${
+              className={`flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-300 group ${
                 isActive
                   ? "bg-primary/10 text-primary-light border border-primary/20 shadow-lg shadow-primary/10"
-                  : "text-muted hover:text-foreground hover:bg-white/5 border border-transparent hover-tilt preserve-3d"
+                  : "text-muted hover:text-foreground hover:bg-white/5 border border-transparent"
               }`}
             >
               <div className="flex items-center gap-3">
@@ -113,7 +113,7 @@ export function Sidebar() {
             </div>
             <div className="flex flex-col overflow-hidden">
               <span className="text-xs font-bold text-foreground truncate">{profile?.store_name || user.email}</span>
-              <span className="text-[10px] text-muted truncate">Commander</span>
+              <span className="text-[10px] text-muted truncate">Owner</span>
             </div>
           </div>
         )}
@@ -135,7 +135,7 @@ export function Sidebar() {
             className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-danger/70 hover:text-danger hover:bg-danger/10 w-full transition-all cursor-pointer group"
           >
             <LogOut className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
-            Abandon Station
+            Sign Out
           </button>
         </div>
       </div>

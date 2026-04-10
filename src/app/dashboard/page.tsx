@@ -216,7 +216,7 @@ export default async function DashboardPage() {
                   <div className="h-1 flex-1 bg-white/5 rounded-full overflow-hidden">
                     <div className="h-full bg-primary w-[70%] animate-shimmer" />
                   </div>
-                  <span className="text-[9px] font-black text-primary uppercase tracking-widest">Active nodes</span>
+                  <span className="text-[9px] font-black text-primary uppercase tracking-widest">Active</span>
                 </div>
               </CardContent>
             </Card>
@@ -244,7 +244,7 @@ export default async function DashboardPage() {
                   <div className="h-1 flex-1 bg-white/5 rounded-full overflow-hidden">
                     <div className="h-full bg-secondary w-[45%] animate-shimmer" />
                   </div>
-                  <span className="text-[9px] font-black text-secondary uppercase tracking-widest">Intercepts</span>
+                  <span className="text-[9px] font-black text-secondary uppercase tracking-widest">Tracked</span>
                 </div>
               </CardContent>
             </Card>
@@ -272,7 +272,7 @@ export default async function DashboardPage() {
                   <div className="h-1 flex-1 bg-white/5 rounded-full overflow-hidden">
                     <div className="h-full bg-accent w-[20%] animate-shimmer" />
                   </div>
-                  <span className="text-[9px] font-black text-accent uppercase tracking-widest">Pending Sync</span>
+                  <span className="text-[9px] font-black text-accent uppercase tracking-widest">Coming soon</span>
                 </div>
               </CardContent>
             </Card>
