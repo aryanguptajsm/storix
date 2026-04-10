@@ -71,7 +71,7 @@ export default function SignupPage() {
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     if (usernameStatus === "taken") {
-      toast.error("Username is already claimed by another node.");
+      toast.error("Username is already taken.");
       return;
     }
     setLoading(true);
@@ -85,11 +85,11 @@ export default function SignupPage() {
           username: formData.username.toLowerCase().replace(/\s+/g, ""),
           store_name: formData.storeName || `${formData.username}'s Store`,
         });
-        toast.success("Station fully initialized!");
+        toast.success("Account created!");
         router.push("/dashboard");
       }
     } catch (err: any) {
-      const msg = err.message || "Signup failed. Protocol interrupted.";
+      const msg = err.message || "Signup failed. Please try again.";
       setError(msg);
       toast.error(msg);
     } finally {
@@ -156,7 +156,7 @@ export default function SignupPage() {
             className="space-y-2"
           >
             <h1 className="text-5xl font-black bg-gradient-to-r from-primary-light via-white to-secondary-light bg-clip-text text-transparent tracking-tighter uppercase italic">Storix</h1>
-            <p className="text-white/40 text-sm font-bold tracking-[0.3em] uppercase">Join the Elite Fleet</p>
+            <p className="text-white/40 text-sm font-bold tracking-[0.3em] uppercase">Create your account</p>
           </motion.div>
         </div>
 
@@ -168,10 +168,10 @@ export default function SignupPage() {
                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}>
                        <Input
-                          label="Email Target"
+                          label="Email"
                           name="email"
                           type="email"
-                          placeholder="node@storix.ai"
+                          placeholder="you@example.com"
                           value={formData.email}
                           onChange={handleChange}
                           icon={<Mail size={18} />}
@@ -181,7 +181,7 @@ export default function SignupPage() {
                     </motion.div>
                     <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 }}>
                        <Input
-                          label="Secret Key"
+                          label="Password"
                           name="password"
                           type="password"
                           placeholder="••••••••"
@@ -200,7 +200,7 @@ export default function SignupPage() {
                        <Input
                           label="Username"
                           name="username"
-                          placeholder="commander1"
+                          placeholder="myusername"
                           value={formData.username}
                           onChange={handleChange}
                           icon={<User size={18} />}
@@ -220,9 +220,9 @@ export default function SignupPage() {
                   </motion.div>
                   <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}>
                     <Input
-                      label="Store Designation"
+                      label="Store Name"
                       name="storeName"
-                      placeholder="Omega Fleet"
+                      placeholder="My Awesome Store"
                       value={formData.storeName}
                       onChange={handleChange}
                       icon={<Layout size={18} />}
@@ -251,7 +251,7 @@ export default function SignupPage() {
                   transition={{ delay: 0.7 }}
                 >
                   <Button type="submit" className="w-full h-16 shadow-2xl shadow-emerald-500/10" loading={loading}>
-                    <span>Initialize Interface</span>
+                    <span>Create Account</span>
                     <Sparkles size={18} className="translate-x-1" />
                   </Button>
                 </motion.div>
@@ -262,7 +262,7 @@ export default function SignupPage() {
                   <div className="w-full border-t border-white/5"></div>
                 </div>
                 <div className="relative flex justify-center">
-                  <span className="bg-[#020205] px-4 text-[9px] font-black uppercase tracking-[0.4em] text-white/20">Secure Auth Link</span>
+                  <span className="bg-[#020205] px-4 text-[9px] font-black uppercase tracking-[0.4em] text-white/20">Or</span>
                 </div>
               </div>
 
@@ -279,13 +279,13 @@ export default function SignupPage() {
                   loading={googleLoading}
                 >
                   <GoogleIcon />
-                  <span className="ml-3">Google Handshake</span>
+                  <span className="ml-3">Continue with Google</span>
                 </Button>
               </motion.div>
 
               <div className="text-center pt-4">
                 <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/30">
-                  Already registered? <Link href="/login" className="text-primary hover:text-primary-light transition-colors ml-2">Open Station</Link>
+                  Already have an account? <Link href="/login" className="text-primary hover:text-primary-light transition-colors ml-2">Sign in</Link>
                 </p>
               </div>
             </CardContent>

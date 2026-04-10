@@ -101,8 +101,8 @@ export default function LoginPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
           >
-            <p className="text-white text-2xl font-black tracking-tight font-display italic">Welcome back, Captain!</p>
-            <p className="text-muted/60 text-sm mt-2 font-medium">Ready to scale your affiliate ecosystem?</p>
+            <p className="text-white text-2xl font-black tracking-tight font-display italic">Welcome back</p>
+            <p className="text-muted/60 text-sm mt-2 font-medium">Sign in to manage your affiliate store</p>
           </motion.div>
         </div>
 
@@ -131,7 +131,7 @@ export default function LoginPage() {
                   <Input
                     label="Email Address"
                     type="email"
-                    placeholder="commander@storix.ai"
+                    placeholder="you@example.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     icon={<Mail size={18} />}
@@ -178,7 +178,7 @@ export default function LoginPage() {
                     >
                       <AlertCircle size={16} className="shrink-0 mt-0.5" />
                       <div className="space-y-1">
-                         <p className="uppercase tracking-wider text-[10px] opacity-70">Authorization Error</p>
+                         <p className="uppercase tracking-wider text-[10px] opacity-70">Sign in failed</p>
                          <p className="leading-relaxed">
                            {error.includes("Provider not enabled") 
                              ? "Google Authentication is not yet activated on this station. Please use your credentials or contact command."
@@ -195,7 +195,7 @@ export default function LoginPage() {
                   transition={{ delay: 0.8 }}
                 >
                   <Button type="submit" className="w-full h-16 group text-base font-black shadow-2xl shadow-primary/20" loading={loading}>
-                    <span>Enter Dashboard</span>
+                    <span>Sign In</span>
                     <ArrowRight size={20} className="group-hover:translate-x-1.5 transition-transform" />
                   </Button>
                 </motion.div>
@@ -211,7 +211,7 @@ export default function LoginPage() {
                   <div className="w-full border-t border-white/5"></div>
                 </div>
                 <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-background px-4 text-muted/30 font-black uppercase tracking-widest text-[9px]">Direct Auth Access</span>
+                  <span className="bg-background px-4 text-muted/30 font-black uppercase tracking-widest text-[9px]">Or continue with</span>
                 </div>
               </motion.div>
 
@@ -240,12 +240,12 @@ export default function LoginPage() {
                 transition={{ delay: 1.1 }}
                 className="mt-10 text-center text-sm"
               >
-                <span className="text-muted/40 font-medium">New to the fleet? </span>
+                <span className="text-muted/40 font-medium">Don't have an account? </span>
                 <Link
                   href="/signup"
                   className="text-primary hover:text-primary-light font-black transition-all hover:underline decoration-2 underline-offset-4"
                 >
-                  Join Storix
+                  Sign up
                 </Link>
               </motion.div>
             </CardContent>
