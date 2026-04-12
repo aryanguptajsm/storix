@@ -193,6 +193,7 @@ export default async function DashboardPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           <div className="perspective-1000 group h-full">
+            <TiltCard intensity={5} className="h-full">
             <Card variant="glass" className="relative overflow-hidden group hover:glow-primary transition-all duration-300 h-full">
               <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
                 <Package size={50} />
@@ -218,9 +219,11 @@ export default async function DashboardPage() {
                 </div>
               </CardContent>
             </Card>
+            </TiltCard>
           </div>
 
           <div className="perspective-1000 group h-full">
+            <TiltCard intensity={5} className="h-full">
             <Card variant="glass" className="relative overflow-hidden group hover:glow-secondary transition-all duration-300 h-full">
               <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
                 <MousePointerClick size={50} />
@@ -246,9 +249,11 @@ export default async function DashboardPage() {
                 </div>
               </CardContent>
             </Card>
+            </TiltCard>
           </div>
 
           <div className="perspective-1000 group h-full">
+            <TiltCard intensity={5} className="h-full">
             <Card variant="glass" className="relative overflow-hidden group hover:glow-accent transition-all duration-300 h-full">
               <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
                 <TrendingUp size={50} />
@@ -274,6 +279,7 @@ export default async function DashboardPage() {
                 </div>
               </CardContent>
             </Card>
+            </TiltCard>
           </div>
         </div>
 
