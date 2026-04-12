@@ -66,7 +66,7 @@ export function StoreView({ profile, products }: StoreViewProps) {
   };
 
   const isPro = profile.plan && profile.plan !== "free";
-  const finalTheme = !isPro && isPremiumTheme(profile.theme) ? "default" : profile.theme;
+  const finalTheme = !isPro && isPremiumTheme(profile.theme || "default") ? "default" : (profile.theme || "default");
 
   return (
     <ThemeProvider initialTheme={finalTheme as any}>
