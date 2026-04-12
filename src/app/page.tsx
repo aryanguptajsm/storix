@@ -102,14 +102,14 @@ export default function LandingPage() {
         {/* ═══════ HERO ═══════ */}
         <section className="relative pt-36 md:pt-52 pb-24 md:pb-44 px-4 sm:px-6 overflow-hidden">
           {/* Background */}
-          <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_50%_0%,rgba(16,185,129,0.08),transparent_70%)]" />
+          <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_50%_0%,rgba(16,185,129,0.1),transparent_70%)]" />
           <div className="absolute inset-0 -z-10">
-            <div className="absolute inset-0 grid-bg-low-vis opacity-50" />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(16,185,129,0.1),transparent_60%)]" />
+            <div className="absolute inset-0 noise-subtle opacity-40 pointer-events-none" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(16,185,129,0.15),transparent_60%)]" />
             <motion.div 
                animate={{ 
-                 scale: [1, 1.15, 1],
-                 opacity: [0.05, 0.1, 0.05],
+                 scale: [1, 1.2, 1],
+                 opacity: [0.05, 0.15, 0.05],
                }}
                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
                className="absolute top-1/4 -left-20 w-[600px] h-[600px] bg-emerald-500/10 rounded-full blur-[140px]" 
@@ -157,26 +157,26 @@ export default function LandingPage() {
               Paste affiliate links, let AI optimize your titles, and launch a beautiful storefront in minutes. Start earning from clicks — no coding required.
             </motion.p>
 
-            {/* CTA Buttons */}
+             {/* CTA Buttons */}
              <motion.div 
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.6 }}
-                className="flex flex-col sm:flex-row items-center justify-center gap-6 md:gap-8 mb-24 md:mb-40"
+                className="flex flex-col sm:flex-row items-center justify-center gap-6 md:gap-8 mb-24 md:mb-40 relative z-20"
              >
                <Link href="/signup">
-                 <Button className="h-16 px-12 md:px-16 rounded-2xl shadow-[0_20px_60px_rgba(16,185,129,0.3)]">
+                 <Button className="h-[4.5rem] px-12 md:px-16 rounded-2xl shadow-[0_20px_60px_rgba(16,185,129,0.3)] hover:shadow-[0_0_80px_rgba(16,185,129,0.6)] hover:-translate-y-1 transition-all duration-500 font-bold text-lg">
                    <span className="flex items-center gap-3">
                      Get Started Free
-                     <ArrowRight size={20} />
+                     <Sparkles size={20} className="animate-pulse" />
                    </span>
                  </Button>
                </Link>
 
                <Link href="/store/demo">
-                 <Button variant="secondary" className="h-16 px-10 md:px-14 rounded-2xl bg-white/[0.04] border-white/10">
+                 <Button variant="secondary" className="h-[4.5rem] px-10 md:px-14 rounded-2xl bg-white/[0.04] border-white/10 hover:bg-white/[0.08] hover:border-white/20 transition-all duration-500 font-bold text-lg">
                    View Demo Store
-                   <ArrowUpRight size={18} className="ml-2 opacity-40" />
+                   <ArrowUpRight size={20} className="ml-2 text-white/40" />
                  </Button>
                </Link>
              </motion.div>
@@ -239,7 +239,8 @@ export default function LandingPage() {
 
         {/* ═══════ FEATURES ═══════ */}
         <section id="features" className="py-32 md:py-48 px-4 sm:px-6 relative">
-          <div className="absolute inset-0 dot-grid opacity-30 -z-10" />
+          <div className="absolute inset-0 noise-subtle opacity-30 -z-10 pointer-events-none" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[500px] bg-gradient-to-r from-violet-500/5 via-cyan-500/5 to-emerald-500/5 blur-[100px] -z-10" />
 
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-24 md:mb-32">
@@ -258,11 +259,11 @@ export default function LandingPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
               {features.map((feature, i) => (
                 <ScrollReveal key={i} delay={i * 0.1} variant="zoom-in">
-                  <TiltCard intensity={8} className="h-full">
-                    <div className="group h-full relative rounded-[2.5rem] border border-white/[0.08] bg-white/[0.01] p-10 md:p-12 hover:border-emerald-500/20 transition-all duration-700 overflow-hidden backdrop-blur-3xl">
-                      <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+                  <TiltCard intensity={8} className="h-full group">
+                    <div className="group h-full relative rounded-[2.5rem] border border-white/[0.05] bg-white/[0.02] p-10 md:p-12 hover:border-white/20 transition-all duration-700 overflow-hidden backdrop-blur-3xl hover:shadow-[0_0_80px_rgba(16,185,129,0.15)] hover:bg-white/[0.04]">
+                      <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
                       
-                      <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${feature.gradient} flex items-center justify-center mb-10 group-hover:scale-110 group-hover:rotate-6 transition-all duration-700 shadow-2xl`}>
+                      <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${feature.gradient} flex items-center justify-center mb-10 group-hover:scale-110 group-hover:rotate-12 transition-all duration-700 shadow-[0_0_30px_rgba(0,0,0,0.5)] group-hover:${feature.shadow}`}>
                         <feature.icon className="w-8 h-8 text-white" />
                       </div>
                       <h3 className="text-3xl font-black mb-5 text-white group-hover:text-emerald-400 transition-colors duration-500">{feature.title}</h3>
@@ -288,7 +289,7 @@ export default function LandingPage() {
               {steps.map((step, i) => (
                 <ScrollReveal key={i} delay={i * 200}>
                   <div className="text-center group">
-                     <div className="w-24 h-24 rounded-[2rem] bg-white/[0.02] border border-white/5 mx-auto mb-10 flex items-center justify-center text-emerald-400 group-hover:scale-110 group-hover:bg-emerald-500/10 group-hover:shadow-[0_0_50px_rgba(16,185,129,0.1)] transition-all duration-700 shadow-2xl relative">
+                     <div className="w-24 h-24 rounded-[2rem] bg-white/[0.02] border border-white/5 mx-auto mb-10 flex items-center justify-center text-emerald-400 group-hover:scale-110 group-hover:bg-emerald-500/10 group-hover:shadow-[0_0_60px_rgba(16,185,129,0.4)] group-hover:border-emerald-500/30 transition-all duration-700 shadow-[0_0_20px_rgba(0,0,0,0.5)] relative">
                         <div className="absolute -top-2 -right-2 w-8 h-8 rounded-xl bg-black border border-white/10 text-[11px] font-black text-white/40 flex items-center justify-center group-hover:text-emerald-500 transition-colors">{step.num}</div>
                         <step.icon size={36} className="group-hover:rotate-12 transition-transform duration-700" />
                      </div>
