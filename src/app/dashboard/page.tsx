@@ -2,6 +2,7 @@ import React from "react";
 import { createClient } from "@/lib/supabase-server";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
+import { TiltCard } from "@/components/ui/TiltCard";
 import { 
   Plus, 
   MousePointerClick, 
