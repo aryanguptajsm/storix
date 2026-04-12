@@ -102,13 +102,12 @@ export default async function DashboardPage() {
     <div className="space-y-6 pb-20 relative min-h-screen">
       {/* Background Layering */}
       <div className="fixed inset-0 pointer-events-none -z-20 bg-[#020205]" />
-      <div className="fixed inset-0 grid-bg-premium opacity-20 pointer-events-none -z-10" />
-      <div className="fixed inset-0 grid-bg-dots opacity-10 pointer-events-none -z-10" />
-      <div className="fixed inset-0 noise-subtle opacity-50 pointer-events-none -z-10" />
+      <div className="fixed inset-0 noise-subtle opacity-70 pointer-events-none -z-10" />
       
       {/* Ambient Glows */}
-      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/10 rounded-full blur-[100px] pointer-events-none -z-10 animate-pulse-breathing" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-secondary/5 rounded-full blur-[100px] pointer-events-none -z-10 animate-drift-slow" />
+      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/20 rounded-full blur-[140px] pointer-events-none -z-10 animate-pulse-breathing" />
+      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-secondary/10 rounded-full blur-[140px] pointer-events-none -z-10 animate-drift-slow" />
+      <div className="absolute top-[40%] left-[60%] w-[30%] h-[30%] bg-accent/10 rounded-full blur-[120px] pointer-events-none -z-10" />
       
       <DashboardEntrance />
 
