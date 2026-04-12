@@ -23,7 +23,7 @@ const GoogleIcon = () => (
   </svg>
 );
 
-export default function SignupPage() {
+function SignupContent() {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -294,5 +294,13 @@ export default function SignupPage() {
         </div>
       </motion.div>
     </div>
+  );
+}
+
+export default function SignupPage() {
+  return (
+    <React.Suspense fallback={<div className="min-h-screen flex items-center justify-center p-4 bg-[#020205]"><div className="animate-spin w-8 h-8 rounded-full border-b-2 border-primary" /></div>}>
+      <SignupContent />
+    </React.Suspense>
   );
 }

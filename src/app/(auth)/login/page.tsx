@@ -22,7 +22,7 @@ const GoogleIcon = () => (
   </svg>
 );
 
-export default function LoginPage() {
+function LoginContent() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -266,4 +266,12 @@ export default function LoginPage() {
     </div>
   );
 
+}
+
+export default function LoginPage() {
+  return (
+    <React.Suspense fallback={<div className="min-h-screen flex items-center justify-center p-4 bg-background"><div className="animate-spin w-8 h-8 rounded-full border-b-2 border-primary" /></div>}>
+      <LoginContent />
+    </React.Suspense>
+  );
 }
