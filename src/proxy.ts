@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { updateSession } from "@/lib/middleware";
+import { updateSession } from "@/lib/auth-middleware";
 
 export async function proxy(request: NextRequest) {
   // First, verify auth sessions
