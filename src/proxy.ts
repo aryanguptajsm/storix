@@ -1,20 +1,21 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { updateSession } from "@/lib/auth-middleware";
 
-export async function middleware(request: NextRequest) {
-  // First, verify auth sessions
+export async function proxy(request: NextRequest) {
+  // Auth session refresh (handles cookies + redirects)
   const res = await updateSession(request);
 
   // Subdomain routing logic
   const url = request.nextUrl;
   const hostname = request.headers.get("host") || "";
-  
+
   // Strip the primary domain depending on environment
-  const currentHost = process.env.NODE_ENV === "production"
+  const currentHost =
+    process.env.NODE_ENV === "production"
       ? hostname.replace(`.storix.in`, "") // Production domain
       : hostname.replace(`.localhost:3000`, ""); // Local dev domain
 
-  // List of paths that should NOT be rewritten to a subdomain store
+  // Paths that should NOT be rewritten to a subdomain store
   const reservedPaths = [
     "/dashboard",
     "/login",
@@ -25,11 +26,12 @@ export async function middleware(request: NextRequest) {
     "/storix",
     "/store",
     "/auth",
-    "/api"
+    "/api",
   ];
 
-  const isReservedPath = reservedPaths.some(path => 
-    url.pathname === path || url.pathname.startsWith(`${path}/`)
+  const isReservedPath = reservedPaths.some(
+    (path) =>
+      url.pathname === path || url.pathname.startsWith(`${path}/`)
   );
 
   // If there's a valid subdomain (not the root domain or www)
@@ -39,15 +41,14 @@ export async function middleware(request: NextRequest) {
     currentHost !== "localhost:3000" &&
     currentHost !== "www.storix.in" &&
     currentHost !== "www" &&
-    currentHost !== hostname // Just in case nothing was replaced
+    currentHost !== hostname
   ) {
-    // We only rewrite if updateSession didn't issue a redirect (status 3xx)
     if (res.status === 200) {
-      if (url.pathname === "/") {
-        return NextResponse.rewrite(new URL(`/store/${currentHost}${url.search}`, request.url));
-      } else {
-        return NextResponse.rewrite(new URL(`/store/${currentHost}${url.pathname}${url.search}`, request.url));
-      }
+      const storePath =
+        url.pathname === "/"
+          ? `/store/${currentHost}${url.search}`
+          : `/store/${currentHost}${url.pathname}${url.search}`;
+      return NextResponse.rewrite(new URL(storePath, request.url));
     }
   }
 
