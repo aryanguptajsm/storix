@@ -206,26 +206,53 @@ export default function LandingPage() {
                     </div>
 
                     <div className="aspect-[16/10] bg-[#050508] relative overflow-hidden flex flex-col">
-                       <div className="p-8 md:p-12 space-y-10">
+                       {/* Animated Content */}
+                       <div className="p-8 md:p-12 space-y-10 relative z-10 h-full flex flex-col">
                           <div className="flex items-center justify-between">
-                             <div className="space-y-2">
-                                <div className="h-5 w-40 bg-white/[0.08] rounded-lg" />
+                             <div className="space-y-4">
+                                <motion.div 
+                                  initial={{ width: "40%" }}
+                                  animate={{ width: ["40%", "100%", "40%"] }}
+                                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                                  className="h-10 w-64 bg-gradient-to-r from-emerald-500/10 to-transparent rounded-xl border border-emerald-500/20 flex items-center px-4"
+                                >
+                                  <div className="h-2 w-1/2 bg-emerald-400/50 rounded-full shadow-[0_0_10px_rgba(52,211,153,0.5)]" />
+                                </motion.div>
                                 <div className="h-3 w-56 bg-white/[0.04] rounded-lg" />
                              </div>
-                             <div className="w-12 h-12 rounded-2xl bg-emerald-500/20 shadow-2xl flex items-center justify-center">
-                                <CheckCircle2 className="text-emerald-400" size={24} />
-                             </div>
+                             <motion.div 
+                                animate={{ scale: [1, 1.1, 1] }}
+                                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                                className="w-14 h-14 rounded-2xl bg-emerald-500/20 shadow-[0_0_40px_rgba(16,185,129,0.4)] flex items-center justify-center border border-emerald-500/30"
+                             >
+                                <CheckCircle2 className="text-emerald-400" size={28} />
+                             </motion.div>
                           </div>
 
-                          <div className="grid grid-cols-3 gap-6">
-                             {[1, 2, 3].map(i => (
-                                <div key={i} className="aspect-[4/5] rounded-[2rem] bg-white/[0.03] border border-white/[0.06] p-6 space-y-4">
-                                   <div className={`w-full aspect-square rounded-2xl ${i % 2 === 0 ? 'bg-emerald-500/15' : 'bg-cyan-500/15'}`} />
-                                   <div className="space-y-2">
-                                      <div className="h-3 w-full bg-white/[0.08] rounded-full" />
-                                      <div className="h-3 w-2/3 bg-white/[0.04] rounded-full" />
+                          <div className="grid grid-cols-3 gap-6 flex-1">
+                             {[1, 2, 3].map((i) => (
+                                <motion.div 
+                                  key={i} 
+                                  initial={{ opacity: 0.3, y: 20 }}
+                                  animate={{ opacity: [0.3, 1, 0.3], y: [20, 0, 20] }}
+                                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: i * 0.4 }}
+                                  className="relative rounded-[2rem] bg-white/[0.02] border border-white/[0.06] flex flex-col overflow-hidden group"
+                                >
+                                   {/* Simulated Image Area */}
+                                   <div className={`flex-1 w-full bg-gradient-to-br ${i % 2 === 0 ? 'from-emerald-500/10 to-transparent' : 'from-cyan-500/10 to-transparent'} relative`}>
+                                      <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/80 to-transparent z-10" />
                                    </div>
-                                </div>
+                                   
+                                   {/* Simulated Content Area */}
+                                   <div className="relative z-20 space-y-3 bg-[#0A0A0E] p-6 border-t border-white/5">
+                                      <div className="h-3 w-full bg-white/[0.2] rounded-full" />
+                                      <div className="h-3 w-2/3 bg-white/[0.1] rounded-full" />
+                                      <div className="flex items-center justify-between mt-6">
+                                        <div className="h-5 w-1/2 bg-emerald-400/30 rounded-full" />
+                                        <div className="w-8 h-8 rounded-full bg-white/5" />
+                                      </div>
+                                   </div>
+                                </motion.div>
                              ))}
                           </div>
                        </div>
