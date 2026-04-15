@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/Button";
 import { motion } from "framer-motion";
 import {
@@ -214,42 +215,74 @@ export default function LandingPage() {
                                   initial={{ width: "40%" }}
                                   animate={{ width: ["40%", "100%", "40%"] }}
                                   transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                                  className="h-10 w-64 bg-gradient-to-r from-emerald-500/10 to-transparent rounded-xl border border-emerald-500/20 flex items-center px-4"
+                                  className="h-10 w-64 bg-gradient-to-r from-emerald-500/10 to-transparent rounded-xl border border-emerald-500/20 flex items-center px-4 overflow-hidden relative"
                                 >
+                                  <motion.div 
+                                     animate={{ x: ["-100%", "200%"] }}
+                                     transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                                     className="absolute inset-y-0 w-1/2 bg-gradient-to-r from-transparent via-emerald-400/20 to-transparent"
+                                  />
                                   <div className="h-2 w-1/2 bg-emerald-400/50 rounded-full shadow-[0_0_10px_rgba(52,211,153,0.5)]" />
                                 </motion.div>
-                                <div className="h-3 w-56 bg-white/[0.04] rounded-lg" />
+                                <motion.div 
+                                  animate={{ opacity: [0.5, 1, 0.5] }}
+                                  transition={{ duration: 2, repeat: Infinity }}
+                                  className="text-xs font-medium text-emerald-400/60 uppercase tracking-widest font-mono"
+                                >
+                                   Scraping Amazon Data...
+                                </motion.div>
                              </div>
                              <motion.div 
-                                animate={{ scale: [1, 1.1, 1] }}
-                                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                                className="w-14 h-14 rounded-2xl bg-emerald-500/20 shadow-[0_0_40px_rgba(16,185,129,0.4)] flex items-center justify-center border border-emerald-500/30"
+                                animate={{ scale: [1, 1.1, 1], rotate: [0, 180, 360] }}
+                                transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                                className="w-14 h-14 rounded-2xl bg-emerald-500/10 shadow-[0_0_40px_rgba(16,185,129,0.2)] flex items-center justify-center border border-emerald-500/20"
                              >
-                                <CheckCircle2 className="text-emerald-400" size={28} />
+                                <Zap className="text-emerald-400/80" size={24} />
                              </motion.div>
                           </div>
 
                           <div className="grid grid-cols-3 gap-6 flex-1">
-                             {[1, 2, 3].map((i) => (
+                             {[
+                                { title: "Sony WH-1000XM5", price: "$348.00", badge: "Audio" },
+                                { title: "MacBook Pro M3 Max", price: "$3199.00", badge: "Laptop" },
+                                { title: "Dyson V15 Detect", price: "$749.99", badge: "Home" }
+                             ].map((item, i) => (
                                 <motion.div 
                                   key={i} 
-                                  initial={{ opacity: 0.3, y: 20 }}
-                                  animate={{ opacity: [0.3, 1, 0.3], y: [20, 0, 20] }}
-                                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: i * 0.4 }}
-                                  className="relative rounded-[2rem] bg-white/[0.02] border border-white/[0.06] flex flex-col overflow-hidden group"
+                                  initial={{ opacity: 0, y: 30 }}
+                                  animate={{ opacity: 1, y: 0 }}
+                                  transition={{ duration: 0.8, ease: "easeOut", delay: i * 0.2 }}
+                                  className="relative rounded-[2rem] bg-white/[0.02] border border-white/[0.06] flex flex-col overflow-hidden group shadow-2xl"
                                 >
                                    {/* Simulated Image Area */}
-                                   <div className={`flex-1 w-full bg-gradient-to-br ${i % 2 === 0 ? 'from-emerald-500/10 to-transparent' : 'from-cyan-500/10 to-transparent'} relative`}>
-                                      <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/80 to-transparent z-10" />
+                                   <div className={`flex-1 w-full bg-gradient-to-br ${i === 0 ? 'from-purple-500/10' : i === 1 ? 'from-blue-500/10' : 'from-orange-500/10'} to-transparent relative overflow-hidden`}>
+                                      <motion.div 
+                                        animate={{ scale: [1, 1.05, 1] }}
+                                        transition={{ duration: 6, repeat: Infinity, delay: i }}
+                                        className="absolute inset-0 bg-white/5"
+                                      />
+                                      <div className="absolute top-4 left-4 px-3 py-1 bg-black/40 backdrop-blur-md rounded-full border border-white/10 text-[10px] font-bold text-white/70 uppercase tracking-widest">
+                                        {item.badge}
+                                      </div>
+                                      <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-[#0A0A0E] to-transparent z-10" />
                                    </div>
                                    
                                    {/* Simulated Content Area */}
-                                   <div className="relative z-20 space-y-3 bg-[#0A0A0E] p-6 border-t border-white/5">
-                                      <div className="h-3 w-full bg-white/[0.2] rounded-full" />
-                                      <div className="h-3 w-2/3 bg-white/[0.1] rounded-full" />
-                                      <div className="flex items-center justify-between mt-6">
-                                        <div className="h-5 w-1/2 bg-emerald-400/30 rounded-full" />
-                                        <div className="w-8 h-8 rounded-full bg-white/5" />
+                                   <div className="relative z-20 space-y-4 bg-[#0A0A0E] p-6 pt-2">
+                                      <h5 className="font-bold text-white text-lg tracking-tight bg-gradient-to-r from-white to-white/60 bg-clip-text text-transparent">{item.title}</h5>
+                                      <div className="h-2 w-full bg-white/[0.05] rounded-full overflow-hidden">
+                                         <motion.div 
+                                           initial={{ width: 0 }}
+                                           animate={{ width: "100%" }}
+                                           transition={{ duration: 2, delay: i * 0.3 + 1, ease: "easeOut" }}
+                                           className="h-full bg-emerald-500/40"
+                                         />
+                                      </div>
+                                      <div className="flex items-center justify-between mt-4">
+                                        <div className="font-mono text-emerald-400 font-bold">{item.price}</div>
+                                        <div className="w-8 h-8 rounded-full bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20">
+                                          <ArrowUpRight size={14} className="text-emerald-400" />
+                                        </div>
                                       </div>
                                    </div>
                                 </motion.div>
