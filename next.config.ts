@@ -34,8 +34,16 @@ const nextConfig: NextConfig = {
     pollIntervalMs: 2000,
   },
   experimental: {
+    optimizePackageImports: [
+      "lucide-react",
+      "framer-motion",
+      "recharts",
+      "sonner",
+    ],
+    turbopackFileSystemCacheForDev: true,
   },
   output: "standalone",
 };
 
 export default nextConfig;
+
