@@ -22,20 +22,12 @@ const nextConfig: NextConfig = {
   },
   devIndicators: false,
   turbopack: {},
-  experimental: {
-    optimizePackageImports: ["lucide-react", "recharts"],
+  watchOptions: {
+    pollIntervalMs: 1000,
   },
-  webpack: (config, { dev }) => {
-    if (dev) {
-      config.watchOptions = {
-        poll: 1000,
-        aggregateTimeout: 300,
-      };
-    }
-    return config;
+  experimental: {
   },
   output: "standalone",
 };
 
 export default nextConfig;
-
