@@ -21,9 +21,9 @@ const nextConfig: NextConfig = {
     ],
   },
   devIndicators: false,
-  optimizePackageImports: ["lucide-react", "recharts"],
   turbopack: {},
   experimental: {
+    optimizePackageImports: ["lucide-react", "recharts"],
   },
   webpack: (config, { dev }) => {
     if (dev) {
