@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import path from "path";
 
 const nextConfig: NextConfig = {
   compress: true,
@@ -22,7 +23,7 @@ const nextConfig: NextConfig = {
   },
   devIndicators: false,
   turbopack: {
-    root: ".",
+    root: path.resolve("."),
     ignoreIssue: [
       { path: "**/node_modules/@opentelemetry/**" },
       { path: "node_modules/next/node_modules/@opentelemetry" },
