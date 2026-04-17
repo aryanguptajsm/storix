@@ -1,8 +1,8 @@
-import React from "react";
+import React, { Suspense } from "react";
+import dynamic from "next/dynamic";
 import { createClient } from "@/lib/supabase-server";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
-import { TiltCard } from "@/components/ui/TiltCard";
 import { 
   Plus, 
   MousePointerClick, 
@@ -18,8 +18,11 @@ import {
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { CopyLinkButton } from "@/components/dashboard/CopyLinkButton";
-import { DashboardEntrance } from "@/components/dashboard/DashboardEntrance";
-import { ScrollReveal, StaggerReveal } from "@/components/ui/ScrollReveal";
+
+const TiltCard = dynamic(() => import("@/components/ui/TiltCard").then(mod => mod.TiltCard), { ssr: true });
+const DashboardEntrance = dynamic(() => import("@/components/dashboard/DashboardEntrance").then(mod => mod.DashboardEntrance), { ssr: false });
+const ScrollReveal = dynamic(() => import("@/components/ui/ScrollReveal").then(mod => mod.ScrollReveal), { ssr: false });
+const StaggerReveal = dynamic(() => import("@/components/ui/ScrollReveal").then(mod => mod.StaggerReveal), { ssr: false });
 import Image from "next/image";
 
 export default async function DashboardPage() {
