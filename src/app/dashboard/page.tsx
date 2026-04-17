@@ -1,3 +1,22 @@
+import React, { Suspense } from "react";
+import { createClient } from "@/lib/supabase-server";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
+import { Button } from "@/components/ui/Button";
+import { 
+  Plus, 
+  MousePointerClick, 
+  Package, 
+  TrendingUp,
+  ExternalLink,
+  Sparkles,
+  Zap,
+  ArrowRight,
+  Settings,
+  Globe,
+} from "lucide-react";
+import Link from "next/link";
+import { redirect } from "next/navigation";
+import { CopyLinkButton } from "@/components/dashboard/CopyLinkButton";
 import Image from "next/image";
 import { 
   DashboardEntrance, 
