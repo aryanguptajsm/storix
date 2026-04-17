@@ -22,9 +22,10 @@ const nextConfig: NextConfig = {
   },
   devIndicators: false,
   turbopack: {
-    root: ".",
+    root: "/home/aryan/storix",
     ignoreIssue: [
       { path: "**/node_modules/@opentelemetry/**" },
+      { path: "node_modules/next/node_modules/@opentelemetry" },
       { path: "**/node_modules/@emotion/**" },
       { path: "**/node_modules/@swc/**" },
       { path: "node_modules/@opentelemetry" },
