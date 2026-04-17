@@ -20,7 +20,7 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
-import { TiltCard } from "@/components/ui/TiltCard";
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
 
 export default function LandingPage() {
   const features = [
@@ -101,21 +101,10 @@ export default function LandingPage() {
       <main className="flex-1">
 
         {/* ═══════ HERO ═══════ */}
-        <section className="relative pt-36 md:pt-52 pb-24 md:pb-44 px-4 sm:px-6 overflow-hidden">
-          {/* Background */}
-          <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_50%_0%,rgba(16,185,129,0.1),transparent_70%)]" />
-          <div className="absolute inset-0 -z-10">
-            <div className="absolute inset-0 noise-subtle opacity-40 pointer-events-none" />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(16,185,129,0.15),transparent_60%)]" />
-            <motion.div 
-               animate={{ 
-                 scale: [1, 1.2, 1],
-                 opacity: [0.05, 0.15, 0.05],
-               }}
-               transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-               className="absolute top-1/4 -left-20 w-[600px] h-[600px] bg-emerald-500/10 rounded-full blur-[140px]" 
-            />
-          </div>
+        <section className="relative pt-32 md:pt-44 pb-20 md:pb-36 px-4 sm:px-6 overflow-hidden">
+          {/* Background overlay for structure */}
+          <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_50%_0%,rgba(16,185,129,0.05),transparent_70%)]" />
+
 
           <div className="max-w-7xl mx-auto text-center relative z-10">
             {/* Status Badge */}
@@ -185,63 +174,45 @@ export default function LandingPage() {
             {/* Browser Mockup */}
             <div className="relative max-w-6xl mx-auto mt-20">
               <ScrollReveal variant="zoom-in" delay={0.8}>
-                <TiltCard intensity={3} perspective={3000} className="relative group">
-                  <div className="absolute -inset-20 bg-emerald-500/10 blur-[120px] rounded-full -z-10 opacity-60 group-hover:opacity-100 transition-opacity duration-1000" />
-                  <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-emerald-400 to-transparent z-20" />
+              <ScrollReveal variant="zoom-in" delay={0.8}>
+                <div className="relative group rounded-md border border-white/[0.1] bg-[#0A0A0E] shadow-[0_40px_80px_rgba(0,0,0,0.9)] overflow-hidden">
+                  <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-emerald-400/50 to-transparent z-20" />
                   
-                  <div className="relative rounded-[3rem] p-3 md:p-4 bg-gradient-to-b from-[#15151E] to-[#0A0A0A] border border-white/[0.08] shadow-[0_50px_100px_-20px_rgba(0,0,0,0.8)] overflow-hidden">
+                  <div className="relative p-2 md:p-2 bg-gradient-to-b from-[#15151E] to-[#0A0A0A]">
                     {/* Browser Chrome */}
-                    <div className="flex items-center gap-3 px-8 py-5 border-b border-white/[0.04] bg-white/[0.01]">
-                       <div className="flex gap-2.5">
-                          <div className="w-3.5 h-3.5 rounded-full bg-red-500/40" />
-                          <div className="w-3.5 h-3.5 rounded-full bg-yellow-500/40" />
-                          <div className="w-3.5 h-3.5 rounded-full bg-green-500/40" />
+                    <div className="flex items-center gap-3 px-6 py-4 border-b border-white/[0.04] bg-white/[0.01]">
+                       <div className="flex gap-2">
+                          <div className="w-3 h-3 rounded-full bg-white/10" />
+                          <div className="w-3 h-3 rounded-full bg-white/10" />
+                          <div className="w-3 h-3 rounded-full bg-white/10" />
                        </div>
-                       <div className="flex-1 max-w-2xl mx-auto h-10 rounded-2xl bg-white/[0.03] border border-white/[0.08] flex items-center px-6 gap-3">
-                          <Globe size={14} className="text-white/20" />
-                          <div className="h-2 w-3/4 bg-white/[0.1] rounded-full" />
-                       </div>
-                       <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-full bg-white/[0.05] border border-white/10" />
+                       <div className="flex-1 max-w-xl mx-auto h-8 rounded-md bg-white/[0.03] border border-white/[0.08] flex items-center px-4 gap-2">
+                          <Globe size={12} className="text-white/20" />
+                          <div className="h-1.5 w-1/2 bg-white/[0.1] rounded-full" />
                        </div>
                     </div>
 
                     <div className="aspect-[16/10] bg-[#050508] relative overflow-hidden flex flex-col">
                        {/* Animated Content */}
-                       <div className="p-8 md:p-12 space-y-10 relative z-10 h-full flex flex-col">
+                       <div className="p-6 md:p-8 space-y-8 relative z-10 h-full flex flex-col">
                           <div className="flex items-center justify-between">
-                             <div className="space-y-4">
+                             <div className="space-y-3">
                                 <motion.div 
                                   initial={{ width: "40%" }}
-                                  animate={{ width: ["40%", "100%", "40%"] }}
+                                  animate={{ width: ["40%", "80%", "40%"] }}
                                   transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                                  className="h-10 w-64 bg-gradient-to-r from-emerald-500/10 to-transparent rounded-xl border border-emerald-500/20 flex items-center px-4 overflow-hidden relative"
+                                  className="h-8 w-48 bg-emerald-500/5 rounded-md border border-emerald-500/10 flex items-center px-3"
                                 >
-                                  <motion.div 
-                                     animate={{ x: ["-100%", "200%"] }}
-                                     transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                                     className="absolute inset-y-0 w-1/2 bg-gradient-to-r from-transparent via-emerald-400/20 to-transparent"
-                                  />
-                                  <div className="h-2 w-1/2 bg-emerald-400/50 rounded-full shadow-[0_0_10px_rgba(52,211,153,0.5)]" />
+                                  <div className="h-1.5 w-1/3 bg-emerald-400/30 rounded-full" />
                                 </motion.div>
-                                <motion.div 
-                                  animate={{ opacity: [0.5, 1, 0.5] }}
-                                  transition={{ duration: 2, repeat: Infinity }}
-                                  className="text-xs font-medium text-emerald-400/60 uppercase tracking-widest font-mono"
-                                >
+                                <div className="text-[10px] font-bold text-emerald-400/40 uppercase tracking-[0.2em]">
                                    Scraping Amazon Data...
-                                </motion.div>
+                                </div>
                              </div>
-                             <motion.div 
-                                animate={{ scale: [1, 1.1, 1], rotate: [0, 180, 360] }}
-                                transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-                                className="w-14 h-14 rounded-2xl bg-emerald-500/10 shadow-[0_0_40px_rgba(16,185,129,0.2)] flex items-center justify-center border border-emerald-500/20"
-                             >
-                                <Zap className="text-emerald-400/80" size={24} />
-                             </motion.div>
+                             <Zap className="text-emerald-400/40" size={20} />
                           </div>
 
-                          <div className="grid grid-cols-3 gap-6 flex-1">
+                          <div className="grid grid-cols-3 gap-4 flex-1">
                              {[
                                 { title: "Sony WH-1000XM5", price: "$348.00", badge: "Audio" },
                                 { title: "MacBook Pro M3 Max", price: "$3199.00", badge: "Laptop" },
@@ -249,40 +220,14 @@ export default function LandingPage() {
                              ].map((item, i) => (
                                 <motion.div 
                                   key={i} 
-                                  initial={{ opacity: 0, y: 30 }}
-                                  animate={{ opacity: 1, y: 0 }}
-                                  transition={{ duration: 0.8, ease: "easeOut", delay: i * 0.2 }}
-                                  className="relative rounded-[2rem] bg-white/[0.02] border border-white/[0.06] flex flex-col overflow-hidden group shadow-2xl"
+                                  className="relative rounded-md bg-white/[0.01] border border-white/[0.05] flex flex-col overflow-hidden group shadow-xl"
                                 >
-                                   {/* Simulated Image Area */}
-                                   <div className={`flex-1 w-full bg-gradient-to-br ${i === 0 ? 'from-purple-500/10' : i === 1 ? 'from-blue-500/10' : 'from-orange-500/10'} to-transparent relative overflow-hidden`}>
-                                      <motion.div 
-                                        animate={{ scale: [1, 1.05, 1] }}
-                                        transition={{ duration: 6, repeat: Infinity, delay: i }}
-                                        className="absolute inset-0 bg-white/5"
-                                      />
-                                      <div className="absolute top-4 left-4 px-3 py-1 bg-black/40 backdrop-blur-md rounded-full border border-white/10 text-[10px] font-bold text-white/70 uppercase tracking-widest">
-                                        {item.badge}
-                                      </div>
-                                      <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-[#0A0A0E] to-transparent z-10" />
-                                   </div>
-                                   
-                                   {/* Simulated Content Area */}
-                                   <div className="relative z-20 space-y-4 bg-[#0A0A0E] p-6 pt-2">
-                                      <h5 className="font-bold text-white text-lg tracking-tight bg-gradient-to-r from-white to-white/60 bg-clip-text text-transparent">{item.title}</h5>
-                                      <div className="h-2 w-full bg-white/[0.05] rounded-full overflow-hidden">
-                                         <motion.div 
-                                           initial={{ width: 0 }}
-                                           animate={{ width: "100%" }}
-                                           transition={{ duration: 2, delay: i * 0.3 + 1, ease: "easeOut" }}
-                                           className="h-full bg-emerald-500/40"
-                                         />
-                                      </div>
-                                      <div className="flex items-center justify-between mt-4">
-                                        <div className="font-mono text-emerald-400 font-bold">{item.price}</div>
-                                        <div className="w-8 h-8 rounded-full bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20">
-                                          <ArrowUpRight size={14} className="text-emerald-400" />
-                                        </div>
+                                   <div className={`flex-1 w-full bg-gradient-to-br ${i === 0 ? 'from-purple-500/5' : i === 1 ? 'from-blue-500/5' : 'from-orange-500/5'} to-transparent relative`} />
+                                   <div className="relative z-20 space-y-3 bg-[#0A0A0E] p-4">
+                                      <h5 className="font-bold text-white text-sm tracking-tight">{item.title}</h5>
+                                      <div className="flex items-center justify-between">
+                                        <div className="text-[10px] text-emerald-400 font-bold">{item.price}</div>
+                                        <ArrowUpRight size={12} className="text-white/20" />
                                       </div>
                                    </div>
                                 </motion.div>
@@ -291,7 +236,8 @@ export default function LandingPage() {
                        </div>
                     </div>
                   </div>
-                </TiltCard>
+                </div>
+              </ScrollReveal>
               </ScrollReveal>
             </div>
           </div>
@@ -319,17 +265,15 @@ export default function LandingPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
               {features.map((feature, i) => (
                 <ScrollReveal key={i} delay={i * 0.1} variant="zoom-in">
-                  <TiltCard intensity={8} className="h-full group">
-                    <div className="group h-full relative rounded-[2.5rem] border border-white/[0.05] bg-white/[0.02] p-10 md:p-12 hover:border-white/20 transition-all duration-700 overflow-hidden backdrop-blur-3xl hover:shadow-[0_0_80px_rgba(16,185,129,0.15)] hover:bg-white/[0.04]">
-                      <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
-                      
-                      <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${feature.gradient} flex items-center justify-center mb-10 group-hover:scale-110 group-hover:rotate-12 transition-all duration-700 shadow-[0_0_30px_rgba(0,0,0,0.5)] group-hover:${feature.shadow}`}>
-                        <feature.icon className="w-8 h-8 text-white" />
-                      </div>
-                      <h3 className="text-3xl font-black mb-5 text-white group-hover:text-emerald-400 transition-colors duration-500">{feature.title}</h3>
-                      <p className="text-white/40 text-lg leading-relaxed font-medium">{feature.desc}</p>
+                  <div className="h-full group relative rounded-lg border border-white/[0.05] bg-white/[0.02] p-8 md:p-10 hover:border-emerald-500/30 transition-all duration-500 overflow-hidden backdrop-blur-2xl hover:shadow-[0_0_40px_rgba(16,185,129,0.1)] hover:bg-white/[0.04]">
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+                    
+                    <div className={`w-14 h-14 rounded-lg bg-gradient-to-br ${feature.gradient} flex items-center justify-center mb-8 shadow-lg`}>
+                      <feature.icon className="w-7 h-7 text-white" />
                     </div>
-                  </TiltCard>
+                    <h3 className="text-2xl font-black mb-4 text-white group-hover:text-emerald-400 transition-colors duration-500">{feature.title}</h3>
+                    <p className="text-white/40 text-base leading-relaxed font-medium">{feature.desc}</p>
+                  </div>
                 </ScrollReveal>
               ))}
             </div>
