@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { ShoppingBag, Share2, Menu, Sparkles, ChevronLeft } from "lucide-react";
+import { ShoppingBag, Share2, Menu, Sparkles, ChevronLeft, Search } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import Link from "next/link";
 
