@@ -38,7 +38,6 @@ const nextConfig: NextConfig = {
     optimizePackageImports: ["framer-motion", "sonner", "lucide-react"],
     turbopackFileSystemCacheForDev: true,
     memoryBasedWorkersCount: true,
-    fetchCacheKeyPrefix: 'storix-fetch',
   },
   output: "standalone",
 };
