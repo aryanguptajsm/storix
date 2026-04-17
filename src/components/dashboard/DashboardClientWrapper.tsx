@@ -2,6 +2,11 @@
 
 import dynamic from "next/dynamic";
 
+export const TiltCard = dynamic(
+  () => import("@/components/ui/TiltCard").then((mod) => mod.TiltCard),
+  { ssr: true }
+);
+
 export const DashboardEntrance = dynamic(
   () => import("@/components/dashboard/DashboardEntrance").then((mod) => mod.DashboardEntrance),
   { ssr: false }
