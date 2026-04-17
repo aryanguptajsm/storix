@@ -41,7 +41,7 @@ const nextConfig: NextConfig = {
   },
   experimental: {
     optimizePackageImports: ["framer-motion", "sonner", "lucide-react"],
-    turbopackFileSystemCacheForDev: true,
+    turbopackFileSystemCacheForDev: false,
     memoryBasedWorkersCount: true,
   },
   output: "standalone",
