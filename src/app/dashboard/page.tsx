@@ -20,9 +20,7 @@ import { redirect } from "next/navigation";
 import { CopyLinkButton } from "@/components/dashboard/CopyLinkButton";
 
 const TiltCard = dynamic(() => import("@/components/ui/TiltCard").then(mod => mod.TiltCard), { ssr: true });
-const DashboardEntrance = dynamic(() => import("@/components/dashboard/DashboardEntrance").then(mod => mod.DashboardEntrance), { ssr: false });
-const ScrollReveal = dynamic(() => import("@/components/ui/ScrollReveal").then(mod => mod.ScrollReveal), { ssr: false });
-const StaggerReveal = dynamic(() => import("@/components/ui/ScrollReveal").then(mod => mod.StaggerReveal), { ssr: false });
+import { DashboardEntrance, ScrollReveal, StaggerReveal } from "@/components/dashboard/DashboardClientWrapper";
 import Image from "next/image";
 
 export default async function DashboardPage() {
