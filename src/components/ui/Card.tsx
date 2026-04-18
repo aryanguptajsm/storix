@@ -23,16 +23,16 @@ export function Card({
   hoverEffect = true
 }: CardProps) {
   const sizeStyles = {
-    default: "p-6 md:p-8 rounded-[2.5rem]",
-    medium: "p-5 md:p-6 rounded-3xl",
-    small: "p-4 md:p-5 rounded-2xl",
+    default: "p-6 md:p-10 rounded-[3rem]",
+    medium: "p-5 md:p-7 rounded-[2.5rem]",
+    small: "p-4 md:p-6 rounded-3xl",
   };
 
   const variants = {
-    glass: "glass-premium backdrop-blur-xl border-white/5 bg-white/[0.01] shadow-[inset_0_1px_1px_rgba(255,255,255,0.05),0_10px_30px_-10px_rgba(0,0,0,0.5)]",
+    glass: "glass-premium backdrop-blur-2xl border-white/10 bg-white/[0.015] shadow-[inset_0_1px_1px_rgba(255,255,255,0.05),0_20px_40px_-15px_rgba(0,0,0,0.6)]",
     "glass-morphism": "glass-morphism shadow-[inset_0_1px_2px_rgba(255,255,255,0.03)]",
-    premium: "glass-premium-animated border-primary/20 bg-primary/[0.02] animate-glow-border shadow-[inset_0_1px_1px_rgba(255,255,255,0.1),0_0_20px_rgba(0,0,0,0.7)]",
-    solid: "bg-[#0A0A0E] border-white/5 shadow-[inset_0_2px_4px_rgba(255,255,255,0.02),inset_0_-2px_4px_rgba(0,0,0,0.6)]",
+    premium: "glass-premium-animated border-primary/30 bg-primary/[0.03] animate-glow-border shadow-[inset_0_1px_1px_rgba(255,255,255,0.15),0_0_30px_rgba(0,0,0,0.8)]",
+    solid: "bg-[#0A0A0E] border-white/10 shadow-[inset_0_2px_4px_rgba(255,255,255,0.02),inset_0_-2px_4px_rgba(0,0,0,0.7)]",
   };
 
   return (
