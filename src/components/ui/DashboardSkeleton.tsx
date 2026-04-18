@@ -39,7 +39,7 @@ export function DashboardSkeleton() {
           {[1, 2, 3].map((i) => (
             <div
               key={i}
-              className="rounded-xl border border-white/[0.05] bg-black/60 backdrop-blur-xl p-5 space-y-3 shadow-[inset_0_2px_4px_rgba(255,255,255,0.02),0_4px_16px_rgba(0,0,0,0.4)] relative overflow-hidden group"
+              className="rounded-[1.5rem] border border-white/[0.05] bg-black/60 backdrop-blur-xl p-5 space-y-3 shadow-[inset_0_2px_4px_rgba(255,255,255,0.02),0_4px_16px_rgba(0,0,0,0.4)] relative overflow-hidden group"
             >
               <div className="absolute inset-0 noise-subtle opacity-20 pointer-events-none" />
               <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
@@ -56,7 +56,7 @@ export function DashboardSkeleton() {
         </div>
 
         {/* Store Card */}
-        <div className="rounded-2xl border border-white/[0.05] bg-black/60 backdrop-blur-xl p-5 md:p-6 flex flex-col md:flex-row items-center justify-between gap-6 shadow-[inset_0_2px_4px_rgba(255,255,255,0.02),0_4px_16px_rgba(0,0,0,0.4)] relative overflow-hidden group">
+        <div className="rounded-[2rem] border border-white/[0.05] bg-black/60 backdrop-blur-xl p-5 md:p-6 flex flex-col md:flex-row items-center justify-between gap-6 shadow-[inset_0_2px_4px_rgba(255,255,255,0.02),0_4px_16px_rgba(0,0,0,0.4)] relative overflow-hidden group">
           <div className="absolute inset-0 noise-subtle opacity-20 pointer-events-none" />
           <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
           <div className="relative z-10 flex items-center gap-5 w-full md:w-auto">
@@ -77,7 +77,7 @@ export function DashboardSkeleton() {
           {[1, 2].map((i) => (
             <div
               key={i}
-              className="rounded-2xl border border-white/[0.05] bg-black/60 backdrop-blur-xl p-5 space-y-4 shadow-[inset_0_2px_4px_rgba(255,255,255,0.02),0_4px_16px_rgba(0,0,0,0.4)] relative overflow-hidden group"
+              className="rounded-[2rem] border border-white/[0.05] bg-black/60 backdrop-blur-xl p-5 space-y-4 shadow-[inset_0_2px_4px_rgba(255,255,255,0.02),0_4px_16px_rgba(0,0,0,0.4)] relative overflow-hidden group"
             >
               <div className="absolute inset-0 noise-subtle opacity-20 pointer-events-none" />
               <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
