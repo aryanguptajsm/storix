@@ -8,10 +8,17 @@ interface Position {
   y: number;
 }
 
+/**
+ * SpotlightCardProps - Configuration for the SpotlightCard component.
+ */
 interface SpotlightCardProps extends React.PropsWithChildren {
   /** Additional CSS classes for the card container */
   className?: string;
-  /** Background color for the spotlight effect (should include alpha for transparency) */
+  /** 
+   * Background color for the spotlight effect.
+   * @default "rgba(16, 185, 129, 0.15)" (Storix Emerald)
+   * @example "rgba(255, 255, 255, 0.1)"
+   */
   spotlightColor?: string;
 }
 
@@ -21,18 +28,21 @@ interface SpotlightCardProps extends React.PropsWithChildren {
  * Features:
  * - Dynamic radial gradient spotlight following cursor
  * - Noise texture overlay for high-fidelity aesthetics
- * - Hover & Focus state transitions
+ * - Hover & Focus state transitions that don't block each other
  * - Optimized with useCallback and relative positioning
+ * - Glassmorphism effects integrated with Storix design system
+ * 
+ * @param props - Component props
  */
 const SpotlightCard: React.FC<SpotlightCardProps> = ({
   children,
   className = '',
-  // Default to Storix Primary Emerald with low opacity
-  spotlightColor = 'rgba(16, 185, 129, 0.2)'
+  spotlightColor = 'rgba(16, 185, 129, 0.15)'
 }) => {
   const divRef = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState<Position>({ x: 0, y: 0 });
-  const [opacity, setOpacity] = useState<number>(0);
+  const [isFocused, setIsFocused] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   const handleMouseMove: React.MouseEventHandler<HTMLDivElement> = useCallback((e) => {
     if (!divRef.current) return;
@@ -44,10 +54,13 @@ const SpotlightCard: React.FC<SpotlightCardProps> = ({
     });
   }, []);
 
-  const handleMouseEnter = () => setOpacity(0.6);
-  const handleMouseLeave = () => setOpacity(0);
-  const handleFocus = () => setOpacity(0.6);
-  const handleBlur = () => setOpacity(0);
+  const handleMouseEnter = () => setIsHovered(true);
+  const handleMouseLeave = () => setIsHovered(false);
+  const handleFocus = () => setIsFocused(true);
+  const handleBlur = () => setIsFocused(false);
+
+  // Spotlight opacity logic ensuring focus and hover work together seamlessly
+  const opacity = isHovered || isFocused ? 1 : 0;
 
   return (
     <div
@@ -57,23 +70,24 @@ const SpotlightCard: React.FC<SpotlightCardProps> = ({
       onMouseLeave={handleMouseLeave}
       onFocus={handleFocus}
       onBlur={handleBlur}
+      tabIndex={0}
       className={cn(
-        "relative rounded-2xl border border-white/5 bg-[#0A0A0E] overflow-hidden p-8 group transition-colors duration-300 hover:border-white/10 outline-none",
+        "relative rounded-2xl border border-white/5 bg-[#0A0A0E]/80 backdrop-blur-xl overflow-hidden p-8 group transition-all duration-500 hover:border-white/20 hover:shadow-2xl hover:shadow-emerald-500/5 outline-none focus-visible:ring-2 focus-visible:ring-primary/50",
         className
       )}
     >
       {/* Noise Texture Overlay for Storix Aesthetic */}
       <div 
-        className="absolute inset-0 noise-subtle opacity-20 pointer-events-none group-hover:opacity-30 transition-opacity duration-500" 
+        className="absolute inset-0 noise-subtle opacity-[0.15] pointer-events-none group-hover:opacity-25 transition-opacity duration-700" 
         aria-hidden="true"
       />
       
       {/* Spotlight Gradient */}
       <div
-        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 ease-in-out"
+        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-1000 ease-in-out"
         style={{
           opacity,
-          background: `radial-gradient(circle at ${position.x}px ${position.y}px, ${spotlightColor}, transparent 80%)`
+          background: `radial-gradient(600px circle at ${position.x}px ${position.y}px, ${spotlightColor}, transparent 40%)`
         }}
         aria-hidden="true"
       />
