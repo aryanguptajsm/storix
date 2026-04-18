@@ -32,7 +32,7 @@ export function Input({
         )}
         <input
           className={cn(
-            "w-full px-4 py-3 rounded-md bg-white/[0.02] border border-white/5 text-foreground placeholder:text-muted/30 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary/40 focus:bg-white/[0.04] transition-all duration-300",
+            "w-full px-4 py-3 rounded-2xl bg-white/[0.02] border border-white/5 text-foreground placeholder:text-muted/30 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary/40 focus:bg-white/[0.04] transition-all duration-300",
             icon ? "pl-12" : "",
             error ? "border-danger/30 focus:ring-danger/10" : "",
             className
@@ -40,7 +40,7 @@ export function Input({
           {...props}
         />
         {/* Subtle noise texture on focus */}
-        <div className="absolute inset-0 rounded-md pointer-events-none opacity-0 group-focus-within/field:opacity-10 transition-opacity noise-subtle" />
+        <div className="absolute inset-0 rounded-2xl pointer-events-none opacity-0 group-focus-within/field:opacity-10 transition-opacity noise-subtle" />
       </div>
       <AnimatePresence>
         {error && (
@@ -76,7 +76,7 @@ export function Textarea({
         <label className="block text-sm font-medium text-muted">{label}</label>
       )}
       <textarea
-        className={`w-full px-4 py-2.5 rounded-md bg-surface-light border border-border text-foreground placeholder:text-muted/50 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/50 transition-all duration-200 resize-none ${
+        className={`w-full px-4 py-2.5 rounded-2xl bg-surface-light border border-border text-foreground placeholder:text-muted/50 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/50 transition-all duration-200 resize-none ${
           error ? "border-danger/50 focus:ring-danger/30" : ""
         } ${className}`}
         {...props}
