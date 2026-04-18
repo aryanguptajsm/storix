@@ -72,7 +72,7 @@ const SpotlightCard: React.FC<SpotlightCardProps> = ({
       onBlur={handleBlur}
       tabIndex={0}
       className={cn(
-        "relative rounded-2xl border border-white/5 bg-[#0A0A0E]/80 backdrop-blur-xl overflow-hidden p-8 group transition-all duration-500 hover:border-white/20 hover:shadow-2xl hover:shadow-emerald-500/5 outline-none focus-visible:ring-2 focus-visible:ring-primary/50",
+        "relative rounded-[2.5rem] border border-white/5 bg-[#0A0A0E]/80 backdrop-blur-xl overflow-hidden p-8 group transition-all duration-500 hover:border-white/20 hover:shadow-2xl hover:shadow-emerald-500/5 outline-none focus-visible:ring-2 focus-visible:ring-primary/50",
         className
       )}
     >
