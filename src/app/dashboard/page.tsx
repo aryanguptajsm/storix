@@ -187,7 +187,7 @@ export default async function DashboardPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-          <Card variant="glass" className="relative overflow-hidden group hover:glow-primary transition-all duration-300 h-full border-white/[0.05] rounded-md">
+          <Card variant="glass" className="relative overflow-hidden group hover:glow-primary transition-all duration-300 h-full border-white/[0.05]">
             <CardHeader className="flex flex-row items-center justify-between pb-1 px-4 pt-4">
               <CardTitle className="text-[10px] font-bold uppercase tracking-widest text-muted/50">
                 Inventory
@@ -202,7 +202,7 @@ export default async function DashboardPage() {
             </CardContent>
           </Card>
 
-          <Card variant="glass" className="relative overflow-hidden group hover:glow-secondary transition-all duration-300 h-full border-white/[0.05] rounded-md">
+          <Card variant="glass" className="relative overflow-hidden group hover:glow-secondary transition-all duration-300 h-full border-white/[0.05]">
             <CardHeader className="flex flex-row items-center justify-between pb-1 px-4 pt-4">
               <CardTitle className="text-[10px] font-bold uppercase tracking-widest text-muted/50">
                 Engagement
@@ -217,7 +217,7 @@ export default async function DashboardPage() {
             </CardContent>
           </Card>
 
-          <Card variant="glass" className="relative overflow-hidden group hover:glow-accent transition-all duration-300 h-full border-white/[0.05] rounded-md">
+          <Card variant="glass" className="relative overflow-hidden group hover:glow-accent transition-all duration-300 h-full border-white/[0.05]">
             <CardHeader className="flex flex-row items-center justify-between pb-1 px-4 pt-4">
               <CardTitle className="text-[10px] font-bold uppercase tracking-widest text-muted/50">
                 Performance
@@ -233,7 +233,7 @@ export default async function DashboardPage() {
           </Card>
         </div>
 
-        <Card variant="premium" className="shadow-lg relative group transition-all duration-500 overflow-hidden border-white/[0.05] p-5 md:p-6 rounded-md">
+        <Card variant="premium" className="shadow-lg relative group transition-all duration-500 overflow-hidden border-white/[0.05]">
           <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/30 to-transparent opacity-50" />
           
           <div className="flex flex-col lg:flex-row items-center justify-between gap-6 relative z-10">
@@ -271,7 +271,7 @@ export default async function DashboardPage() {
         </Card>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          <Card variant="glass" className="hover:border-white/10 transition-all duration-500 overflow-hidden group h-full rounded-2xl border-white/[0.05]">
+          <Card variant="glass" className="hover:border-white/10 transition-all duration-500 overflow-hidden group h-full border-white/[0.05]">
             <CardHeader className="border-b border-white/[0.02] flex flex-row items-center justify-between pb-3 pt-4 px-5">
               <CardTitle className="text-[13px] font-bold tracking-tight uppercase text-muted/80">Recent Products</CardTitle>
               <Link href="/dashboard/products">
@@ -317,7 +317,7 @@ export default async function DashboardPage() {
             </CardContent>
           </Card>
 
-          <Card variant="glass" className="hover:border-white/10 transition-all duration-500 h-full group rounded-2xl border-white/[0.05]">
+          <Card variant="glass" className="hover:border-white/10 transition-all duration-500 h-full group border-white/[0.05]">
             <CardHeader className="border-b border-white/[0.02] pb-3 pt-4 px-5">
               <CardTitle className="text-[13px] font-bold tracking-tight uppercase text-muted/80">Quick Tips</CardTitle>
             </CardHeader>
