@@ -30,9 +30,7 @@ export function AnalyticsSkeleton() {
                 <Skeleton className="h-3 w-52 opacity-30" />
               </div>
             </div>
-            <div className="h-[280px] w-full bg-white/[0.01] rounded-xl overflow-hidden relative">
-              <div className="absolute inset-0 shimmer opacity-20" />
-            </div>
+            <Skeleton className="h-[280px] w-full" />
           </div>
         ))}
       </div>

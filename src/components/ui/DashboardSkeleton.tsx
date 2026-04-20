@@ -1,30 +1,18 @@
 "use client";
 
 import { Skeleton } from "./Skeleton";
-import DotField from "./DotField";
 
 export function DashboardSkeleton() {
   return (
     <div className="relative min-h-[100dvh] w-full bg-black animate-fade-in overflow-hidden">
-      {/* Dynamic Background */}
+      {/* Premium Background Layer */}
       <div className="absolute inset-0 z-0">
-        <DotField
-          dotRadius={1.5}
-          dotSpacing={16}
-          cursorRadius={400}
-          cursorForce={0.15}
-          bulgeOnly={true}
-          bulgeStrength={50}
-          sparkle={true}
-          waveAmplitude={5}
-          gradientFrom="rgba(16, 185, 129, 0.4)"
-          gradientTo="rgba(16, 185, 129, 0.1)"
-          glowColor="#050508"
-        />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(16,185,129,0.05),transparent_40%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(0,206,201,0.05),transparent_40%)]" />
       </div>
 
       {/* Subtle overlay to ensure good contrast */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent pointer-events-none z-0" />
+      <div className="absolute inset-0 bg-black/40 pointer-events-none z-0" />
 
       {/* Main Skeleton Content */}
       <div className="space-y-8 px-4 sm:px-6 lg:px-8 pt-20 max-w-[1400px] mx-auto relative z-10">
