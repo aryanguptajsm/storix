@@ -176,6 +176,7 @@ export default function ProductsPage() {
                     alt={product.title}
                     fill
                     className="object-contain group-hover:scale-110 transition-transform duration-700 p-6 z-0"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   />
                 ) : (
                   <div className="w-16 h-16 rounded-2xl bg-surface-light flex items-center justify-center">
