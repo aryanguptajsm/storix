@@ -17,11 +17,11 @@ import {
   CreditCard,
   Calendar,
   Shield,
-  Loader2,
   Star,
   Package,
 } from "lucide-react";
 import { toast } from "sonner";
+import { BillingSkeleton } from "@/components/ui/BillingSkeleton";
 
 interface UserState {
   plan: PlanId;
@@ -170,10 +170,6 @@ export default function BillingPage() {
     }
   };
 
-import { BillingSkeleton } from "@/components/ui/BillingSkeleton";
-
-export default function BillingPage() {
-...
   if (loading) {
     return <BillingSkeleton />;
   }
