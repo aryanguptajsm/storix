@@ -173,6 +173,7 @@ export default function EditProductPage() {
                     alt="Product preview"
                     fill
                     className="object-contain p-8 z-10"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 400px"
                   />
                 ) : (
                   <Package className="w-20 h-20 text-muted/20" />
