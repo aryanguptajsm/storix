@@ -2,11 +2,19 @@ import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import crypto from "crypto";
 
-// Initialize Supabase Admin client (using service role key for bypassing RLS)
-const supabaseAdmin = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+export const dynamic = "force-dynamic";
+
+// Helper for lazy initialization of Supabase Admin
+function getSupabaseAdmin() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  if (!url || !key) {
+    throw new Error("Supabase configurations are missing for admin operations.");
+  }
+
+  return createClient(url, key);
+}
 
 export async function POST(req: Request) {
   try {

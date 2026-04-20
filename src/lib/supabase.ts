@@ -33,6 +33,11 @@ export function createClient() {
   return client;
 }
 
-// For backward compatibility while I refactor
-export const supabase = client || createClient();
+// For backward compatibility: lazily initialize the client
+export const supabase = {
+  get auth() { return createClient().auth; },
+  get storage() { return createClient().storage; },
+  from(relation: string) { return createClient().from(relation); },
+  rpc(fn: string, args?: any) { return createClient().rpc(fn, args); },
+};
 
