@@ -42,10 +42,12 @@ import { ScrollReveal, StaggerReveal } from "@/components/ui/ScrollReveal";
 import { motion } from "framer-motion";
 
 export default function EarningsPage() {
+  const [mounted, setMounted] = useState(false);
   const [timeRange, setTimeRange] = useState("Last 7 Days");
   const [loading, setLoading] = useState(true);
 
   React.useEffect(() => {
+    setMounted(true);
     // Simulate data loading
     const timer = setTimeout(() => {
       setLoading(false);
@@ -53,7 +55,7 @@ export default function EarningsPage() {
     return () => clearTimeout(timer);
   }, []);
 
-  if (loading) {
+  if (loading || !mounted) {
     return <AnalyticsSkeleton />;
   }
 
@@ -163,55 +165,119 @@ export default function EarningsPage() {
 
       <ScrollReveal delay={0.4}>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <Card className="glass p-1">
+          <Card className="glass p-1 group hover:border-primary/20 transition-all duration-500">
             <CardHeader className="flex flex-row items-center justify-between p-5 pb-2">
               <div>
                 <CardTitle className="text-lg font-bold">Earnings Velocity</CardTitle>
                 <p className="text-xs text-muted font-medium mt-1 uppercase tracking-widest text-[10px]">Revenue stream over target period</p>
               </div>
-              <BarChart3 size={20} className="text-muted/30" />
+              <div className="p-2 rounded-lg bg-primary/5 text-primary/40 group-hover:text-primary transition-colors">
+                <BarChart3 size={20} />
+              </div>
             </CardHeader>
             <CardContent className="h-[300px] w-full pt-6">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={mockData}>
                   <defs>
                     <linearGradient id="colorEarnings" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="var(--color-primary)" stopOpacity={0.3}/>
+                      <stop offset="5%" stopColor="var(--color-primary)" stopOpacity={0.4}/>
                       <stop offset="95%" stopColor="var(--color-primary)" stopOpacity={0}/>
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#ffffff10" />
-                  <XAxis dataKey="name" stroke="#9CA3AF" fontSize={12} tickLine={false} axisLine={false} />
-                  <YAxis stroke="#9CA3AF" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(value) => `$${value}`} />
-                  <Tooltip 
-                    contentStyle={{ backgroundColor: "#0A0A0A", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "12px", color: "#F1F1F6" }}
-                    itemStyle={{ color: "var(--color-primary)" }}
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.05)" />
+                  <XAxis 
+                    dataKey="name" 
+                    stroke="rgba(255,255,255,0.3)" 
+                    fontSize={10} 
+                    tickLine={false} 
+                    axisLine={false} 
+                    dy={10}
+                    tick={{ fontWeight: 800 }}
                   />
-                  <Area type="monotone" dataKey="earnings" stroke="var(--color-primary)" strokeWidth={3} fillOpacity={1} fill="url(#colorEarnings)" />
+                  <YAxis 
+                    stroke="rgba(255,255,255,0.3)" 
+                    fontSize={10} 
+                    tickLine={false} 
+                    axisLine={false} 
+                    tickFormatter={(value) => `$${value}`} 
+                    tick={{ fontWeight: 800 }}
+                  />
+                  <Tooltip 
+                    contentStyle={{ 
+                      backgroundColor: "rgba(10,10,10,0.9)", 
+                      backdropFilter: "blur(12px)",
+                      border: "1px solid rgba(255,255,255,0.1)", 
+                      borderRadius: "16px", 
+                      boxShadow: "0 20px 40px rgba(0,0,0,0.4)"
+                    }}
+                    cursor={{ stroke: 'rgba(255,255,255,0.1)', strokeWidth: 2 }}
+                    itemStyle={{ color: "var(--color-primary)", fontWeight: 800, fontSize: '12px' }}
+                    labelStyle={{ color: "rgba(255,255,255,0.5)", fontWeight: 800, fontSize: '10px', textTransform: 'uppercase', marginBottom: '4px' }}
+                  />
+                  <Area 
+                    type="monotone" 
+                    dataKey="earnings" 
+                    stroke="var(--color-primary)" 
+                    strokeWidth={4} 
+                    fillOpacity={1} 
+                    fill="url(#colorEarnings)" 
+                    animationDuration={2000}
+                    animationEasing="ease-in-out"
+                  />
                 </AreaChart>
               </ResponsiveContainer>
             </CardContent>
           </Card>
 
-          <Card className="glass p-1">
+          <Card className="glass p-1 group hover:border-secondary/20 transition-all duration-500">
             <CardHeader className="flex flex-row items-center justify-between p-5 pb-2">
               <div>
                 <CardTitle className="text-lg font-bold">Traffic Volume</CardTitle>
                 <p className="text-xs text-muted font-medium mt-1 uppercase tracking-widest text-[10px]">Click distribution by day</p>
               </div>
-              <Zap size={20} className="text-muted/30" />
+              <div className="p-2 rounded-lg bg-secondary/5 text-secondary/40 group-hover:text-secondary transition-colors">
+                <Zap size={20} />
+              </div>
             </CardHeader>
             <CardContent className="h-[300px] w-full pt-6">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={mockData}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#ffffff10" />
-                  <XAxis dataKey="name" stroke="#9CA3AF" fontSize={12} tickLine={false} axisLine={false} />
-                  <YAxis stroke="#9CA3AF" fontSize={12} tickLine={false} axisLine={false} />
-                  <Tooltip 
-                     contentStyle={{ backgroundColor: "#0A0A0A", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "12px", color: "#F1F1F6" }}
-                     itemStyle={{ color: "var(--color-secondary)" }}
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.05)" />
+                  <XAxis 
+                    dataKey="name" 
+                    stroke="rgba(255,255,255,0.3)" 
+                    fontSize={10} 
+                    tickLine={false} 
+                    axisLine={false} 
+                    dy={10}
+                    tick={{ fontWeight: 800 }}
                   />
-                  <Bar dataKey="clicks" fill="var(--color-secondary)" radius={[4, 4, 0, 0]} />
+                  <YAxis 
+                    stroke="rgba(255,255,255,0.3)" 
+                    fontSize={10} 
+                    tickLine={false} 
+                    axisLine={false} 
+                    tick={{ fontWeight: 800 }}
+                  />
+                  <Tooltip 
+                     contentStyle={{ 
+                      backgroundColor: "rgba(10,10,10,0.9)", 
+                      backdropFilter: "blur(12px)",
+                      border: "1px solid rgba(255,255,255,0.1)", 
+                      borderRadius: "16px", 
+                      boxShadow: "0 20px 40px rgba(0,0,0,0.4)"
+                    }}
+                    cursor={{ fill: 'rgba(255,255,255,0.05)', radius: 8 }}
+                    itemStyle={{ color: "var(--color-secondary)", fontWeight: 800, fontSize: '12px' }}
+                    labelStyle={{ color: "rgba(255,255,255,0.5)", fontWeight: 800, fontSize: '10px', textTransform: 'uppercase', marginBottom: '4px' }}
+                  />
+                  <Bar 
+                    dataKey="clicks" 
+                    fill="var(--color-secondary)" 
+                    radius={[10, 10, 0, 0]} 
+                    animationDuration={2000}
+                    animationEasing="ease-in-out"
+                  />
                 </BarChart>
               </ResponsiveContainer>
             </CardContent>
