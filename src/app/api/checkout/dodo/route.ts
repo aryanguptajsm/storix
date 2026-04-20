@@ -4,6 +4,8 @@ import { cookies } from "next/headers";
 import DodoPayments from "dodopayments";
 import type { CheckoutSessionCreateParams } from "dodopayments/resources/checkout-sessions";
 
+export const dynamic = "force-dynamic";
+
 // Singleton-like: create the Dodo client once per cold start, not per request
 function getDodoClient(): DodoPayments | null {
   const apiKey =
