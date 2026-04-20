@@ -61,6 +61,7 @@ export async function POST(req: Request) {
       if (userId) {
         console.log(`[Dodo Webhook] Updating profile ${userId} to plan ${planId}`);
         
+        const supabaseAdmin = getSupabaseAdmin();
         const { error } = await supabaseAdmin
           .from("profiles")
           .update({ plan: planId })
