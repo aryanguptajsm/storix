@@ -22,6 +22,7 @@ import {
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import DotField from "@/components/ui/DotField";
 import SpotlightCard from "@/components/ui/SpotlightCard";
+import LightPillar from "@/components/ui/LightPillar";
 
 export default function LandingPage() {
   const features = [
