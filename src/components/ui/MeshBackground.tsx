@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 
 export function MeshBackground() {
   return (
-    <div className="fixed inset-0 -z-50 overflow-hidden pointer-events-none bg-black">
+    <div className="fixed inset-0 -z-50 overflow-hidden pointer-events-none bg-[var(--background)]">
       {/* Primary Blob */}
       <motion.div
         className="mesh-blob bg-emerald-500/10 animate-mesh-drift top-[-10%] left-[-10%]"

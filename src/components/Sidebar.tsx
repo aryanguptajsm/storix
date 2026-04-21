@@ -105,9 +105,9 @@ export function Sidebar() {
         })}
       </nav>
 
-      <div className="mt-auto p-4 border-t border-border/50 bg-white/[0.02]">
+      <div className="mt-auto p-4 border-t border-border/50 bg-surface-light/30">
         {user && (
-          <div className="flex items-center gap-3 p-3 mb-4 rounded-xl bg-surface-light/50 border border-white/5">
+          <div className="flex items-center gap-3 p-3 mb-4 rounded-xl bg-surface-light border border-border">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-secondary/20 to-primary/20 flex items-center justify-center text-xs font-bold text-primary-light border border-primary/10">
               {profile?.store_name?.[0].toUpperCase() || user.email?.[0].toUpperCase()}
             </div>
