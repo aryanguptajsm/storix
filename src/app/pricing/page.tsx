@@ -15,6 +15,8 @@ import {
   Shield,
   Loader2,
 } from "lucide-react";
+import DotField from "@/components/ui/DotField";
+import LightPillar from "@/components/ui/LightPillar";
 
 export default function PricingPage() {
   const [annual, setAnnual] = useState(false);
@@ -96,21 +98,44 @@ export default function PricingPage() {
 
   return (
     <div className="min-h-screen bg-[#0A0A0F] text-slate-200 selection:bg-[var(--store-primary)]/30 selection:text-white font-sans overflow-hidden">
-      {/* Dynamic Background */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
-        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/20 rounded-full blur-[150px] mix-blend-screen" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-primary/10 rounded-full blur-[150px] mix-blend-screen" />
-        <div className="absolute top-[20%] right-[20%] w-[20%] h-[20%] bg-primary/10 rounded-full blur-[120px] mix-blend-screen animate-pulse-slow" />
+      {/* ─── Global Background Layers ─── */}
+      <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+        <div className="absolute inset-0 z-0 opacity-30">
+          <LightPillar
+            topColor="#10B981"
+            bottomColor="#059669"
+            intensity={0.6}
+            rotationSpeed={0.2}
+            glowAmount={0.002}
+            pillarWidth={3.0}
+            pillarHeight={0.4}
+            noiseIntensity={0.5}
+            pillarRotation={25}
+            interactive={false}
+            mixBlendMode="normal"
+            quality="high"
+          />
+        </div>
+        <div className="absolute inset-0 z-10">
+          <DotField 
+            dotRadius={1.2} 
+            dotSpacing={20} 
+            passiveSpeed={1.0} 
+            gradientFrom="rgba(16, 185, 129, 0.2)" 
+            gradientTo="rgba(0, 206, 201, 0.05)"
+          />
+        </div>
+        <div className="absolute inset-0 z-20 noise-subtle opacity-[0.03]" />
       </div>
 
       {/* Nav */}
       <nav className="fixed top-0 w-full z-50 bg-black/60 backdrop-blur-xl border-b border-white/5">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-3 group cursor-pointer">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[var(--store-primary)] to-purple-600 flex items-center justify-center shadow-lg shadow-[var(--store-primary)]/20 group-hover:shadow-[var(--store-primary)]/40 transition-all duration-300">
+          <Link href="/" className="flex items-center gap-2.5 group cursor-pointer">
+            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center shadow-lg shadow-emerald-500/25 group-hover:shadow-emerald-500/40 group-hover:scale-110 transition-all duration-300">
               <ShoppingBag className="w-5 h-5 text-white" />
             </div>
-            <span className="text-2xl font-black text-white tracking-tighter">
+            <span className="text-xl font-black bg-gradient-to-r from-white to-white/60 bg-clip-text text-transparent tracking-tighter font-display">
               Storix
             </span>
           </Link>
@@ -218,15 +243,15 @@ export default function PricingPage() {
                   {/* Price */}
                   <div className="mb-8">
                     <div className="flex items-end gap-2 text-white">
-                      <span className="text-sm font-bold opacity-50 mb-2">₹</span>
+                      <span className="text-sm font-bold opacity-50 mb-2">{plan.symbol}</span>
                       <span className="text-6xl font-black tracking-tighter leading-none">{displayPrice}</span>
                       {id !== "free" && (
                         <span className="text-sm font-bold text-slate-500 mb-2">/ month</span>
                       )}
                     </div>
                     {annual && id !== "free" && (
-                      <p className="text-xs text-green-400 font-bold mt-2 bg-green-400/10 inline-block px-2 py-1 rounded-md">
-                        Billed ₹{displayPrice * 12} annually
+                      <p className="text-xs text-emerald-400 font-bold mt-2 bg-emerald-400/10 inline-block px-3 py-1.5 rounded-xl border border-emerald-500/10 backdrop-blur-md">
+                        Billed {plan.symbol}{displayPrice * 12} annually
                       </p>
                     )}
                   </div>

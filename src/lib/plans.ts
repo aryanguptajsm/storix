@@ -21,6 +21,7 @@ export interface Plan {
   price: number; // in paise (INR)
   priceDisplay: string;
   currency: string;
+  symbol: string;
   interval: 'month' | 'year';
   description: string;
   badge?: string;
@@ -37,6 +38,7 @@ export const PLANS: Record<PlanId, Plan> = {
     price: 0,
     priceDisplay: '₹0',
     currency: 'INR',
+    symbol: '₹',
     interval: 'month',
     description: 'Perfect for getting started with affiliate marketing.',
     limits: {
@@ -66,6 +68,7 @@ export const PLANS: Record<PlanId, Plan> = {
     price: 499, // $4.99
     priceDisplay: '$4.99',
     currency: 'USD',
+    symbol: '$',
     interval: 'month',
     description: 'For serious affiliate marketers who want to scale.',
     badge: 'Most Popular',
@@ -101,6 +104,7 @@ export const PLANS: Record<PlanId, Plan> = {
     price: 199900, // ₹1,999
     priceDisplay: '₹1,999',
     currency: 'INR',
+    symbol: '₹',
     interval: 'month',
     description: 'For agencies and power users who need everything.',
     badge: 'Maximum Power',
