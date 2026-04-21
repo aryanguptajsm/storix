@@ -21,6 +21,8 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "images.unsplash.com" },
     ],
   },
+    ],
+  },
   devIndicators: false,
   turbopack: {
     root: path.resolve("."),
@@ -36,9 +38,6 @@ const nextConfig: NextConfig = {
       { path: "**/.next/**" },
       { path: ".config/**" },
     ],
-  },
-  watchOptions: {
-    pollIntervalMs: 2000,
   },
   experimental: {
     optimizePackageImports: ["framer-motion", "sonner", "lucide-react"],
