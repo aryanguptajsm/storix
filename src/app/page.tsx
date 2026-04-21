@@ -58,16 +58,39 @@ export default function LandingPage() {
   return (
     <div className="flex flex-col min-h-screen bg-black selection:bg-emerald-500/30 selection:text-white overflow-x-hidden relative">
       {/* ─── Global Background Layers ─── */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
-        <DotField 
-          dotRadius={1.2} 
-          dotSpacing={20} 
-          passiveSpeed={1.2} 
-          gradientFrom="rgba(16, 185, 129, 0.35)" 
-          gradientTo="rgba(0, 206, 201, 0.15)"
-        />
+      <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+        {/* LightPillar (Base Layer) */}
+        <div className="absolute inset-0 z-0 opacity-40">
+          <LightPillar
+            topColor="#10B981"
+            bottomColor="#059669"
+            intensity={0.8}
+            rotationSpeed={0.2}
+            glowAmount={0.003}
+            pillarWidth={3.5}
+            pillarHeight={0.3}
+            noiseIntensity={0.4}
+            pillarRotation={15}
+            interactive={false}
+            mixBlendMode="normal"
+            quality="high"
+          />
+        </div>
+
+        {/* DotField (Interactive Layer) */}
+        <div className="absolute inset-0 z-10 transition-opacity duration-1000">
+          <DotField 
+            dotRadius={1.2} 
+            dotSpacing={20} 
+            passiveSpeed={1.2} 
+            gradientFrom="rgba(16, 185, 129, 0.25)" 
+            gradientTo="rgba(0, 206, 201, 0.05)"
+          />
+        </div>
+
+        {/* Texture Overlay */}
+        <div className="absolute inset-0 z-20 noise-subtle opacity-[0.03]" />
       </div>
-      <div className="fixed inset-0 z-0 noise-subtle opacity-[0.03] pointer-events-none" />
 
       {/* ─── Navigation ─── */}
       <nav className="fixed top-0 w-full z-50 glass border-b border-white/[0.04]">
