@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { ShoppingBag, Share2, Menu, Sparkles, ChevronLeft, Search } from "lucide-react";
+import { ShoppingBag, Share2, Menu, Sparkles, ChevronLeft, Search, X } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import Link from "next/link";
 
@@ -53,8 +53,16 @@ export function StoreHeader({ storeName, storeLogo, searchValue, onSearchChange 
             value={searchValue}
             onChange={(e) => onSearchChange?.(e.target.value)}
             placeholder={`Search in ${storeName}...`}
-            className="w-full h-10 md:h-11 bg-white/[0.03] border border-white/5 rounded-md pl-10 md:pl-12 pr-4 text-sm font-medium text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-[var(--store-primary)]/20 focus:border-[var(--store-primary)] transition-all"
+            className="w-full h-10 md:h-11 bg-white/[0.03] border border-white/5 rounded-md pl-10 md:pl-12 pr-10 md:pr-12 text-sm font-medium text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-[var(--store-primary)]/20 focus:border-[var(--store-primary)] transition-all"
           />
+          {searchValue && (
+            <button 
+              onClick={() => onSearchChange?.("")}
+              className="absolute inset-y-0 right-0 pr-3 md:pr-4 flex items-center text-white/20 hover:text-white transition-colors"
+            >
+              <X size={16} />
+            </button>
+          )}
         </div>
 
         {/* Right: Actions */}
