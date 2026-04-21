@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   LayoutDashboard,
   Package,
@@ -16,26 +17,41 @@ import {
   CreditCard,
   LayoutGrid,
   Layers,
+  ChevronRight,
 } from "lucide-react";
 import { signOut } from "@/lib/auth";
 import { toast } from "sonner";
 import { ThemeToggle } from "./ui/ThemeToggle";
 
-const navItems = [
-  { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-  { label: "Manage Store", href: "/dashboard/store", icon: LayoutGrid },
-  { label: "Products", href: "/dashboard/products", icon: Package },
-  { label: "Bulk Import", href: "/dashboard/bulk", icon: Layers, tier: "business" },
-  { label: "Earnings", href: "/dashboard/earnings", icon: DollarSign },
-  { label: "Billing & Plans", href: "/dashboard/billing", icon: CreditCard },
-  { label: "Account Settings", href: "/dashboard/settings", icon: Settings },
+const navSections = [
+  {
+    title: "General",
+    items: [
+      { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+      { label: "Storefront", href: "/dashboard/store", icon: LayoutGrid },
+      { label: "Products", href: "/dashboard/products", icon: Package },
+    ]
+  },
+  {
+    title: "Financials",
+    items: [
+      { label: "Earnings", href: "/dashboard/earnings", icon: DollarSign },
+      { label: "Global Bulk", href: "/dashboard/bulk", icon: Layers, tier: "business" },
+      { label: "Billing", href: "/dashboard/billing", icon: CreditCard },
+    ]
+  },
+  {
+    title: "Configuration",
+    items: [
+      { label: "Settings", href: "/dashboard/settings", icon: Settings },
+    ]
+  }
 ];
 
 export function Sidebar() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = React.useState(false);
-
-  const [user, setUser] = React.useState<any>(null); // Still using any for Supabase User for now but will refine if possible
+  const [user, setUser] = React.useState<any>(null);
   const [profile, setProfile] = React.useState<any>(null);
 
   React.useEffect(() => {
@@ -56,87 +72,121 @@ export function Sidebar() {
   };
 
   const nav = (
-    <div className="flex flex-col h-full">
-      <div className="p-6 flex items-center gap-3">
-        <div className="w-10 h-10 rounded-2xl gradient-primary flex items-center justify-center shadow-lg shadow-primary/20">
-          <Sparkles className="w-6 h-6 text-white" />
+    <div className="flex flex-col h-full overflow-hidden">
+      {/* Brand Header */}
+      <div className="p-8 pb-6 flex items-center gap-4">
+        <div className="relative group">
+          <div className="absolute -inset-2 bg-gradient-to-r from-primary to-secondary rounded-2xl blur-lg opacity-20 group-hover:opacity-40 transition-opacity" />
+          <div className="relative w-11 h-11 rounded-2xl gradient-primary flex items-center justify-center shadow-xl shadow-primary/20 border border-white/20">
+            <Sparkles className="w-6 h-6 text-white animate-pulse" />
+          </div>
         </div>
         <div className="flex flex-col">
-          <span className="text-xl font-black bg-gradient-to-r from-primary-light to-secondary bg-clip-text text-transparent tracking-tighter leading-none">
+          <span className="text-2xl font-black tracking-tighter leading-none bg-gradient-to-r from-white to-white/60 bg-clip-text text-transparent">
             Storix
           </span>
-          <span className="text-[10px] text-muted/50 font-bold uppercase tracking-widest mt-0.5">Dashboard</span>
+          <span className="text-[10px] text-primary/60 font-black uppercase tracking-[0.3em] mt-1">Admin Node</span>
         </div>
       </div>
 
-      <nav className="flex-1 px-3 space-y-1.5 mt-4">
-        {navItems.map((item) => {
-          const isActive =
-            pathname === item.href ||
-            (item.href !== "/dashboard" && pathname.startsWith(item.href));
-          
-          const isLocked = item.tier === "business" && profile?.plan !== "business";
-          const isPro = profile?.plan && profile?.plan !== "free";
+      {/* Nav Sections */}
+      <div className="flex-1 px-4 space-y-8 overflow-y-auto no-scrollbar py-4">
+        {navSections.map((section) => (
+          <div key={section.title}>
+            <h4 className="px-4 text-[10px] font-black uppercase tracking-[0.4em] text-white/20 mb-4">
+              {section.title}
+            </h4>
+            <nav className="space-y-1">
+              {section.items.map((item) => {
+                const isActive = pathname === item.href || (item.href !== "/dashboard" && pathname.startsWith(item.href));
+                const isLocked = item.tier === "business" && profile?.plan !== "business";
+                const isPro = profile?.plan && profile?.plan !== "free";
 
-          if (item.tier === "business" && !isPro) return null; // Hide completely for Free users
+                if (item.tier === "business" && !isPro) return null;
 
-          return (
-            <Link
-              key={item.href}
-              href={isLocked ? "/dashboard/billing" : item.href}
-              onClick={() => setMobileOpen(false)}
-              className={`flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-300 group ${
-                isActive
-                  ? "bg-primary/10 text-primary-light border border-primary/20 shadow-lg shadow-primary/10"
-                  : "text-muted hover:text-foreground hover:bg-white/5 border border-transparent"
-              }`}
-            >
-              <div className="flex items-center gap-3">
-                <item.icon className={`w-5 h-5 transition-transform duration-500 group-hover:scale-110 ${isActive ? "text-primary-light" : "text-muted group-hover:text-primary-light"}`} />
-                {item.label}
-              </div>
-              {isLocked && (
-                <div className="p-1 rounded-md bg-secondary/10 text-secondary border border-secondary/20">
-                  <X className="w-3 h-3" />
-                </div>
-              )}
-            </Link>
-          );
-        })}
-      </nav>
+                return (
+                  <Link
+                    key={item.href}
+                    href={isLocked ? "/dashboard/billing" : item.href}
+                    onClick={() => setMobileOpen(false)}
+                    className={`relative flex items-center justify-between px-4 py-3.5 rounded-2xl text-sm font-bold transition-all duration-500 group ${
+                      isActive
+                        ? "text-white"
+                        : "text-white/40 hover:text-white hover:bg-white/[0.03]"
+                    }`}
+                  >
+                    {isActive && (
+                      <motion.div 
+                        layoutId="active-pill"
+                        className="absolute inset-0 bg-primary/10 border border-primary/20 rounded-2xl z-0"
+                        transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                      />
+                    )}
+                    
+                    <div className="relative z-10 flex items-center gap-3">
+                      <div className={`transition-all duration-500 ${isActive ? "text-primary scale-110 shadow-[0_0_15px_rgba(16,185,129,0.3)]" : "group-hover:text-white"}`}>
+                        <item.icon size={20} strokeWidth={isActive ? 2.5 : 2} />
+                      </div>
+                      <span className="tracking-tight">{item.label}</span>
+                    </div>
 
-      <div className="mt-auto p-4 border-t border-border/50 bg-surface-light/30">
-        {user && (
-          <div className="flex items-center gap-3 p-3 mb-4 rounded-xl bg-surface-light border border-border">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-secondary/20 to-primary/20 flex items-center justify-center text-xs font-bold text-primary-light border border-primary/10">
-              {profile?.store_name?.[0].toUpperCase() || user.email?.[0].toUpperCase()}
-            </div>
-            <div className="flex flex-col overflow-hidden">
-              <span className="text-xs font-bold text-foreground truncate">{profile?.store_name || user.email}</span>
-              <span className="text-[10px] text-muted truncate">Owner</span>
-            </div>
+                    {isLocked ? (
+                      <div className="relative z-10 p-1.5 rounded-lg bg-amber-500/10 text-amber-500 border border-amber-500/20">
+                        <X size={12} />
+                      </div>
+                    ) : (
+                      isActive && <ChevronRight size={14} className="relative z-10 text-primary/40" />
+                    )}
+                  </Link>
+                );
+              })}
+            </nav>
           </div>
-        )}
+        ))}
+      </div>
 
-        <div className="space-y-1">
-          <ThemeToggle />
-          {profile?.username && (
-            <Link
-              href={`/store/${profile.username}`}
-              target="_blank"
-              className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-muted hover:text-foreground hover:bg-white/5 transition-all group"
-            >
-              <ExternalLink className="w-5 h-5 group-hover:rotate-12 transition-transform" />
-              View Live Store
-            </Link>
+      {/* Footer Widget */}
+      <div className="p-4 mt-auto">
+        <div className="glass-premium rounded-[2rem] p-4 border border-white/5 shadow-2xl relative overflow-hidden group">
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+          
+          {user && (
+            <div className="flex items-center gap-3 mb-4 p-2">
+              <div className="relative shrink-0">
+                <div className="w-10 h-10 rounded-xl gradient-accent p-[1px]">
+                  <div className="w-full h-full rounded-[11px] bg-black flex items-center justify-center text-sm font-black text-white">
+                    {profile?.store_name?.[0].toUpperCase() || user.email?.[0].toUpperCase()}
+                  </div>
+                </div>
+                <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 border-2 border-black rounded-full shadow-lg" />
+              </div>
+              <div className="flex flex-col min-w-0">
+                <span className="text-[11px] font-black text-white truncate">{profile?.store_name || user.email}</span>
+                <span className="text-[9px] text-primary font-black uppercase tracking-widest">{profile?.plan || 'Free'} Tier</span>
+              </div>
+            </div>
           )}
-          <button
-            onClick={handleSignOut}
-            className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-danger/70 hover:text-danger hover:bg-danger/10 w-full transition-all cursor-pointer group"
-          >
-            <LogOut className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
-            Sign Out
-          </button>
+
+          <div className="space-y-1">
+            <ThemeToggle />
+            {profile?.username && (
+              <Link
+                href={`/store/${profile.username}`}
+                target="_blank"
+                className="flex items-center gap-3 px-4 py-3 rounded-xl text-[11px] font-black uppercase tracking-widest text-white/40 hover:text-white hover:bg-white/5 transition-all group/link"
+              >
+                <ExternalLink size={14} className="group-hover/link:rotate-12 transition-transform" />
+                Live Node
+              </Link>
+            )}
+            <button
+              onClick={handleSignOut}
+              className="flex items-center gap-3 px-4 py-3 rounded-xl text-[11px] font-black uppercase tracking-widest text-red-400/60 hover:text-red-400 hover:bg-red-400/10 w-full transition-all group/out"
+            >
+              <LogOut size={14} className="group-hover/out:-translate-x-1 transition-transform" />
+              Terminate
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -144,33 +194,49 @@ export function Sidebar() {
 
   return (
     <>
-      {/* Mobile toggle */}
-      <div className="lg:hidden fixed top-0 left-0 w-full h-16 glass z-40 border-b border-white/5 flex items-center px-4">
+      {/* Mobile Header */}
+      <div className="lg:hidden fixed top-0 left-0 w-full h-20 glass z-[100] border-b border-white/5 flex items-center px-6 justify-between">
+        <div className="flex items-center gap-3">
+           <div className="w-10 h-10 rounded-xl gradient-primary flex items-center justify-center">
+              <Sparkles className="w-6 h-6 text-white" />
+           </div>
+           <span className="font-black text-xl tracking-tighter text-white">Storix</span>
+        </div>
         <button
-          className="p-2 rounded-xl bg-surface-light border border-border text-foreground cursor-pointer"
+          className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white active:scale-95 transition-transform"
           onClick={() => setMobileOpen(!mobileOpen)}
         >
-          {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          {mobileOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
-        <span className="ml-4 font-black tracking-tighter text-lg bg-gradient-to-r from-primary-light to-secondary bg-clip-text text-transparent">Storix</span>
       </div>
 
-      {/* Mobile overlay */}
-      {mobileOpen && (
-        <div
-          className="lg:hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-30"
-          onClick={() => setMobileOpen(false)}
-        />
-      )}
+      {/* Mobile Overlay */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="lg:hidden fixed inset-0 bg-black/90 backdrop-blur-md z-[110]"
+            onClick={() => setMobileOpen(false)}
+          />
+        )}
+      </AnimatePresence>
 
-      {/* Sidebar - Enhanced Responsive Transitions */}
+      {/* Sidebar Architecture */}
       <aside
-        className={`fixed lg:sticky top-0 left-0 z-50 h-screen w-72 lg:w-64 bg-surface border-r border-border transition-all duration-500 cubic-bezier(0.4, 0, 0.2, 1) ${
-          mobileOpen ? "translate-x-0 shadow-2xl shadow-primary/20" : "-translate-x-full lg:translate-x-0 shadow-none"
+        className={`fixed lg:sticky top-0 left-0 z-[120] h-full lg:h-screen w-[300px] lg:w-[320px] transition-all duration-700 cubic-bezier(0.16, 1, 0.3, 1) ${
+          mobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         }`}
       >
-        {nav}
+        <div className="h-full lg:m-4 lg:my-6 lg:rounded-[3rem] bg-[#0A0A0E] border-r lg:border border-white/5 shadow-2xl relative overflow-hidden">
+           <div className="absolute inset-0 mesh-primary opacity-20" />
+           <div className="relative h-full">
+              {nav}
+           </div>
+        </div>
       </aside>
     </>
   );
 }
+
