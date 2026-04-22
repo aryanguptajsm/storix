@@ -53,6 +53,7 @@ export function Sidebar() {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [user, setUser] = React.useState<any>(null);
   const [profile, setProfile] = React.useState<any>(null);
+  const [isLoggingOut, setIsLoggingOut] = React.useState(false);
 
   React.useEffect(() => {
     import("@/lib/auth").then(({ getUser, getProfile }) => {
@@ -66,9 +67,16 @@ export function Sidebar() {
   }, []);
 
   const handleSignOut = async () => {
-    await signOut();
-    toast.success("Signed out successfully");
-    window.location.href = "/login";
+    try {
+      setIsLoggingOut(true);
+      await signOut();
+      toast.success("Signed out successfully");
+      window.location.href = "/login";
+    } catch (error) {
+      console.error("Sign out error:", error);
+      toast.error("Failed to sign out");
+      setIsLoggingOut(false);
+    }
   };
 
   const nav = (
@@ -148,7 +156,7 @@ export function Sidebar() {
       {/* Footer Widget */}
       <div className="p-4 mt-auto">
         <div className="glass-premium rounded-[2rem] p-4 border border-white/5 shadow-2xl relative overflow-hidden group">
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
           
           {user && (
             <div className="flex items-center gap-3 mb-4 p-2">
@@ -181,10 +189,15 @@ export function Sidebar() {
             )}
             <button
               onClick={handleSignOut}
-              className="flex items-center gap-3 px-4 py-3 rounded-xl text-[11px] font-black uppercase tracking-widest text-red-400/60 hover:text-red-400 hover:bg-red-400/10 w-full transition-all group/out"
+              disabled={isLoggingOut}
+              className="flex items-center gap-3 px-4 py-3 rounded-xl text-[11px] font-black uppercase tracking-widest text-red-400/60 hover:text-red-400 hover:bg-red-400/10 w-full transition-all group/out cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <LogOut size={14} className="group-hover/out:-translate-x-1 transition-transform" />
-              Terminate
+              {isLoggingOut ? (
+                <div className="w-4 h-4 border-2 border-red-400 border-t-transparent rounded-full animate-spin" />
+              ) : (
+                <LogOut size={14} className="group-hover/out:-translate-x-1 transition-transform" />
+              )}
+              {isLoggingOut ? "Terminating..." : "Terminate"}
             </button>
           </div>
         </div>
