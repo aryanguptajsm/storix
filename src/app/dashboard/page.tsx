@@ -254,82 +254,88 @@ export default async function DashboardPage() {
           </Card>
         </StaggerReveal>
 
-        <Card variant="premium" className="shadow-lg relative group transition-all duration-500 overflow-hidden border-white/[0.05]">
-          <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/30 to-transparent opacity-50" />
+        <Card variant="premium" className="relative group transition-all duration-500 overflow-hidden border-white/[0.05] p-1">
+          <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/50 to-transparent opacity-50" />
           
-          <div className="flex flex-col lg:flex-row items-center justify-between gap-6 relative z-10">
-            <div className="flex flex-col md:flex-row items-center gap-5">
+          <div className="bg-black/40 backdrop-blur-xl rounded-[2.8rem] p-6 lg:p-8 flex flex-col lg:flex-row items-center justify-between gap-8 relative z-10">
+            <div className="flex flex-col md:flex-row items-center gap-6">
               <div className="relative">
-                <div className="w-10 h-10 rounded-md bg-black/40 flex items-center justify-center text-primary border border-primary/20 shadow-md transition-all group-hover:scale-105 duration-500 relative overflow-hidden">
-                   <Globe size={18} className="relative z-10" />
+                <div className="absolute -inset-4 bg-primary/20 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="w-16 h-16 rounded-2xl bg-black border border-primary/20 flex items-center justify-center text-primary shadow-2xl relative overflow-hidden group-hover:rotate-3 transition-transform duration-500">
+                   <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent" />
+                   <Globe size={28} className="relative z-10 animate-pulse-slow" />
                 </div>
               </div>
-              <div className="space-y-0.5 text-center md:text-left">
-                <div className="flex flex-col md:flex-row md:items-center gap-2">
-                    <h3 className="text-xl font-black text-white tracking-tight">Merchant Storefront</h3>
+              <div className="space-y-1.5 text-center md:text-left">
+                <div className="flex flex-col md:flex-row md:items-center gap-3">
+                    <h3 className="text-2xl font-black text-white tracking-tighter italic">Live Merchant Node</h3>
                     <div className="flex justify-center md:justify-start">
-                       <span className="px-1.5 py-0.5 rounded-[2px] bg-emerald-500 text-black text-[8px] font-black uppercase tracking-widest">System Active</span>
+                       <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 text-[9px] font-black uppercase tracking-[0.2em] animate-pulse">Broadcast Active</span>
                     </div>
                 </div>
-                <p className="text-[10px] text-white/40 font-medium">
-                   Point your traffic to the merchant grid to track conversions.
+                <p className="text-[11px] text-white/40 font-bold uppercase tracking-widest leading-relaxed max-w-sm">
+                   Your decentralized storefront is synced. Deploy traffic to track global conversions.
                 </p>
               </div>
             </div>
             
-            <div className="w-full lg:w-auto flex flex-col sm:flex-row items-center gap-2">
-              <div className="w-full lg:w-auto py-2 px-3 rounded-sm bg-black border border-white/10 font-mono text-[10px] text-emerald-400 flex items-center justify-between gap-4">
-                 <span className="opacity-40">/store/</span>
-                 <span className="font-bold">{profile?.username || "..."}</span>
+            <div className="w-full lg:w-auto flex flex-col sm:flex-row items-center gap-3">
+              <div className="w-full lg:min-w-[240px] py-3.5 px-5 rounded-2xl bg-black/60 border border-white/5 font-mono text-xs text-primary flex items-center justify-between gap-6 group/URL">
+                 <span className="opacity-30 select-none">/store/</span>
+                 <span className="font-black group-hover:text-white transition-colors">{profile?.username || "..."}</span>
               </div>
               <Link href={`/store/${profile?.username}`} target="_blank" className="w-full sm:w-auto">
-                <Button className="w-full sm:w-auto h-9 rounded-sm px-4 text-[10px] uppercase tracking-widest font-black">
-                   Visit Store
+                <Button className="w-full sm:w-auto h-12 rounded-2xl px-8 text-[11px] uppercase tracking-[0.2em] font-black group-hover:glow-primary transition-all">
+                   Deploy Portal
                 </Button>
               </Link>
             </div>
           </div>
         </Card>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          <Card variant="glass" className="hover:border-white/10 transition-all duration-500 overflow-hidden group h-full border-white/[0.05]">
-            <CardHeader className="border-b border-white/[0.02] flex flex-row items-center justify-between pb-3 pt-4 px-5">
-              <CardTitle className="text-[13px] font-bold tracking-tight uppercase text-muted/80">Recent Products</CardTitle>
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+          <Card variant="glass" className="lg:col-span-3 hover:border-white/10 transition-all duration-500 overflow-hidden group h-full border-white/[0.05] p-0">
+            <CardHeader className="border-b border-white/[0.03] flex flex-row items-center justify-between py-6 px-8 bg-white/[0.01]">
+              <div className="flex items-center gap-3">
+                 <Package className="w-4 h-4 text-primary" />
+                 <CardTitle className="text-[14px] font-black tracking-[0.1em] uppercase text-white/80">Inventory Log</CardTitle>
+              </div>
               <Link href="/dashboard/products">
-                <Button variant="ghost" size="sm" className="text-[9px] text-primary-light hover:text-primary font-bold uppercase tracking-widest border border-transparent hover:border-white/5 rounded-lg px-2 h-7 py-0 mt-[-4px]">View All</Button>
+                <Button variant="ghost" size="sm" className="text-[10px] text-primary-light hover:text-primary font-black uppercase tracking-widest border border-white/5 bg-white/[0.02] rounded-xl px-4 h-9 py-0">Archive</Button>
               </Link>
             </CardHeader>
             <CardContent className="p-0">
               {recentProducts.length === 0 ? (
-                <div className="text-xs text-muted text-center py-10 flex flex-col items-center gap-3">
-                  <div className="w-12 h-12 rounded-xl bg-surface-light flex items-center justify-center opacity-50 border border-white/5">
-                    <Package className="w-6 h-6" />
+                <div className="text-xs text-muted text-center py-16 flex flex-col items-center gap-4">
+                  <div className="w-16 h-16 rounded-2xl bg-white/[0.02] flex items-center justify-center opacity-50 border border-white/5 animate-pulse">
+                    <Package className="w-8 h-8 text-white/20" />
                   </div>
-                  <p className="max-w-[200px] font-medium text-white/40 text-[11px]">No products yet. Add your first product.</p>
+                  <p className="max-w-[200px] font-bold text-white/30 text-[12px] uppercase tracking-widest leading-relaxed">No active protocols detected. Initialize your first product.</p>
                 </div>
               ) : (
-                <div className="divide-y divide-white/5">
+                <div className="divide-y divide-white/[0.03]">
                   {recentProducts.map((product) => (
-                    <div key={product.id} className="p-4 flex items-center justify-between group/item hover:bg-white/[0.03] transition-all cursor-pointer relative overflow-hidden">
-                      <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover/item:opacity-100 transition-opacity" />
-                      <div className="flex items-center gap-4 relative z-10">
-                        <div className="w-10 h-10 rounded-lg bg-white overflow-hidden flex-shrink-0 relative border border-white/10 group-hover/item:scale-105 transition-transform duration-300 shadow-sm p-1">
+                    <div key={product.id} className="px-8 py-5 flex items-center justify-between group/item hover:bg-white/[0.02] transition-all cursor-pointer relative overflow-hidden">
+                      <div className="absolute left-0 top-0 bottom-0 w-[4px] bg-primary scale-y-0 group-hover/item:scale-y-100 transition-transform origin-top duration-500" />
+                      <div className="flex items-center gap-5 relative z-10 overflow-hidden">
+                        <div className="w-12 h-12 rounded-xl bg-white overflow-hidden flex-shrink-0 relative border border-white/10 group-hover/item:scale-110 group-hover/item:rotate-2 transition-all duration-500 shadow-xl p-1.5">
                           {product.image_url ? (
-                            <Image src={product.image_url} alt="" fill className="object-contain p-1" sizes="40px" />
+                            <Image src={product.image_url} alt="" fill className="object-contain p-1" sizes="48px" />
                           ) : (
                             <Package className="w-full h-full p-2 text-muted/20" />
                           )}
                         </div>
-                        <div className="flex flex-col">
-                          <span className="text-sm font-bold text-foreground line-clamp-1 group-hover/item:text-primary transition-colors tracking-tight">{product.title}</span>
-                          <span className="text-[9px] text-muted uppercase font-bold tracking-wider flex items-center gap-1 mt-0.5">
-                             <Globe size={8} className="text-secondary" /> {product.platform}
-                          </span>
+                        <div className="flex flex-col min-w-0">
+                          <span className="text-[15px] font-black text-white truncate transition-colors tracking-tight group-hover/item:text-primary leading-tight">{product.title}</span>
+                          <div className="flex items-center gap-2 mt-1.5">
+                             <div className="px-1.5 py-0.5 rounded-[4px] bg-white/[0.03] border border-white/5 text-[8px] font-black text-white/40 uppercase tracking-widest">{product.platform}</div>
+                             <span className="text-[8px] text-white/20 uppercase font-black tracking-widest">ID: {product.id.slice(0, 8)}</span>
+                          </div>
                         </div>
                       </div>
-                      <div className="text-right relative z-10 pl-3">
-                        <div className="text-sm font-bold text-secondary-light tracking-tight">{product.price || "N/A"}</div>
-                        <div className="text-[9px] text-muted font-bold uppercase tracking-widest mt-0.5">{new Date(product.created_at).toLocaleDateString()}</div>
+                      <div className="text-right relative z-10 pl-4 flex-shrink-0">
+                        <div className="text-[16px] font-black text-secondary tracking-tighter italic leading-none">{product.price || "FREE"}</div>
+                        <div className="text-[9px] text-white/20 font-black uppercase tracking-widest mt-2">{new Date(product.created_at).toLocaleDateString()}</div>
                       </div>
                     </div>
                   ))}
@@ -338,30 +344,35 @@ export default async function DashboardPage() {
             </CardContent>
           </Card>
 
-          <Card variant="glass" className="hover:border-white/10 transition-all duration-500 h-full group border-white/[0.05]">
-            <CardHeader className="border-b border-white/[0.02] pb-3 pt-4 px-5">
-              <CardTitle className="text-[13px] font-bold tracking-tight uppercase text-muted/80">Quick Tips</CardTitle>
+          <Card variant="glass" className="lg:col-span-2 hover:border-white/10 transition-all duration-500 h-full group border-white/[0.05] p-0">
+            <CardHeader className="border-b border-white/[0.03] py-6 px-8 bg-white/[0.01]">
+              <div className="flex items-center gap-3">
+                 <Sparkles className="w-4 h-4 text-secondary" />
+                 <CardTitle className="text-[14px] font-black tracking-[0.1em] uppercase text-white/80">Strategy Node</CardTitle>
+              </div>
             </CardHeader>
-            <CardContent className="space-y-3 p-4">
-              <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5 flex items-start gap-4 hover:border-primary/20 transition-all group/tip cursor-default hover:bg-primary/[0.02] relative overflow-hidden">
-                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0 text-primary group-hover/tip:rotate-6 transition-transform border border-primary/20 shadow-sm">
-                  <Plus className="w-5 h-5" />
+            <CardContent className="space-y-4 p-8">
+              <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/5 flex items-start gap-4 hover:border-primary/20 transition-all group/tip cursor-default hover:bg-primary/[0.02] relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover/tip:opacity-100 transition-opacity" />
+                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 text-primary group-hover/tip:scale-110 transition-transform border border-primary/20 shadow-lg">
+                  <Plus className="w-6 h-6" />
                 </div>
                 <div className="relative z-10">
-                  <h4 className="font-bold text-[13px] text-foreground mb-0.5">Add More Products</h4>
-                  <p className="text-[11px] text-muted/70 leading-relaxed font-medium">
-                    Stores with <span className="text-primary-light font-bold">12+ products</span> get significantly more clicks.
+                  <h4 className="font-black text-[14px] text-white mb-1 italic">Growth Protocol</h4>
+                  <p className="text-[11px] text-white/40 leading-relaxed font-bold uppercase tracking-wider">
+                    Stores exceeding <span className="text-primary font-black">12+ assets</span> demonstrate 400% higher conversions.
                   </p>
                 </div>
               </div>
-              <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5 flex items-start gap-4 hover:border-secondary/20 transition-all group/tip cursor-default hover:bg-secondary/[0.02] relative overflow-hidden">
-                <div className="w-10 h-10 rounded-lg bg-secondary/10 flex items-center justify-center flex-shrink-0 text-secondary group-hover/tip:rotate-6 transition-transform border border-secondary/20 shadow-sm">
-                  <Sparkles className="w-5 h-5" />
+              <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/5 flex items-start gap-4 hover:border-secondary/20 transition-all group/tip cursor-default hover:bg-secondary/[0.02] relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-secondary/5 to-transparent opacity-0 group-hover/tip:opacity-100 transition-opacity" />
+                <div className="w-12 h-12 rounded-xl bg-secondary/10 flex items-center justify-center flex-shrink-0 text-secondary group-hover/tip:scale-110 transition-transform border border-secondary/20 shadow-lg">
+                  <Sparkles className="w-6 h-6" />
                 </div>
                 <div className="relative z-10">
-                  <h4 className="font-bold text-[13px] text-foreground mb-0.5">Optimize Your Titles</h4>
-                  <p className="text-[11px] text-muted/70 leading-relaxed font-medium">
-                    Use the <span className="text-secondary-light font-bold">AI generator</span> to write SEO-friendly titles.
+                  <h4 className="font-black text-[14px] text-white mb-1 italic">Semantic Sync</h4>
+                  <p className="text-[11px] text-white/40 leading-relaxed font-bold uppercase tracking-wider">
+                    Utilize <span className="text-secondary font-black">AI synthesis</span> to optimize titles for neural search.
                   </p>
                 </div>
               </div>
