@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { BillingSkeleton } from "@/components/ui/BillingSkeleton";
+import { motion } from "framer-motion";
 
 interface UserState {
   plan: PlanId;
@@ -143,12 +144,13 @@ export default function BillingPage() {
       if (planId === "free") return;
       
       const plan = PLANS[planId];
-      if (planId === "pro" && plan.dodoProductId) {
+      if ((planId === "pro" || planId === "business") && plan.dodoProductId) {
         const res = await fetch("/api/checkout/dodo", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             productId: plan.dodoProductId,
+            planId: planId,
           }),
         });
         const data = await res.json();
@@ -188,7 +190,7 @@ export default function BillingPage() {
     {
       id: "ai_writer",
       name: "AI Description Writer",
-      price: "₹199/mo",
+      price: "Included",
       icon: <Sparkles size={18} />,
       desc: "Generate SEO-optimized product descriptions with Claude AI.",
       included: currentPlan !== "free",
@@ -196,7 +198,7 @@ export default function BillingPage() {
     {
       id: "bulk_import",
       name: "Bulk CSV Import",
-      price: "₹149/mo",
+      price: "Included",
       icon: <Package size={18} />,
       desc: "Import hundreds of products at once from CSV files.",
       included: currentPlan === "business",
@@ -204,12 +206,25 @@ export default function BillingPage() {
     {
       id: "seo_booster",
       name: "SEO Booster",
-      price: "₹99/mo",
+      price: "Included",
       icon: <Star size={18} />,
       desc: "Auto-generate sitemaps, meta tags, and JSON-LD structured data.",
       included: currentPlan !== "free",
     },
   ];
+
+  const variants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: (i: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: i * 0.1,
+        duration: 0.5,
+        ease: [0.16, 1, 0.3, 1]
+      }
+    })
+  };
 
   return (
     <div className="space-y-8 animate-fade-in pb-12">
@@ -268,7 +283,7 @@ export default function BillingPage() {
 
       {/* Plan Comparison */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {plans.map(({ id, icon, color, bg }) => {
+        {plans.map(({ id, icon, color, bg }, i) => {
           const plan = PLANS[id];
           const planIndex = planOrder.indexOf(id);
           const isCurrent = id === currentPlan;
@@ -276,72 +291,92 @@ export default function BillingPage() {
           const isUpgrade = planIndex > currentIndex;
 
           return (
-            <Card
+            <motion.div
               key={id}
-              className={`glass overflow-hidden flex flex-col transition-all duration-500 ${
-                isCurrent
-                  ? "border-primary/40 shadow-lg shadow-primary/5"
-                  : "hover:border-white/20"
-              }`}
+              custom={i}
+              initial="hidden"
+              animate="visible"
+              variants={variants}
+              className="flex"
             >
-              {isCurrent && (
-                <div className="h-1 bg-gradient-to-r from-primary to-accent" />
-              )}
-              <div className="p-6 flex-1 flex flex-col">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className={`w-10 h-10 rounded-xl ${bg} flex items-center justify-center ${color}`}>
-                    {icon}
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-foreground">{plan.name}</h4>
-                    {isCurrent && (
-                      <span className="text-[8px] font-black uppercase tracking-[0.2em] text-primary bg-primary/10 px-2 py-0.5 rounded-full">
-                        Current Plan
-                      </span>
-                    )}
-                  </div>
-                </div>
-
-                <div className="mb-4">
-                  <span className="text-3xl font-black text-foreground">{plan.priceDisplay}</span>
-                  {id !== "free" && <span className="text-muted text-sm">/mo</span>}
-                </div>
-
-                <ul className="space-y-2 mb-6 flex-1">
-                  {plan.features.slice(0, 5).map((f, i) => (
-                    <li key={i} className="flex items-center gap-2 text-xs text-muted">
-                      <Check size={12} className={color} />
-                      {f}
-                    </li>
-                  ))}
-                  {plan.features.length > 5 && (
-                    <li className="text-[10px] text-muted/50 font-bold">
-                      +{plan.features.length - 5} more features
-                    </li>
-                  )}
-                </ul>
-
-                {isCurrent ? (
-                  <Button variant="secondary" disabled className="w-full opacity-50">
-                    Current Plan
-                  </Button>
-                ) : isUpgrade ? (
-                  <Button
-                    className="w-full gap-2 group shadow-lg shadow-primary/10"
-                    onClick={() => handleUpgrade(id)}
-                    loading={upgrading === id}
-                  >
-                    Upgrade to {plan.name}
-                    <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-                  </Button>
-                ) : (
-                  <Button variant="ghost" disabled className="w-full opacity-40">
-                    <Shield size={14} />
-                    Downgrade
-                  </Button>
+              <Card
+                className={`glass w-full overflow-hidden flex flex-col transition-all duration-700 relative group/card ${
+                  isCurrent
+                    ? "border-primary/40 shadow-2xl shadow-primary/10 scale-[1.02] z-10"
+                    : "hover:border-white/20 hover:translate-y-[-4px]"
+                }`}
+              >
+                {isCurrent && (
+                  <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-accent to-primary" />
                 )}
-              </div>
-            </Card>
+                
+                {plan.badge && (
+                  <div className="absolute top-4 right-4">
+                    <span className={`text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full border ${
+                      id === 'business' ? 'bg-accent/10 text-accent border-accent/20' : 'bg-primary/10 text-primary border-primary/20'
+                    }`}>
+                      {plan.badge}
+                    </span>
+                  </div>
+                )}
+
+                <div className="p-8 flex-1 flex flex-col">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className={`w-12 h-12 rounded-2xl ${bg} flex items-center justify-center ${color} shadow-inner border border-white/5`}>
+                      {icon}
+                    </div>
+                    <div>
+                      <h4 className="text-lg font-black text-foreground tracking-tight">{plan.name}</h4>
+                      <p className="text-[10px] text-muted font-bold uppercase tracking-wider">{id === 'free' ? 'Starter' : id === 'pro' ? 'Scale' : 'Enterprise'}</p>
+                    </div>
+                  </div>
+
+                  <div className="mb-8">
+                    <div className="flex items-baseline gap-1">
+                      <span className="text-4xl font-black text-foreground tracking-tighter">{plan.priceDisplay}</span>
+                      {id !== "free" && <span className="text-muted text-sm font-bold">/mo</span>}
+                    </div>
+                    <p className="text-xs text-muted/60 mt-2 font-medium line-clamp-2">{plan.description}</p>
+                  </div>
+
+                  <div className="space-y-4 mb-8 flex-1">
+                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted/40">Includes:</p>
+                    <ul className="space-y-3">
+                      {plan.features.slice(0, 8).map((f, i) => (
+                        <li key={i} className="flex items-center gap-3 text-[11px] text-muted font-medium">
+                          <div className={`shrink-0 w-4 h-4 rounded-full ${bg} flex items-center justify-center ${color}`}>
+                            <Check size={10} strokeWidth={3} />
+                          </div>
+                          {f}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {isCurrent ? (
+                    <Button variant="secondary" disabled className="w-full h-12 rounded-2xl bg-white/5 border-white/10 opacity-60">
+                      Active Plan
+                    </Button>
+                  ) : isUpgrade ? (
+                    <Button
+                      className={`w-full h-12 rounded-2xl gap-2 group relative overflow-hidden font-black uppercase tracking-widest text-[11px] ${
+                        id === 'business' ? 'bg-accent hover:bg-accent-dark shadow-accent/20' : 'bg-primary hover:bg-primary-dark shadow-primary/20'
+                      }`}
+                      onClick={() => handleUpgrade(id)}
+                      loading={upgrading === id}
+                    >
+                      <span>Command {plan.name}</span>
+                      <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                    </Button>
+                  ) : (
+                    <Button variant="ghost" disabled className="w-full h-12 rounded-2xl opacity-40 text-[11px] font-black uppercase">
+                      <Shield size={14} className="mr-2" />
+                      Legacy Version
+                    </Button>
+                  )}
+                </div>
+              </Card>
+            </motion.div>
           );
         })}
       </div>
