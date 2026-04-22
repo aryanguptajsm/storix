@@ -8,7 +8,7 @@ interface ThemeContextType {
   theme: Theme;
   setTheme: (theme: Theme) => void;
   appMode: "light" | "dark";
-  toggleAppMode: () => void;
+  toggleAppMode: (event?: React.MouseEvent | MouseEvent) => void;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -78,7 +78,6 @@ export function ThemeProvider({
       );
     });
   };
- pieces of information.
   return (
     <ThemeContext.Provider value={{ theme, setTheme, appMode, toggleAppMode }}>
       <div className={`theme-${theme} mode-${appMode} min-h-screen transition-colors duration-500`}>
