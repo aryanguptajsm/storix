@@ -63,8 +63,8 @@ export default async function PublicStorePage({ params }: Props) {
   const { username } = await params;
   const supabase = await createClient();
   
-  // Normalized username for query robustness
-  const normalizedUsername = username.toLowerCase().trim();
+  // Normalized username for query robustness — handle encoding and special chars
+  const normalizedUsername = decodeURIComponent(username).toLowerCase().trim().replace(/\/$/, "");
 
   // Single profile fetch — we use .ilike for case-insensitive robust lookups
   // We also select by email_prefix as a secondary fallback to catch new users who haven't set a username
@@ -154,11 +154,14 @@ export default async function PublicStorePage({ params }: Props) {
           </h1>
           
           <p className="text-white/40 text-lg mb-10 leading-relaxed font-medium animate-fade-in-up animation-delay-100 px-4">
-            We couldn&apos;t find a storefront at <span className="text-primary font-bold">/{username}</span>.
+            We couldn&apos;t find an active terminal at <span className="text-primary font-black tracking-widest italic">/{username}</span>.
             {isPotentialOwner ? (
-               <span className="block mt-2 text-white/60">This could be your store URL.</span>
+               <span className="block mt-4 p-4 rounded-xl bg-primary/5 border border-primary/20 text-white/60 text-sm">
+                 <Sparkles size={16} className="inline mr-2 text-primary" />
+                 This is your allocated username. Initialize your node to go live.
+               </span>
             ) : (
-               <span className="block mt-2">Check the URL or explore some popular stores below.</span>
+               <span className="block mt-2">The requested node is offline or has been decommissioned.</span>
             )}
           </p>
 
