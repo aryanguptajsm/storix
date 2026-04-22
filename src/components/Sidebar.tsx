@@ -216,7 +216,7 @@ export function Sidebar() {
            <span className="font-black text-xl tracking-tighter text-white">Storix</span>
         </div>
         <button
-          className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white active:scale-95 transition-transform"
+          className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white active:scale-95 transition-transform cursor-pointer"
           onClick={() => setMobileOpen(!mobileOpen)}
         >
           {mobileOpen ? <X size={20} /> : <Menu size={20} />}
