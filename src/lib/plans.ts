@@ -134,6 +134,7 @@ export const PLANS: Record<PlanId, Plan> = {
       'Priority support',
     ],
     razorpayPlanId: process.env.RAZORPAY_BUSINESS_PLAN_ID,
+    dodoProductId: process.env.NEXT_PUBLIC_DODO_PRODUCT_ID_BUSINESS || 'pdt_0NdG5Q5kJJp0JImaI5wm3',
   },
 };
 
