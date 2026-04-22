@@ -6,11 +6,13 @@ export const dynamic = "force-dynamic";
 
 // Helper for lazy initialization of Supabase Admin
 function getSupabaseAdmin() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://dummy.supabase.co";
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "dummy";
 
-  if (!url || !key) {
-    throw new Error("Supabase configurations are missing for admin operations.");
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || (!process.env.SUPABASE_SERVICE_ROLE_KEY && !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)) {
+    console.warn(
+      "SUPABASE_CONFIG_WARNING: Missing Supabase configurations for admin operations. Using fallback values for build safety."
+    );
   }
 
   return createClient(url, key);
