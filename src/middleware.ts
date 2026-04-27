@@ -2,18 +2,34 @@ import { NextResponse, type NextRequest } from "next/server";
 import { updateSession } from "@/lib/auth-middleware";
 
 export async function middleware(request: NextRequest) {
-  // Auth session refresh (handles cookies + redirects)
-  const res = await updateSession(request);
-
-  // Subdomain routing logic
   const url = request.nextUrl;
+  const pathname = url.pathname;
+
+  // Fast-path: skip middleware logic entirely for static assets & API routes
+  // The matcher config already excludes most, but this is a safety net
+  if (
+    pathname.startsWith("/_next") ||
+    pathname.startsWith("/api") ||
+    pathname.includes(".")
+  ) {
+    return NextResponse.next();
+  }
+
+  // Subdomain routing logic — check BEFORE auth to avoid unnecessary Supabase calls
   const hostname = request.headers.get("host") || "";
 
-  // Strip the primary domain depending on environment
   const currentHost =
     process.env.NODE_ENV === "production"
-      ? hostname.replace(`.storix.in`, "") // Production domain
-      : hostname.replace(`.localhost:3000`, ""); // Local dev domain
+      ? hostname.replace(`.storix.in`, "")
+      : hostname.replace(`.localhost:3000`, "");
+
+  // Check if this is a subdomain request
+  const isSubdomain =
+    currentHost !== "storix.in" &&
+    currentHost !== "localhost:3000" &&
+    currentHost !== "www.storix.in" &&
+    currentHost !== "www" &&
+    currentHost !== hostname;
 
   // Paths that should NOT be rewritten to a subdomain store
   const reservedPaths = [
@@ -30,29 +46,47 @@ export async function middleware(request: NextRequest) {
   ];
 
   const isReservedPath = reservedPaths.some(
-    (path) =>
-      url.pathname === path || url.pathname.startsWith(`${path}/`)
+    (path) => pathname === path || pathname.startsWith(`${path}/`)
   );
 
-  // If there's a valid subdomain (not the root domain or www)
-  if (
-    !isReservedPath &&
-    currentHost !== "storix.in" &&
-    currentHost !== "localhost:3000" &&
-    currentHost !== "www.storix.in" &&
-    currentHost !== "www" &&
-    currentHost !== hostname
-  ) {
-    if (res.status === 200) {
+  // Only run auth middleware for pages that actually need it
+  // (dashboard, login, signup, root) — not for public pages or subdomain stores
+  const needsAuth =
+    pathname.startsWith("/dashboard") ||
+    pathname === "/login" ||
+    pathname === "/signup" ||
+    pathname === "/";
+
+  if (needsAuth) {
+    const res = await updateSession(request);
+
+    // If auth middleware redirected, return immediately
+    if (res.status !== 200) {
+      return res;
+    }
+
+    // Handle subdomain rewrite after auth
+    if (!isReservedPath && isSubdomain) {
       const storePath =
-        url.pathname === "/"
+        pathname === "/"
           ? `/store/${currentHost}${url.search}`
-          : `/store/${currentHost}${url.pathname}${url.search}`;
+          : `/store/${currentHost}${pathname}${url.search}`;
       return NextResponse.rewrite(new URL(storePath, request.url));
     }
+
+    return res;
   }
 
-  return res;
+  // For non-auth pages, handle subdomain rewrite directly (no Supabase call)
+  if (!isReservedPath && isSubdomain) {
+    const storePath =
+      pathname === "/"
+        ? `/store/${currentHost}${url.search}`
+        : `/store/${currentHost}${pathname}${url.search}`;
+    return NextResponse.rewrite(new URL(storePath, request.url));
+  }
+
+  return NextResponse.next();
 }
 
 export const config = {
