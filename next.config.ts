@@ -37,14 +37,6 @@ const nextConfig: NextConfig = {
     "standardwebhooks",
   ],
 
-  // Turbopack configuration for faster dev builds
-  turbopack: {
-    resolveAlias: {
-      // Prevent Turbopack from tracing into heavy packages
-      "playwright": { browser: "" },
-      "playwright-core": { browser: "" },
-    },
-  },
 
   experimental: {
     // Tree-shake barrel imports from these packages for faster compilation
