@@ -34,21 +34,21 @@ export function ThemeToggle() {
             isLight ? "bg-warning shadow-[0_0_15px_rgba(253,203,110,0.5)]" : "bg-primary shadow-[0_0_15px_rgba(16,185,129,0.5)]"
           }`} />
           
-          <AnimatePresence mode="wait">
+          <AnimatePresence initial={false}>
             {isLight ? (
               <motion.div
                 key="sun"
                 initial={{ scale: 0.5, rotate: -180, opacity: 0 }}
                 animate={{ scale: 1, rotate: 0, opacity: 1 }}
                 exit={{ scale: 0.5, rotate: 180, opacity: 0 }}
-                transition={{ type: "spring", stiffness: 200, damping: 15 }}
-                className="text-warning relative z-10"
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                className="text-warning absolute inset-0 flex items-center justify-center z-10"
               >
                 <Sun size={20} strokeWidth={2.5} />
                 <motion.div 
                   animate={{ opacity: [0.4, 0.8, 0.4] }}
                   transition={{ repeat: Infinity, duration: 2 }}
-                  className="absolute inset-0 blur-sm text-warning"
+                  className="absolute inset-0 blur-sm flex items-center justify-center text-warning"
                 >
                   <Sun size={20} strokeWidth={4} />
                 </motion.div>
@@ -59,14 +59,14 @@ export function ThemeToggle() {
                 initial={{ scale: 0.5, rotate: 180, opacity: 0 }}
                 animate={{ scale: 1, rotate: 0, opacity: 1 }}
                 exit={{ scale: 0.5, rotate: -180, opacity: 0 }}
-                transition={{ type: "spring", stiffness: 200, damping: 15 }}
-                className="text-primary-light relative z-10"
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                className="text-primary-light absolute inset-0 flex items-center justify-center z-10"
               >
                 <Moon size={20} strokeWidth={2.5} />
                 <motion.div 
                   animate={{ opacity: [0.4, 0.8, 0.4] }}
                   transition={{ repeat: Infinity, duration: 3, delay: 0.5 }}
-                  className="absolute inset-0 blur-sm text-primary-light"
+                  className="absolute inset-0 blur-sm flex items-center justify-center text-primary-light"
                 >
                   <Moon size={20} strokeWidth={4} />
                 </motion.div>
