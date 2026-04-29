@@ -1,5 +1,4 @@
 import type { NextConfig } from "next";
-import path from "path";
 
 const isProd = process.env.NODE_ENV === "production";
 
@@ -29,39 +28,37 @@ const nextConfig: NextConfig = {
   // This prevents the bundler from tracing into their deeply nested node_modules
   serverExternalPackages: [
     "playwright",
+    "playwright-core",
     "cheerio",
     "open-graph-scraper",
     "axios",
     "csv-parse",
     "csv-stringify",
+    "three",
+    "standardwebhooks",
   ],
 
+  // Turbopack configuration for faster dev builds
   turbopack: {
-    root: path.resolve("."),
-    ignoreIssue: [
-      { path: "**/node_modules/@opentelemetry/**" },
-      { path: "node_modules/next/node_modules/@opentelemetry" },
-      { path: "**/node_modules/@emotion/**" },
-      { path: "**/node_modules/@swc/**" },
-      { path: "node_modules/@opentelemetry" },
-      { path: ".next-internal/**" },
-      { path: "**/.next-internal/**" },
-      { path: ".next/**" },
-      { path: "**/.next/**" },
-      { path: ".config/**" },
-      { path: "**/node_modules/playwright/**" },
-      { path: "**/node_modules/playwright-core/**" },
-    ],
+    resolveAlias: {
+      // Prevent Turbopack from tracing into heavy packages
+      "playwright": { browser: "" },
+      "playwright-core": { browser: "" },
+    },
   },
 
   experimental: {
+    // Tree-shake barrel imports from these packages for faster compilation
     optimizePackageImports: [
       "framer-motion",
       "sonner",
       "lucide-react",
       "recharts",
       "@supabase/supabase-js",
+      "@supabase/ssr",
+      "three",
     ],
+    // Use memory-based worker count to auto-tune parallelism
     memoryBasedWorkersCount: true,
   },
 
