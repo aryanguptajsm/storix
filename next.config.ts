@@ -47,10 +47,18 @@ const nextConfig: NextConfig = {
       "recharts",
       "@supabase/supabase-js",
       "@supabase/ssr",
+      "three",
+      "dodopayments",
     ],
     // Use memory-based worker count to auto-tune parallelism
     memoryBasedWorkersCount: true,
+    // Enable partial pre-rendering for better performance
+    ppr: "incremental" as const,
   },
+  // Disable powered by header for security
+  poweredByHeader: false,
+  // Improve production builds
+  reactStrictMode: true,
 
   // Only use standalone output for production builds — it causes
   // extra filesystem tracing during dev which triggers "slow filesystem" warnings
