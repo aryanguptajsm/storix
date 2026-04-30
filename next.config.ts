@@ -38,6 +38,9 @@ const nextConfig: NextConfig = {
   ],
 
 
+  // Partial Pre-rendering (PPR) — top-level in Next.js 16 (moved out of experimental)
+  cacheComponents: true,
+
   experimental: {
     // Tree-shake barrel imports from these packages for faster compilation
     optimizePackageImports: [
@@ -52,8 +55,9 @@ const nextConfig: NextConfig = {
     ],
     // Use memory-based worker count to auto-tune parallelism
     memoryBasedWorkersCount: true,
-    // Enable partial pre-rendering (PPR) via cacheComponents — replaces the old `ppr` flag in Next.js 16
-    cacheComponents: true,
+    // Disable Turbopack's filesystem cache persistence — eliminates the
+    // "Slow filesystem detected. The benchmark took Xms" warning in dev
+    turbopackFileSystemCacheForDev: false,
   },
   // Disable powered by header for security
   poweredByHeader: false,
