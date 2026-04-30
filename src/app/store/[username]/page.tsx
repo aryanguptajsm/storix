@@ -8,10 +8,6 @@ import Link from "next/link";
 import { Metadata } from "next";
 import { StoreSearch } from "@/components/store/StoreSearch";
 
-// Cache rendered pages for 60s (ISR) — drastically speeds up repeat visits
-// Dynamic rendering ensures newly created stores are immediately available
-export const dynamic = "force-dynamic";
-export const fetchCache = "force-no-store";
 
 interface Props {
   params: { username: string };
