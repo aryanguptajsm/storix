@@ -3,6 +3,8 @@ import type { NextConfig } from "next";
 const isProd = process.env.NODE_ENV === "production";
 
 const nextConfig: NextConfig = {
+  // Allow cross-origin access to Next.js dev resources (e.g., webpack-hmr)
+  allowedDevOrigins: ["10.209.100.227", "localhost"],
   compress: true,
   images: {
     minimumCacheTTL: 60,
