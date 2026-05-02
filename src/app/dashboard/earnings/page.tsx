@@ -44,18 +44,12 @@ import { motion } from "framer-motion";
 export default function EarningsPage() {
   const [mounted, setMounted] = useState(false);
   const [timeRange, setTimeRange] = useState("Last 7 Days");
-  const [loading, setLoading] = useState(true);
 
   React.useEffect(() => {
     setMounted(true);
-    // Simulate data loading
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 2000);
-    return () => clearTimeout(timer);
   }, []);
 
-  if (loading || !mounted) {
+  if (!mounted) {
     return <AnalyticsSkeleton />;
   }
 
