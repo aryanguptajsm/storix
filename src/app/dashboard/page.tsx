@@ -32,31 +32,27 @@ export default async function DashboardPage() {
     redirect("/login");
   }
 
-  // Check if database is initialized
-  const { error: probeError } = await supabase
-    .from("products")
-    .select("id")
-    .limit(1);
+  // Run all DB queries in parallel — one round-trip instead of 4 sequential ones
+  const [probeRes, profileRes, productsRes, clicksRes, recentRes] = await Promise.all([
+    supabase.from("products").select("id").limit(1),
+    supabase.from("profiles").select("*").eq("id", user.id).single(),
+    supabase.from("products").select("*", { count: "exact", head: true }).eq("user_id", user.id),
+    supabase.from("clicks").select("*", { count: "exact", head: true }).eq("user_id", user.id),
+    supabase.from("products").select("id, title, image_url, platform, price, created_at").eq("user_id", user.id).order("created_at", { ascending: false }).limit(5),
+  ]);
 
   let configError = false;
   let productsTableExists = true;
 
-  if (probeError && probeError.code === "PGRST205") {
+  if (probeRes.error?.code === "PGRST205") {
     productsTableExists = false;
-  } else if (probeError && probeError.message.includes("Invalid API key")) {
+  } else if (probeRes.error?.message.includes("Invalid API key")) {
     configError = true;
   }
 
-  let profile = null;
-  const { data: existingProfile } = await supabase
-    .from("profiles")
-    .select("*")
-    .eq("id", user.id)
-    .single();
+  let profile = profileRes.data;
 
-  profile = existingProfile;
-
-  // Auto-initialize profile
+  // Auto-initialize profile if it doesn't exist
   if (!profile && !configError && productsTableExists) {
     const { data: newProfile, error: initError } = await supabase
       .from("profiles")
@@ -67,32 +63,12 @@ export default async function DashboardPage() {
       })
       .select()
       .single();
-    
+
     if (!initError) profile = newProfile;
   }
 
-  // Fetch stats and recent products in parallel
-  const [productsRes, clicksRes, recentRes] = await Promise.all([
-    supabase
-      .from("products")
-      .select("*", { count: "exact", head: true })
-      .eq("user_id", user.id),
-    supabase
-      .from("clicks")
-      .select("*", { count: "exact", head: true })
-      .eq("user_id", user.id),
-    supabase
-      .from("products")
-      .select("*")
-      .eq("user_id", user.id)
-      .order("created_at", { ascending: false })
-      .limit(5)
-  ]);
-
-  if (productsRes.error || clicksRes.error) {
-     if (productsRes.error?.message.includes("key") || clicksRes.error?.message.includes("key")) {
-       configError = true;
-     }
+  if (productsRes.error?.message.includes("key") || clicksRes.error?.message.includes("key")) {
+    configError = true;
   }
 
   const stats = {
