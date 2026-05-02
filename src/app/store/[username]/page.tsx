@@ -118,7 +118,11 @@ export default async function PublicStorePage({ params }: Props) {
         .select("id, user_id, title, description, image_url, platform, price, original_price, discount_percentage, rating, review_count, brand, category, original_url, created_at")
         .eq("user_id", profile.id)
         .order("created_at", { ascending: false })
-    : { data: [] };
+    : { data: [], error: null };
+
+  if (productsRes.error) {
+    console.error("Public store product fetch failed:", productsRes.error);
+  }
 
   const products = productsRes.data || [];
 

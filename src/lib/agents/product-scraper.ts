@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { type AxiosResponse } from "axios";
 import * as cheerio from "cheerio";
 import { chromium, Browser } from "playwright";
 import { parseAffiliateUrl } from "../affiliate";
@@ -71,7 +71,9 @@ export class ProductScraper {
   public async scrape(url: string, retryCount: number = 3): Promise<ProductScrapeResult> {
     const scrapedAt = new Date().toISOString();
     let attempt = 0;
-    let delay = 1500 + Math.random() * 1500;
+    let delay = 2000 + Math.random() * 2000; // 2-4s initial delay
+    let lastHttpCode = 0;
+    let lastErrorMessage = "Scraping failed";
 
     const finalUrl = this.appendAffiliateTag(url);
 
@@ -88,6 +90,7 @@ export class ProductScraper {
         if (this.isJsHeavy(url)) {
           const pwResult = await this.scrapeWithPlaywright(url);
           result = { ...result, ...pwResult, http_code: 200 };
+          lastHttpCode = 200;
         } else {
           // Try standard fetch first (fast)
           const response = await axios.get(url, {
@@ -109,6 +112,7 @@ export class ProductScraper {
           }
 
           result.http_code = response.status;
+          lastHttpCode = response.status;
 
           if (response.status === 200) {
             const $ = cheerio.load(response.data);
@@ -158,17 +162,18 @@ export class ProductScraper {
         }
 
         return result as ProductScrapeResult;
-      } catch (error: any) {
+      } catch (error: unknown) {
         attempt++;
         const errorMessage = error instanceof Error ? error.message : String(error);
+        lastErrorMessage = errorMessage;
         if (attempt > retryCount) {
           return {
             product_title: "Error",
             product_url: finalUrl,
             image_url: null,
             image_status: "error",
-            http_code: error.response?.status || 0,
-            error_reason: errorMessage,
+            http_code: lastHttpCode,
+            error_reason: lastErrorMessage,
             scraped_at: scrapedAt,
           };
         }
@@ -181,8 +186,8 @@ export class ProductScraper {
       product_url: finalUrl,
       image_url: null,
       image_status: "error",
-      http_code: 0,
-      error_reason: "Max retries exceeded",
+      http_code: lastHttpCode,
+      error_reason: lastErrorMessage || "Max retries exceeded",
       scraped_at: scrapedAt,
     };
   }
