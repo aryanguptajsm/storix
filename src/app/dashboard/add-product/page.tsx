@@ -222,6 +222,7 @@ export default function AddProductPage() {
         .from("products")
         .insert(insertData);
       
+      // Cache invalidation trigger to ensure client bundle reloads
       if (error) {
         console.error("Supabase Deployment Error:", {
           message: error.message,
